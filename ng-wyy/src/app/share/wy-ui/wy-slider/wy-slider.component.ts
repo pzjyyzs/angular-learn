@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Inject } from '@angular/core';
+import { filter, tap, pluck, map, distinctUntilChanged, takeUntil } from 'rxjs/internal/operators';
+import { SliderEventObserverConfig } from './wy-slider-types';
+import { DOCUMENT } from '@angular/common';
+import { sliderEvent } from './wy-slider-helper';
+import { fromEvent, merge, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-wy-slider',
@@ -9,9 +14,62 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class WySliderComponent implements OnInit {
 
-  constructor() { }
+  @Input() wyVertical = false;
+  private sliderDom: HTMLDivElement;
+  @ViewChild('wySlider', { static: true }) private wySlider: ElementRef;
+  private dragStart$: Observable<number | void>;
+  private dragMove$: Observable<number | void>;
+  private dragEnd$: Observable<Event>;
+  constructor(@Inject(DOCUMENT) private doc: Document) { }
 
   ngOnInit() {
+    this.sliderDom = this.wySlider.nativeElement;
+    this.createDraggingObservables();
   }
 
+  private createDraggingObservables() {
+    const orientField = this.wyVertical ? 'pageY' : 'pageX';
+    const mouse: SliderEventObserverConfig = {
+      start: 'mousedown',
+      move: 'mousemove',
+      end: 'mouseup',
+      filter: (e: MouseEvent) => e instanceof MouseEvent,
+      pluckKey: [orientField]
+    };
+    const touch: SliderEventObserverConfig = {
+      start: 'touchstart',
+      move: 'touchmove',
+      end: 'touchend',
+      filter: (e: MouseEvent) => e instanceof TouchEvent,
+      pluckKey: ['touches', '0', orientField]
+    };
+
+    [mouse, touch].forEach(source => {
+      const { start, move, end, filter: filerFunc, pluckKey } = source;
+      source.startPlucked$ = fromEvent(this.sliderDom, start)
+        .pipe(
+          filter(filerFunc),
+          tap(sliderEvent),
+          pluck(...pluckKey),
+          map((position: number) => {
+            this.findClosestValue(position);
+          })
+        );
+      source.end$ = fromEvent(this.doc, end);
+      source.moveResolved$ = fromEvent(this.doc, move).pipe(
+        filter(filerFunc),
+          tap(sliderEvent),
+          pluck(...pluckKey),
+          distinctUntilChanged(),
+          map((position: number) => {
+            this.findClosestValue(position);
+          }),
+          takeUntil(source.end$)
+      );
+    });
+
+    this.dragStart$ = merge(mouse.startPlucked$, touch.startPlucked$);
+    this.dragMove$ = merge(mouse.moveResolved$, touch.moveResolved$);
+    this.dragEnd$ = merge(mouse.end$, touch.end$);
+  }
 }
