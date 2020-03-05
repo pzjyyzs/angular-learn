@@ -6,19 +6,26 @@ import { DOCUMENT } from '@angular/common';
 import { sliderEvent, getElementOffset } from './wy-slider-helper';
 import { getPercent, limitNumberInRange } from 'src/utils/number';
 import { inArray } from 'src/utils/array';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-wy-slider',
   templateUrl: './wy-slider.component.html',
   styleUrls: ['./wy-slider.component.less'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => WySliderComponent),
+    multi: true
+  }]
 })
-export class WySliderComponent implements OnInit, OnDestroy {
+export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
   @Input() wyVertical = false;
   @Input() wyMin = 0;
   @Input() wyMax = 100;
+  @Input() wyBuffer: SliderValue = 0;
   private sliderDom: HTMLDivElement;
   @ViewChild('wySlider', { static: true }) private wySlider: ElementRef;
   private dragStart$: Observable<number | void>;
@@ -61,12 +68,12 @@ export class WySliderComponent implements OnInit, OnDestroy {
       const { start, move, end, filter: filerFunc, pluckKey } = source;
 
       source.startPlucked$ = fromEvent(this.sliderDom, start)
-      .pipe(
-        filter(filerFunc),
-        tap(sliderEvent),
-        pluck(...pluckKey),
-        map((position: number) => this.findClosestValue(position))
-      );
+        .pipe(
+          filter(filerFunc),
+          tap(sliderEvent),
+          pluck(...pluckKey),
+          map((position: number) => this.findClosestValue(position))
+        );
 
       source.end$ = fromEvent(this.doc, end);
       source.moveResolved$ = fromEvent(this.doc, move).pipe(
@@ -86,7 +93,7 @@ export class WySliderComponent implements OnInit, OnDestroy {
 
   private subscribeDrag(events: string[] = ['start', 'move', 'end']) {
     if (inArray(events, 'start') && this.dragStart$ && !this.dragStart_) {
-     this.dragStart_ =  this.dragStart$.subscribe(this.onDragStart.bind(this));
+      this.dragStart_ = this.dragStart$.subscribe(this.onDragStart.bind(this));
     }
     if (inArray(events, 'move') && this.dragMove$ && !this.dragMove_) {
       this.dragMove_ = this.dragMove$.subscribe(this.onDragMove.bind(this));
@@ -125,14 +132,32 @@ export class WySliderComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private setValue(value: SliderValue) {
+  private setValue(value: SliderValue, needCheck = false) {
+    if (needCheck) {
+      if (this.isDragging) { return; }
+      this.value = this.formatValue(value);
+      this.updateTrackAndHandles();
+    }
     if (!this.valuesEqual(this.value, value)) {
       this.value = value;
       this.updateTrackAndHandles();
+      this.onValueChange(this.value);
     }
 
   }
-
+  private formatValue(value: SliderValue): SliderValue {
+    let res = value;
+    if (this.assertValueValid(value)) {
+      res = this.wyMin;
+    } else {
+      res = limitNumberInRange(value, this.wyMin, this.wyMax);
+    }
+    return res;
+  }
+  // 判断是否是NaN
+  private assertValueValid(value: SliderValue): boolean {
+    return isNaN(typeof value !== 'number' ? parseFloat(value) : value);
+  }
   private valuesEqual(valA: SliderValue, valB: SliderValue) {
     if (typeof valA !== typeof valB) {
       return false;
@@ -161,7 +186,7 @@ export class WySliderComponent implements OnInit, OnDestroy {
     const sliderStart = this.getSliderStartPosition();
 
     // 滑块当前位置 / 滑块总长
-    const ratio = limitNumberInRange((position - sliderStart) / sliderLength,0,1);
+    const ratio = limitNumberInRange((position - sliderStart) / sliderLength, 0, 1);
     const ratioTrue = this.wyVertical ? 1 - ratio : ratio;
     return ratioTrue * (this.wyMax - this.wyMin) + this.wyMin;
   }
@@ -174,7 +199,20 @@ export class WySliderComponent implements OnInit, OnDestroy {
     return this.wyVertical ? offset.top : offset.left;
   }
 
+
+  private onValueChange(value: SliderValue): void { }
+  private onTouched(): void { }
+  writeValue(value: SliderValue): void {
+    this.setValue(value, true);
+  }
+  registerOnChange(fn: (value: SliderValue) => void): void {
+    this.onValueChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
   ngOnDestroy(): void {
-   this.unsubscribeDrag();
+    this.unsubscribeDrag();
   }
 }
