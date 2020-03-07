@@ -3,13 +3,13 @@ import { WySliderStyle } from './wy-slider-types';
 
 @Component({
   selector: 'app-wy-slider-handle',
-  template: `<div class="wy-slider-handle" [class.buffer]="wyBuffer" [ngStyle]="style"></div>`,
+  template: `<div class="wy-slider-handle" [ngStyle]="style"></div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WySliderHandleComponent implements OnInit, OnChanges {
   @Input() wyVertical = false;
   @Input() wyOffset: number;
-  @Input() wyBuffer = false;
+
   style:WySliderStyle = {};
 
   constructor() { }
