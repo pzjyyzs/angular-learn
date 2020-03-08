@@ -19,6 +19,9 @@ export class WyPlayerComponent implements OnInit {
   currentSong: Song;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   private audioEl: HTMLAudioElement;
+
+  duration: number;
+  currentTime: number;
   constructor(
     private store$: Store<AppStoreModule>
   ) {
@@ -45,7 +48,10 @@ export class WyPlayerComponent implements OnInit {
     console.log(mode);
   }
   private watchCurrentSong(song: Song) {
-    this.currentSong = song;
+    if (song) {
+      this.currentSong = song;
+      this.duration = song.dt / 1000;
+    }
   }
 
   onCanplay() {
@@ -53,5 +59,13 @@ export class WyPlayerComponent implements OnInit {
   }
   private play() {
     this.audioEl.play();
+  }
+
+  get picUrl(): string {
+    return this.currentSong ? this.currentSong.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg'
+  }
+
+  onTimeUpdate(e: Event) {
+    this.currentTime = (e.target as HTMLAudioElement).currentTime;
   }
 }
