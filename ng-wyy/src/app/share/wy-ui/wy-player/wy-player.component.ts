@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Song } from 'src/app/service/data-types/common.types';
 import { getSongList, getPlayList, getCurrentIndex, getPlayMode, getCurrentSong, getPlayer } from 'src/app/selectors/player.selectors';
 import { PlayMode } from './player-type';
+import { SetCurrentIndex } from 'src/app/actions/player.action';
 
 @Component({
   selector: 'app-wy-player',
@@ -22,6 +23,9 @@ export class WyPlayerComponent implements OnInit {
 
   duration: number;
   currentTime: number;
+
+  playing = false;
+  songReady = false;
   constructor(
     private store$: Store<AppStoreModule>
   ) {
@@ -32,7 +36,7 @@ export class WyPlayerComponent implements OnInit {
     appStore$.pipe(select(getPlayMode)).subscribe(mode => this.watchPlayMode(mode));
     appStore$.pipe(select(getCurrentSong)).subscribe(song => this.watchCurrentSong(song));
     //appStore$.pipe(select(getCurrentAction)).subscribe(action => this.watchCurrentAction(action));
-   }
+  }
 
   ngOnInit() {
     this.audioEl = this.audio.nativeElement;
@@ -55,10 +59,12 @@ export class WyPlayerComponent implements OnInit {
   }
 
   onCanplay() {
+    this.songReady = true;
     this.play();
   }
   private play() {
     this.audioEl.play();
+    this.playing = true;
   }
 
   get picUrl(): string {
@@ -67,5 +73,53 @@ export class WyPlayerComponent implements OnInit {
 
   onTimeUpdate(e: Event) {
     this.currentTime = (e.target as HTMLAudioElement).currentTime;
+  }
+
+  onToggle() {
+    if (!this.currentSong) {
+      if (this.playList.length) {
+        this.updateIndex(0);
+      }
+    } else {
+      if (this.songReady) {
+        this.playing = !this.playing;
+        if (this.playing) {
+          this.audioEl.play();
+        } else {
+          this.audioEl.pause();
+        }
+      }
+    }
+
+  }
+
+  onPrey(index: number) {
+    if (!this.songReady) { return; }
+    if (this.playList.length === 1) {
+      this.loop();
+    } else {
+      const newIndex = index <= 0 ? this.playList.length - 1 : index;
+      this.updateIndex(newIndex);
+    }
+  }
+  onNext(index: number) {
+    if (!this.songReady) { return; }
+    if (this.playList.length === 1) {
+      this.loop();
+    } else {
+      const newIndex = index >= this.playList.length ? 0 : index;
+      this.updateIndex(newIndex);
+    }
+
+  }
+
+  private updateIndex(index: number) {
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: index }));
+    this.songReady = false;
+  }
+
+  private loop() {
+    this.audioEl.currentTime = 0;
+    this.play();
   }
 }
