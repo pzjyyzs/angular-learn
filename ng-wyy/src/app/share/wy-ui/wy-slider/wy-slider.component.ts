@@ -26,6 +26,8 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   @Input() wyMin = 0;
   @Input() wyMax = 100;
   @Input() bufferOffset: SliderValue = 0;
+
+  @Output() wyOnAfterChange = new EventEmitter<SliderValue>();
   private sliderDom: HTMLDivElement;
   @ViewChild('wySlider', { static: true }) private wySlider: ElementRef;
   private dragStart$: Observable<number | void>;
@@ -128,6 +130,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     }
   }
   private onDragEnd() {
+    this.wyOnAfterChange.emit(this.value);
     this.toggleDragMoving(false);
     this.cdr.markForCheck();
   }
