@@ -4,11 +4,12 @@ import { WyPlayerComponent } from './wy-player.component';
 import { WySliderModule } from '../wy-slider/wy-slider.module';
 import { FormsModule } from '@angular/forms';
 import { FormatTimePipe } from '../../pipes/format-time.pipe';
+import { WiPlayerPanelComponent } from './wi-player-panel/wi-player-panel.component';
 
 
 
 @NgModule({
-  declarations: [WyPlayerComponent, FormatTimePipe],
+  declarations: [WyPlayerComponent, FormatTimePipe, WiPlayerPanelComponent],
   imports: [
     CommonModule,
     FormsModule,

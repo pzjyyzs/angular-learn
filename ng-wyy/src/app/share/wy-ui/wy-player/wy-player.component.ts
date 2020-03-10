@@ -46,6 +46,8 @@ export class WyPlayerComponent implements OnInit {
 
   showVolumnPanel = false;
 
+  showPanel = false;
+
   // 是否点击音量面板
   selfClick = false;
 
@@ -172,14 +174,18 @@ export class WyPlayerComponent implements OnInit {
     this.audioEl.volume = per / 100;
   }
 
-  toggleVolPanel(evt: MouseEvent) {
-    //evt.stopPropagation();
-    this.togglePanel();
+  toggleVolPanel() {
+    this.togglePanel('showVolumnPanel');
   }
 
-  togglePanel() {
-    this.showVolumnPanel = !this.showVolumnPanel;
-    if (this.showVolumnPanel) {
+  toggleListPanel() {
+    if (this.songList.length) {
+      this.togglePanel('showPanel');
+    }
+  }
+  togglePanel(type: string) {
+    this[type] = !this[type];
+    if (this.showVolumnPanel || this.showPanel) {
       this.bindDocumentClickListener();
     } else {
       this.unbindDocumentClickListener();
@@ -190,6 +196,7 @@ export class WyPlayerComponent implements OnInit {
     if (!this.winClick) {
       this.winClick = fromEvent(this.doc, 'click').subscribe(() => {
         if (!this.selfClick) {
+          this.showVolumnPanel = false;
           this.showVolumnPanel = false;
           this.unbindDocumentClickListener();
         }
@@ -219,5 +226,9 @@ export class WyPlayerComponent implements OnInit {
     } else {
       this.onNext( this.currentIndex + 1);
     }
+  }
+
+  onChangeSong(song: Song) {
+    this.updateCurrentIndex(this.playList, song);
   }
 }
