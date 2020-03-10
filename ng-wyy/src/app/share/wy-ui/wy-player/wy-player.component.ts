@@ -4,10 +4,21 @@ import { Store, select } from '@ngrx/store';
 import { Song } from 'src/app/service/data-types/common.types';
 import { getSongList, getPlayList, getCurrentIndex, getPlayMode, getCurrentSong, getPlayer } from 'src/app/selectors/player.selectors';
 import { PlayMode } from './player-type';
-import { SetCurrentIndex } from 'src/app/actions/player.action';
+import { SetCurrentIndex, SetPlayMode, SetPlayList } from 'src/app/actions/player.action';
 import { Subscription, fromEvent } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { shuffle } from 'src/utils/array';
 
+const modeTypes: PlayMode[] = [{
+  type: 'loop',
+  label: '循环'
+}, {
+  type: 'random',
+  label: '随机'
+}, {
+  type: 'singleLoop',
+  label: '单曲循环'
+}]
 @Component({
   selector: 'app-wy-player',
   templateUrl: './wy-player.component.html',
@@ -39,6 +50,8 @@ export class WyPlayerComponent implements OnInit {
   selfClick = false;
 
   private winClick: Subscription;
+  currentMode: PlayMode;
+  modeCount = 0;
   constructor(
     private store$: Store<AppStoreModule>,
     @Inject(DOCUMENT) private doc: Document
@@ -63,7 +76,15 @@ export class WyPlayerComponent implements OnInit {
     this.currentIndex = index;
   }
   private watchPlayMode(mode: PlayMode) {
-    console.log(mode);
+    this.currentMode = mode;
+    if (this.songList) {
+      let list = this.songList.slice();
+      if (mode.type === 'random') {
+        list = shuffle(this.songList);
+        this.updateCurrentIndex(list, this.currentSong);
+        this.store$.dispatch(SetPlayList({ playList: list }));
+      }
+    }
   }
   private watchCurrentSong(song: Song) {
     if (song) {
@@ -168,11 +189,11 @@ export class WyPlayerComponent implements OnInit {
   private bindDocumentClickListener() {
     if (!this.winClick) {
       this.winClick = fromEvent(this.doc, 'click').subscribe(() => {
-          if (!this.selfClick) {
-            this.showVolumnPanel = false;
-            this.unbindDocumentClickListener();
-          }
-          this.selfClick = false;
+        if (!this.selfClick) {
+          this.showVolumnPanel = false;
+          this.unbindDocumentClickListener();
+        }
+        this.selfClick = false;
       });
     }
   }
@@ -180,6 +201,23 @@ export class WyPlayerComponent implements OnInit {
     if (this.winClick) {
       this.winClick.unsubscribe();
       this.winClick = null;
+    }
+  }
+
+  changeMode() {
+    this.store$.dispatch(SetPlayMode({ playMode: modeTypes[++this.modeCount % 3] }));
+  }
+
+  private updateCurrentIndex(list: Song[], song: Song) {
+    const newIndex = list.findIndex(item => item.id === song.id);
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: newIndex }));
+  }
+
+  onEnded() {
+    if (this.currentMode.type === 'singleLoop') {
+      this.loop();
+    } else {
+      this.onNext( this.currentIndex + 1);
     }
   }
 }
