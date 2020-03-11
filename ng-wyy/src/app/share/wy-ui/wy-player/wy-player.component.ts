@@ -117,7 +117,7 @@ export class WyPlayerComponent implements OnInit {
     this.currentTime = (e.target as HTMLAudioElement).currentTime;
     this.percent = (this.currentTime / this.duration) * 100;
     const buffered = this.audioEl.buffered;
-    if (buffered && this.bufferPercent < 100) {
+    if (buffered.length && this.bufferPercent < 100) {
       this.bufferPercent = (buffered.end(0) / this.duration) * 100;
     }
   }

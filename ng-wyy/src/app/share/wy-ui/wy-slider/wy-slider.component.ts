@@ -21,24 +21,29 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   }]
 })
 export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccessor {
-
   @Input() wyVertical = false;
   @Input() wyMin = 0;
   @Input() wyMax = 100;
   @Input() bufferOffset: SliderValue = 0;
 
   @Output() wyOnAfterChange = new EventEmitter<SliderValue>();
+
   private sliderDom: HTMLDivElement;
   @ViewChild('wySlider', { static: true }) private wySlider: ElementRef;
+
   private dragStart$: Observable<number | void>;
   private dragMove$: Observable<number | void>;
   private dragEnd$: Observable<Event>;
   private dragStart_: Subscription | null;
   private dragMove_: Subscription | null;
   private dragEnd_: Subscription | null;
-  private isDragging: boolean;
+
+  private isDragging = false;
+
   value: SliderValue = null;
-  offset: SliderValue | null = null;
+  offset: SliderValue = null;
+
+
   constructor(@Inject(DOCUMENT) private doc: Document, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -70,12 +75,12 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
       const { start, move, end, filter: filerFunc, pluckKey } = source;
 
       source.startPlucked$ = fromEvent(this.sliderDom, start)
-        .pipe(
-          filter(filerFunc),
-          tap(sliderEvent),
-          pluck(...pluckKey),
-          map((position: number) => this.findClosestValue(position))
-        );
+      .pipe(
+        filter(filerFunc),
+        tap(sliderEvent),
+        pluck(...pluckKey),
+        map((position: number) => this.findClosestValue(position))
+      );
 
       source.end$ = fromEvent(this.doc, end);
       source.moveResolved$ = fromEvent(this.doc, move).pipe(
@@ -93,6 +98,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     this.dragEnd$ = merge(mouse.end$, touch.end$);
   }
 
+
   private subscribeDrag(events: string[] = ['start', 'move', 'end']) {
     if (inArray(events, 'start') && this.dragStart$ && !this.dragStart_) {
       this.dragStart_ = this.dragStart$.subscribe(this.onDragStart.bind(this));
@@ -100,10 +106,11 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     if (inArray(events, 'move') && this.dragMove$ && !this.dragMove_) {
       this.dragMove_ = this.dragMove$.subscribe(this.onDragMove.bind(this));
     }
-    if (inArray(events, 'start') && this.dragEnd$ && this.dragEnd_) {
+    if (inArray(events, 'end') && this.dragEnd$ && !this.dragEnd_) {
       this.dragEnd_ = this.dragEnd$.subscribe(this.onDragEnd.bind(this));
     }
   }
+
 
   private unsubscribeDrag(events: string[] = ['start', 'move', 'end']) {
     if (inArray(events, 'start') && this.dragStart_) {
@@ -114,14 +121,16 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
       this.dragMove_.unsubscribe();
       this.dragMove_ = null;
     }
-    if (inArray(events, 'start') && this.dragEnd$) {
+    if (inArray(events, 'end') && this.dragEnd_) {
       this.dragEnd_.unsubscribe();
       this.dragEnd_ = null;
     }
   }
+
   private onDragStart(value: number) {
     this.toggleDragMoving(true);
     this.setValue(value);
+
   }
   private onDragMove(value: number) {
     if (this.isDragging) {
@@ -135,19 +144,21 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     this.cdr.markForCheck();
   }
 
+
   private setValue(value: SliderValue, needCheck = false) {
     if (needCheck) {
       if (this.isDragging) { return; }
       this.value = this.formatValue(value);
       this.updateTrackAndHandles();
-    }
-    if (!this.valuesEqual(this.value, value)) {
+    } else if (!this.valuesEqual(this.value, value)) {
       this.value = value;
       this.updateTrackAndHandles();
       this.onValueChange(this.value);
     }
 
   }
+
+
   private formatValue(value: SliderValue): SliderValue {
     let res = value;
     if (this.assertValueValid(value)) {
@@ -157,23 +168,31 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     }
     return res;
   }
-  // 判断是否是NaN
+
+
+  // 判断是否是NAN
   private assertValueValid(value: SliderValue): boolean {
     return isNaN(typeof value !== 'number' ? parseFloat(value) : value);
   }
-  private valuesEqual(valA: SliderValue, valB: SliderValue) {
+
+  private valuesEqual(valA: SliderValue, valB: SliderValue): boolean {
     if (typeof valA !== typeof valB) {
       return false;
     }
     return valA === valB;
   }
+
+
   private updateTrackAndHandles() {
     this.offset = this.getValueToOffset(this.value);
     this.cdr.markForCheck();
   }
+
+
   private getValueToOffset(value: SliderValue): SliderValue {
     return getPercent(this.wyMin, this.wyMax, value);
   }
+
   private toggleDragMoving(movable: boolean) {
     this.isDragging = movable;
     if (movable) {
@@ -182,10 +201,13 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
       this.unsubscribeDrag(['move', 'end']);
     }
   }
+
+
   private findClosestValue(position: number): number {
     // 获取滑块总长
     const sliderLength = this.getSliderLength();
-    // 滑块（左，上）端点位置
+
+    // 滑块(左, 上)端点位置
     const sliderStart = this.getSliderStartPosition();
 
     // 滑块当前位置 / 滑块总长
@@ -194,28 +216,36 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     return ratioTrue * (this.wyMax - this.wyMin) + this.wyMin;
   }
 
+
   private getSliderLength(): number {
     return this.wyVertical ? this.sliderDom.clientHeight : this.sliderDom.clientWidth;
   }
+
   private getSliderStartPosition(): number {
     const offset = getElementOffset(this.sliderDom);
     return this.wyVertical ? offset.top : offset.left;
   }
 
 
-  private onValueChange(value: SliderValue): void { }
-  private onTouched(): void { }
+  private onValueChange(value: SliderValue): void {}
+  private onTouched(): void {}
+
   writeValue(value: SliderValue): void {
     this.setValue(value, true);
   }
+
+
   registerOnChange(fn: (value: SliderValue) => void): void {
     this.onValueChange = fn;
   }
+
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
+
 
   ngOnDestroy(): void {
     this.unsubscribeDrag();
   }
 }
+
