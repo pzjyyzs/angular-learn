@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import BScroll from '@better-scroll/core';
 import ScrollBar from '@better-scroll/scroll-bar';
 import MouseWheel from '@better-scroll/mouse-wheel';
@@ -22,7 +22,9 @@ export class WyScrollComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() refreshDelay = 50;
   private bs: BScroll;
   @ViewChild('wrap', { static: true }) private wrapRef: ElementRef;
-  constructor() { }
+
+  @Output() private onScrollEnd = new EventEmitter<number>();
+  constructor(readonly el: ElementRef) { }
 
 
   ngOnInit() {
@@ -35,6 +37,7 @@ export class WyScrollComponent implements OnInit, AfterViewInit, OnChanges {
       },
       mouseWheel: {}
     });
+    this.bs.on('scrollEnd', ({ y }) => this.onScrollEnd.emit(y));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,5 +53,9 @@ export class WyScrollComponent implements OnInit, AfterViewInit, OnChanges {
     setTimeout(() => {
      this.refresh();
     }, this.refreshDelay);
+  }
+
+  scrollToElement(...args) {
+    this.bs.scrollToElement.apply(this.bs, args);
   }
 }
