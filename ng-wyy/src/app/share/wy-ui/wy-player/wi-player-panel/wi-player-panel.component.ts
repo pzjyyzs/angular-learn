@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChange, SimpleChanges, Outpu
 import { Song } from 'src/app/service/data-types/common.types';
 import { WyScrollComponent } from '../wy-scroll/wy-scroll.component';
 import { findIndex } from 'src/utils/array';
+import { timer } from 'rxjs';
+import { SongService } from 'src/app/service/song.service';
 
 @Component({
   selector: 'app-wi-player-panel',
@@ -20,7 +22,7 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
 
   scrollY = 0;
   @ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
-  constructor() { }
+  constructor(private songServe: SongService) { }
 
   ngOnInit() {
   }
@@ -32,6 +34,7 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
     if (changes.currentSong) {
       if (this.currentSong) {
         this.currentIndex = findIndex(this.songList, this.currentSong);
+        this.updateLyric();
         if (this.show) {
           this.scrollToCurrent();
         }
@@ -42,11 +45,11 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
     if (changes.show) {
       if (!changes.show.firstChange && this.show) {
         this.wyScroll.first.refreshScroll();
-        setTimeout(() => {
+        timer(80).subscribe(() => {
           if (this.currentSong) {
             this.scrollToCurrent(0);
           }
-        }, 80)
+        });
       }
     }
   }
@@ -61,5 +64,10 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
         this.wyScroll.first.scrollToElement(currentLi, speed, false, false);
       }
     }
+  }
+  private updateLyric() {
+    this.songServe.getLyric(this.currentSong.id).subscribe(res => {
+
+    });
   }
 }
