@@ -7,8 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/internal/operators';
 import { SheetService } from 'src/app/service/sheet.service';
 import { AppStoreModule } from 'src/app/store';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { SetSongList, SetPlayList, SetCurrentIndex } from 'src/app/actions/player.action';
+import { PlayState } from 'src/app/reducers/player.reducer';
+import { findIndex, shuffle } from 'src/utils/array';
+import { getPlayer } from 'src/app/selectors/player.selectors';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +25,8 @@ export class HomeComponent implements OnInit {
   hotTags: HotTag[];
   songSheetList: SongSheet[];
   singers: Singer[];
+
+  private playerState: PlayState;
   @ViewChild(NzCarouselComponent, { static: true }) private nzCarousel: NzCarouselComponent;
 
   constructor(
@@ -29,12 +34,14 @@ export class HomeComponent implements OnInit {
     private sheetService: SheetService,
     private store$: Store<AppStoreModule>
     ) {
-    this.route.data.pipe(map(res => res.homeDatas)).subscribe(([banners, hotTags, songSheetList,singers]) =>{
+    this.route.data.pipe(map(res => res.homeDatas)).subscribe(([banners, hotTags, songSheetList, singers]) => {
       this.banners = banners;
       this.hotTags = hotTags;
       this.songSheetList = songSheetList;
       this.singers = singers;
-    })
+    });
+
+    this.store$.pipe(select(getPlayer)).subscribe(res => this.playerState = res);
   }
 
   ngOnInit() {
@@ -49,10 +56,17 @@ export class HomeComponent implements OnInit {
   }
 
   onPlaySheet(id: number) {
-    this.sheetService.playSheet(id).subscribe(list =>{
+    this.sheetService.playSheet(id).subscribe(list => {
       this.store$.dispatch(SetSongList({ songList: list }));
+      let trueIndex = 0;
+      let trueList = list.slice();
+
+      if (this.playerState.playMode.type === 'random') {
+        trueList = shuffle(list || []);
+        trueIndex = findIndex(trueList, list[trueIndex]);
+      }
       this.store$.dispatch(SetPlayList({ playList: list }));
-      this.store$.dispatch(SetCurrentIndex({ currentIndex: 0 }));
+      this.store$.dispatch(SetCurrentIndex({ currentIndex: trueIndex }));
     });
   }
 }

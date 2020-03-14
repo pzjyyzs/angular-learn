@@ -31,7 +31,7 @@ const reducer = createReducer(
   on(SetSongList,  (state, { songList }) => ({ ...state, songList })),
   on(SetPlayMode,  (state, { playMode }) => ({ ...state, playMode })),
   on(SetCurrentIndex,  (state, { currentIndex }) => ({ ...state, currentIndex })),
-)
+);
 
 export function playerReducer(state: PlayState, action: Action) {
   return reducer(state, action);
