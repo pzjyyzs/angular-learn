@@ -4,6 +4,7 @@ import { WyScrollComponent } from '../wy-scroll/wy-scroll.component';
 import { findIndex } from 'src/utils/array';
 import { timer } from 'rxjs';
 import { SongService } from 'src/app/service/song.service';
+import { WyLyric, BaseLyricLine } from './wy-lyric';
 
 @Component({
   selector: 'app-wi-player-panel',
@@ -21,6 +22,7 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
   @Output() onChangeSong = new EventEmitter<Song>();
 
   scrollY = 0;
+  currentLyric: BaseLyricLine[];
   @ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
   constructor(private songServe: SongService) { }
 
@@ -45,6 +47,7 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
     if (changes.show) {
       if (!changes.show.firstChange && this.show) {
         this.wyScroll.first.refreshScroll();
+        this.wyScroll.last.refreshScroll();
         timer(80).subscribe(() => {
           if (this.currentSong) {
             this.scrollToCurrent(0);
@@ -67,7 +70,8 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
   }
   private updateLyric() {
     this.songServe.getLyric(this.currentSong.id).subscribe(res => {
-
+      const lyric = new WyLyric(res);
+      this.currentLyric = lyric.lines;
     });
   }
 }

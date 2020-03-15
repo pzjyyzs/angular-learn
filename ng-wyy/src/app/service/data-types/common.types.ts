@@ -42,6 +42,6 @@ export type SongUrl = {
 }
 
 export type Lyric = {
-  lrc: string;
+  lyric: string;
   tlyric: string;
 }
