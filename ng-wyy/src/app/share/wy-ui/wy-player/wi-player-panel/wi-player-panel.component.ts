@@ -13,6 +13,7 @@ import { WyLyric, BaseLyricLine } from './wy-lyric';
 })
 export class WiPlayerPanelComponent implements OnInit, OnChanges {
 
+  @Input() playing: boolean;
   @Input() songList: Song[];
   @Input() currentSong: Song;
   currentIndex: number;
@@ -23,6 +24,8 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
 
   scrollY = 0;
   currentLyric: BaseLyricLine[];
+
+  private  lyric: WyLyric;
   @ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
   constructor(private songServe: SongService) { }
 
@@ -30,6 +33,11 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['playing']) {
+      if (!changes['playing'].firstChange && this.playing) {
+        this.lyric.play();
+      }
+    }
     if (changes.songList) {
       this.currentIndex = 0;
     }
@@ -70,8 +78,12 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
   }
   private updateLyric() {
     this.songServe.getLyric(this.currentSong.id).subscribe(res => {
-      const lyric = new WyLyric(res);
-      this.currentLyric = lyric.lines;
+      this.lyric = new WyLyric(res);
+      this.currentLyric = this.lyric.lines;
+      this.wyScroll.last.scrollTo(0, 0);
+      if (this.playing) {
+        this.lyric.play();
+      }
     });
   }
 }

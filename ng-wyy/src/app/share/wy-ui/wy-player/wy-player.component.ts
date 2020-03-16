@@ -231,4 +231,5 @@ export class WyPlayerComponent implements OnInit {
   onChangeSong(song: Song) {
     this.updateCurrentIndex(this.playList, song);
   }
+
 }
