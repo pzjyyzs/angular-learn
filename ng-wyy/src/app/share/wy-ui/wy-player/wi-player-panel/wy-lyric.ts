@@ -1,6 +1,6 @@
 import { Lyric } from 'src/app/service/data-types/common.types';
-import { zip, from, Subject } from 'rxjs';
-import { skip } from 'rxjs/internal/operators';
+import { zip, from, Subject, Subscription, timer } from 'rxjs';
+import { skip, timeout } from 'rxjs/internal/operators';
 
 const timeExp = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
 
@@ -25,7 +25,7 @@ export class WyLyric {
 
   handler = new Subject<Handler>();
 
-  private timer: any;
+  private timer$: Subscription;
   constructor(lrc: Lyric) {
     this.lrc = lrc;
     this.init();
@@ -97,7 +97,7 @@ export class WyLyric {
     }
   }
 
-  play(startTime = 0) {
+  play(startTime = 0, skip = false) {
     if (!this.lines.length) { return; }
     if (!this.playing) {
       this.playing = true;
@@ -105,10 +105,13 @@ export class WyLyric {
 
     this.curNum = this.findCurNum(startTime);
     this.startStamp = Date.now() - startTime;
-    //this.callHandler()
+
+    if (!skip) {
+      this.callHandler(this.curNum - 1);
+    }
 
     if (this.curNum < this.lines.length) {
-      clearTimeout(this.timer);
+      this.clearTimer();
       this.playReset();
     }
   }
@@ -121,20 +124,25 @@ export class WyLyric {
   private playReset() {
     const line = this.lines[this.curNum];
     const delay = line.time - (Date.now() - this.startStamp);
-    this.timer = setTimeout(() => {
+    this.timer$ = timer(delay).subscribe(() => {
       this.callHandler(this.curNum++);
       if (this.curNum < this.lines.length && this.playing) {
         this.playReset();
       }
-    }, delay);
+    });
   }
 
+  private clearTimer() {
+    this.timer$&& this.timer$.unsubscribe();
+  }
   private callHandler(i: number) {
-    this.handler.next({
-      txt: this.lines[i].txt,
-      txtCn: this.lines[i].txtCn,
-      lineNum: i
-    });
+    if (i > 0) {
+      this.handler.next({
+        txt: this.lines[i].txt,
+        txtCn: this.lines[i].txtCn,
+        lineNum: i
+      });
+    }
   }
 
   togglePlay(playing: boolean) {
@@ -142,17 +150,21 @@ export class WyLyric {
     this.playing = playing;
     if (playing) {
       const startTime = (this.pauseStamp || now) - (this.startStamp || now);
-      this.play(startTime);
+      this.play(startTime, true);
     } else {
       this.stop();
       this.pauseStamp = now;
     }
   }
 
-  private stop() {
+  stop() {
     if (this.playing) {
       this.playing = false;
     }
-    clearTimeout(this.timer)
+    this.clearTimer();
+  }
+
+  seek(time: number) {
+    this.play(time);
   }
 }

@@ -24,8 +24,10 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
 
   scrollY = 0;
   currentLyric: BaseLyricLine[];
+  currentLineNum: number;
 
-  private  lyric: WyLyric;
+  private lyric: WyLyric;
+  private lyricRefs: NodeList;
   @ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
   constructor(private songServe: SongService) { }
 
@@ -34,8 +36,8 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['playing']) {
-      if (!changes['playing'].firstChange && this.playing) {
-        this.lyric.play();
+      if (!changes['playing'].firstChange) {
+        this.lyric.togglePlay(this.playing);
       }
     }
     if (changes.songList) {
@@ -49,7 +51,7 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
           this.scrollToCurrent();
         }
       } else {
-
+        this.resetLyric();
       }
     }
     if (changes.show) {
@@ -77,13 +79,52 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
     }
   }
   private updateLyric() {
+    this.resetLyric();
     this.songServe.getLyric(this.currentSong.id).subscribe(res => {
       this.lyric = new WyLyric(res);
       this.currentLyric = this.lyric.lines;
+      const startLine = res.lyric ? 1 : 2;
+      this.handleLyric(startLine);
       this.wyScroll.last.scrollTo(0, 0);
       if (this.playing) {
         this.lyric.play();
       }
     });
+  }
+
+  private handleLyric(startLine = 2) {
+    this.lyric.handler.subscribe(({ lineNum }) => {
+      if (!this.lyricRefs) {
+        this.lyricRefs = this.wyScroll.last.el.nativeElement.querySelectorAll('ul li');
+      }
+      if (this.lyricRefs.length) {
+        this.currentLineNum = lineNum;
+        if (lineNum > startLine) {
+          const targetLine = this.lyricRefs[lineNum - startLine];
+          if (targetLine) {
+            this.wyScroll.last.scrollToElement(targetLine, 300, false, false);
+          }
+        } else {
+          this.wyScroll.last.scrollTo(0, 0);
+        }
+
+      }
+    });
+  }
+
+  private resetLyric() {
+    if (this.lyric) {
+      this.lyric.stop();
+      this.lyric = null;
+      this.currentLyric = [];
+      this.currentLineNum = 0;
+      this.lyricRefs = null;
+    }
+  }
+
+  seekLyric(time: number) {
+    if (this.lyric) {
+      this.lyric.seek(time);
+    }
   }
 }
