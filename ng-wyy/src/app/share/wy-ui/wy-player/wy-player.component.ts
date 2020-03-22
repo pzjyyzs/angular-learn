@@ -4,11 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { Song } from 'src/app/service/data-types/common.types';
 import { getSongList, getPlayList, getCurrentIndex, getPlayMode, getCurrentSong, getPlayer } from 'src/app/selectors/player.selectors';
 import { PlayMode } from './player-type';
-import { SetCurrentIndex, SetPlayMode, SetPlayList } from 'src/app/actions/player.action';
+import { SetCurrentIndex, SetPlayMode, SetPlayList, SetSongList } from 'src/app/actions/player.action';
 import { Subscription, fromEvent } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { shuffle, findIndex } from 'src/utils/array';
 import { WiPlayerPanelComponent } from './wi-player-panel/wi-player-panel.component';
+import { NzModalComponent, NzModalService } from 'ng-zorro-antd';
+import { BatchActionsService } from 'src/app/store/batch-actions.service';
 
 const modeTypes: PlayMode[] = [{
   type: 'loop',
@@ -35,7 +37,7 @@ export class WyPlayerComponent implements OnInit {
   currentIndex: number;
   currentSong: Song;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
-  @ViewChild(WiPlayerPanelComponent, { static: false}) private playerPanel: WiPlayerPanelComponent;
+  @ViewChild(WiPlayerPanelComponent, { static: false }) private playerPanel: WiPlayerPanelComponent;
   private audioEl: HTMLAudioElement;
 
   duration: number;
@@ -51,14 +53,17 @@ export class WyPlayerComponent implements OnInit {
   showPanel = false;
 
   // 是否点击音量面板
-  selfClick = false;
+  bindFlag = false;
 
   private winClick: Subscription;
   currentMode: PlayMode;
   modeCount = 0;
+
   constructor(
     private store$: Store<AppStoreModule>,
-    @Inject(DOCUMENT) private doc: Document
+    @Inject(DOCUMENT) private doc: Document,
+    private nzModalServe: NzModalService,
+    private batchActionsServe: BatchActionsService
   ) {
     const appStore$ = this.store$.pipe(select(getPlayer));
     appStore$.pipe(select(getSongList)).subscribe(list => this.watchList(list, 'songList'));
@@ -85,9 +90,9 @@ export class WyPlayerComponent implements OnInit {
       let list = this.songList.slice();
       if (mode.type === 'random') {
         list = shuffle(this.songList);
-        this.updateCurrentIndex(list, this.currentSong);
-        this.store$.dispatch(SetPlayList({ playList: list }));
       }
+      this.updateCurrentIndex(list, this.currentSong);
+      this.store$.dispatch(SetPlayList({ playList: list }));
     }
   }
   private watchCurrentSong(song: Song) {
@@ -194,25 +199,9 @@ export class WyPlayerComponent implements OnInit {
   }
   togglePanel(type: string) {
     this[type] = !this[type];
-    if (this.showVolumnPanel || this.showPanel) {
-      this.bindDocumentClickListener();
-    } else {
-      this.unbindDocumentClickListener();
-    }
+    this.bindFlag = (this.showVolumnPanel || this.showPanel);
   }
 
-  private bindDocumentClickListener() {
-    if (!this.winClick) {
-      this.winClick = fromEvent(this.doc, 'click').subscribe(() => {
-        if (!this.selfClick) {
-          this.showVolumnPanel = false;
-          this.showVolumnPanel = false;
-          this.unbindDocumentClickListener();
-        }
-        this.selfClick = false;
-      });
-    }
-  }
   private unbindDocumentClickListener() {
     if (this.winClick) {
       this.winClick.unsubscribe();
@@ -233,7 +222,7 @@ export class WyPlayerComponent implements OnInit {
     if (this.currentMode.type === 'singleLoop') {
       this.loop();
     } else {
-      this.onNext( this.currentIndex + 1);
+      this.onNext(this.currentIndex + 1);
     }
   }
 
@@ -241,4 +230,23 @@ export class WyPlayerComponent implements OnInit {
     this.updateCurrentIndex(this.playList, song);
   }
 
+  onDeleteSong(song: Song) {
+  this.batchActionsServe.deleteSong(song);
+  }
+
+  onClearSong() {
+    this.nzModalServe.confirm({
+      nzTitle: '确认清空列表',
+      nzOnOk: () => {
+        this.batchActionsServe.clearSong();
+      }
+    });
+
+  }
+
+  onClickOutSide() {
+    this.showVolumnPanel = false;
+    this.showPanel = false;
+    this.bindFlag = false;
+  }
 }

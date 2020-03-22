@@ -1,4 +1,9 @@
-<div class="m-player" (click)="selfClick = true">
+<div class="m-player"
+(click)="selfClick = true"
+appClickoutside
+(onClickOutSide)="onClickOutSide()"
+[bindFlag]='bindFlag'
+>
   <div class="lock">
     <div class="left"><i></i></div>
   </div>
@@ -57,7 +62,10 @@
         [show]="showPanel"
         (onChangeSong)="onChangeSong($event)"
         [playing]="playing"
-        (onClose)="showPanel = false">
+        (onClose)="showPanel = false"
+        (onDeleteSong)="onDeleteSong($event)"
+        (onClearSong)="onClearSong($event)"
+        >
       </app-wi-player-panel>
     </div>
   </div>

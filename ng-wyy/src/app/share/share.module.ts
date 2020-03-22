@@ -4,6 +4,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
 import { WyUiModule } from './wy-ui/wy-ui.module';
 import { FormatTimePipe } from './pipes/format-time.pipe';
+import { ClickoutsideDirective } from './directives/clickoutside.directive';
 
 
 
@@ -19,6 +20,6 @@ import { FormatTimePipe } from './pipes/format-time.pipe';
     NgZorroAntdModule,
     FormsModule,
     WyUiModule,
-  ]
+  ],
 })
 export class ShareModule { }

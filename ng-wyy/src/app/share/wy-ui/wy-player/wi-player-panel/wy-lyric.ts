@@ -2,7 +2,7 @@ import { Lyric } from 'src/app/service/data-types/common.types';
 import { zip, from, Subject, Subscription, timer } from 'rxjs';
 import { skip, timeout } from 'rxjs/internal/operators';
 
-const timeExp = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
+const timeExp = /\[(\d{2}):(\d{2})\.(\d{2,3})?\]/;
 
 export interface BaseLyricLine {
   txt: string;
