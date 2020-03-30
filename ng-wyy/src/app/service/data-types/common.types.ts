@@ -1,3 +1,5 @@
+import { NumberValueAccessor } from '@angular/forms'
+
 export type Banner = {
   targetId: number,
   url: string,
@@ -44,4 +46,9 @@ export type SongUrl = {
 export type Lyric = {
   lyric: string;
   tlyric: string;
+}
+
+export type SheetList = {
+  playlists: SongSheet[];
+  total: NumberValueAccessor;
 }
