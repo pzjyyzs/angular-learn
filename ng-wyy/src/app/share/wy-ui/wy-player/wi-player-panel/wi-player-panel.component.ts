@@ -94,7 +94,7 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
     this.songServe.getLyric(this.currentSong.id).subscribe(res => {
       this.lyric = new WyLyric(res);
       this.currentLyric = this.lyric.lines;
-      this.startLine = res.lyric ? 1 : 2;
+      this.startLine = res.lyric ? 1 : 3;
       this.handleLyric();
       this.wyScroll.last.scrollTo(0, 0);
       if (this.playing) {

@@ -17,6 +17,7 @@ export type SongSheet = {
   id: number;
   name: string;
   picUrl: string;
+  coverImgUrl: string;
   playCount: number;
   tracks: Song[];
 }

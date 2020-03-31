@@ -12,13 +12,13 @@ export class SongService {
 
   constructor(private http: HttpClient, @Inject(API_CONFIG) private uri: string) { }
 
- getSongUrl(ids: string): Observable<SongUrl[]> {
+  getSongUrl(ids: string): Observable<SongUrl[]> {
     const params = new HttpParams().set('id', ids);
     return this.http.get(this.uri + 'song/url', { params })
       .pipe(map((res: { data: SongUrl[] }) => res.data));
   }
 
-  getSongList(songs: Song | Song[]):Observable<Song[]>  {
+  getSongList(songs: Song | Song[]): Observable<Song[]> {
     const songArr = Array.isArray(songs) ? songs.slice() : [songs];
     const ids = songArr.map(item => item.id).join(',');
     return this.getSongUrl(ids).pipe(map(urls => this.generateSongList(songArr, urls)));
@@ -29,7 +29,7 @@ export class SongService {
     songs.forEach(song => {
       const url = urls.find(url => url.id === song.id).url;
       if (url) {
-        result.push({...song, url});
+        result.push({ ...song, url });
       }
     });
     return result;
@@ -38,11 +38,18 @@ export class SongService {
   getLyric(id: number): Observable<Lyric> {
     const params = new HttpParams().set('id', id.toString());
     return this.http.get(this.uri + 'lyric', { params })
-      .pipe(map((res: { [key: string]: { lyric: string }}) => {
-      return {
-          lyric: res.lrc.lyric,
-          tlyric: res.tlyric.lyric
-      }
-    }));
+      .pipe(map((res: { [key: string]: { lyric: string } }) => {
+        try {
+          return {
+            lyric: res.lrc.lyric,
+            tlyric: res.tlyric.lyric
+          };
+        } catch (err) {
+          return {
+            lyric: '',
+            tlyric: ''
+          };
+        }
+      }));
   }
 }
