@@ -15,6 +15,7 @@ export type HotTag = {
 // 歌单
 export type SongSheet = {
   id: number;
+  userId: number;
   name: string;
   picUrl: string;
   coverImgUrl: string;

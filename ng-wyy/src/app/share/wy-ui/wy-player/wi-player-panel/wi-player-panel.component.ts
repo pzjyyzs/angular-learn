@@ -45,8 +45,11 @@ export class WiPlayerPanelComponent implements OnInit, OnChanges {
       }
     }
     if (changes.songList) {
-     this.updateCurrentIndex();
+      if (this.currentSong) {
+        this.updateCurrentIndex();
+      }
     }
+
     if (changes.currentSong) {
       if (this.currentSong) {
         this.updateCurrentIndex();
