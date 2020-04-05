@@ -122,4 +122,16 @@ export class SheetInfoComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  onLikeSheet() {
+
+  }
+
+  shareResource() {
+
+  }
+
+  onLikeSong() {
+
+  }
 }
