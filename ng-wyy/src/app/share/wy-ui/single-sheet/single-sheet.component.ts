@@ -16,8 +16,8 @@ export class SingleSheetComponent implements OnInit {
   ngOnInit() {
   }
 
-  playSheet(id: number) {
-    console.log(id)
+  playSheet(evt: MouseEvent , id: number) {
+    evt.stopPropagation();
     this.onPlay.emit(id);
   }
 
