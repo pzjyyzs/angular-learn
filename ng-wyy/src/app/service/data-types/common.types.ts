@@ -68,3 +68,9 @@ export type SheetList = {
   playlists: SongSheet[];
   total: NumberValueAccessor;
 }
+
+export type SearchResult = {
+  artists?: Singer[];
+  playlists?: SongSheet[],
+  songs?: Song[]
+}
