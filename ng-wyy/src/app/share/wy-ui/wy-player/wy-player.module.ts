@@ -7,6 +7,7 @@ import { FormatTimePipe } from '../../pipes/format-time.pipe';
 import { WiPlayerPanelComponent } from './wi-player-panel/wi-player-panel.component';
 import { WyScrollComponent } from './wy-scroll/wy-scroll.component';
 import { ClickoutsideDirective } from '../../directives/clickoutside.directive';
+import { NzToolTipModule } from 'ng-zorro-antd';
 
 
 
@@ -21,7 +22,8 @@ import { ClickoutsideDirective } from '../../directives/clickoutside.directive';
   imports: [
     CommonModule,
     FormsModule,
-    WySliderModule
+    WySliderModule,
+    NzToolTipModule
   ],
   exports: [WyPlayerComponent, FormatTimePipe, ClickoutsideDirective]
 })

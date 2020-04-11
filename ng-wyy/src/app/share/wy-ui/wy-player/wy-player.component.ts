@@ -2,17 +2,18 @@ import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core'
 import { AppStoreModule } from 'src/app/store';
 import { Store, select } from '@ngrx/store';
 import { Song } from 'src/app/service/data-types/common.types';
-import { getSongList, getPlayList, getCurrentIndex, getPlayMode, getCurrentSong, getPlayer } from 'src/app/selectors/player.selectors';
+import { getSongList, getPlayList, getCurrentIndex, getPlayMode, getCurrentSong, getPlayer, getCurrentAction } from 'src/app/selectors/player.selectors';
 import { PlayMode } from './player-type';
-import { SetCurrentIndex, SetPlayMode, SetPlayList, SetSongList } from 'src/app/actions/player.action';
-import { Subscription, fromEvent } from 'rxjs';
+import { SetCurrentIndex, SetPlayMode, SetPlayList, SetCurrentAction } from 'src/app/actions/player.action';
+import { Subscription, timer } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { shuffle, findIndex } from 'src/utils/array';
 import { WiPlayerPanelComponent } from './wi-player-panel/wi-player-panel.component';
-import { NzModalComponent, NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
 import { Router } from '@angular/router';
-import { transition, animate, trigger, style, state } from '@angular/animations';
+import { transition, animate, trigger, style, state, AnimationEvent } from '@angular/animations';
+import { CurrentActions } from 'src/app/reducers/player.reducer';
 
 const modeTypes: PlayMode[] = [{
   type: 'loop',
@@ -24,6 +25,11 @@ const modeTypes: PlayMode[] = [{
   type: 'singleLoop',
   label: '单曲循环'
 }]
+
+enum TipTitles {
+  Add = '已添加到列表',
+  Play = '已开始播放'
+}
 @Component({
   selector: 'app-wy-player',
   templateUrl: './wy-player.component.html',
@@ -38,6 +44,11 @@ export class WyPlayerComponent implements OnInit {
   showPlayer = 'hide';
   isLocked = false;
   animating = false;
+
+  controlTooltip = {
+    title: '',
+    show: false
+  }
 
   bufferPercent = 0;
   percent = 0;
@@ -82,7 +93,7 @@ export class WyPlayerComponent implements OnInit {
     appStore$.pipe(select(getCurrentIndex)).subscribe(index => this.watchCurrentIndex(index));
     appStore$.pipe(select(getPlayMode)).subscribe(mode => this.watchPlayMode(mode));
     appStore$.pipe(select(getCurrentSong)).subscribe(song => this.watchCurrentSong(song));
-    //appStore$.pipe(select(getCurrentAction)).subscribe(action => this.watchCurrentAction(action));
+    appStore$.pipe(select(getCurrentAction)).subscribe(action => this.watchCurrentAction(action));
   }
 
   ngOnInit() {
@@ -112,6 +123,18 @@ export class WyPlayerComponent implements OnInit {
       this.duration = song.dt / 1000;
     }
   }
+  private watchCurrentAction(action: CurrentActions) {
+    const title = TipTitles[CurrentActions[action]];
+    if (title) {
+      this.controlTooltip.title = title;
+      if (this.showPlayer === 'hide') {
+        this.togglePlayer('show');
+      } else {
+        this.showToolTip();
+      }
+    }
+    this.store$.dispatch(SetCurrentAction({ currentAction: CurrentActions.Other }));
+  }
 
   onPercentChange(per) {
     if (this.currentSong) {
@@ -122,6 +145,17 @@ export class WyPlayerComponent implements OnInit {
       }
     }
   }
+
+  private showToolTip() {
+    this.controlTooltip.show = true;
+    timer(1500).subscribe(() => {
+       this.controlTooltip = {
+         title: '',
+         show: false
+       }
+    })
+  }
+
   onCanplay() {
     this.songReady = true;
     this.play();
@@ -272,6 +306,13 @@ export class WyPlayerComponent implements OnInit {
   togglePlayer(type: string) {
     if (!this.isLocked && !this.animating) {
       this.showPlayer = type;
+    }
+  }
+
+  OnAnimateDone(event: AnimationEvent) {
+    this.animating = false;
+    if (event.toState === 'show' && this.controlTooltip.title) {
+      this.showToolTip();
     }
   }
 }
