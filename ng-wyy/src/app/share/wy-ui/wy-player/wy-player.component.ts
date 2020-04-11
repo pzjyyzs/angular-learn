@@ -35,7 +35,7 @@ enum TipTitles {
   templateUrl: './wy-player.component.html',
   styleUrls: ['./wy-player.component.less'],
   animations: [trigger('showHide', [
-    state('show', style({ bottom: 0})),
+    state('show', style({ bottom: 0 })),
     state('hide', style({ bottom: -71 })),
     transition('show<=>hide', [animate('0.3s')])
   ])]
@@ -118,8 +118,8 @@ export class WyPlayerComponent implements OnInit {
     }
   }
   private watchCurrentSong(song: Song) {
+    this.currentSong = song;
     if (song) {
-      this.currentSong = song;
       this.duration = song.dt / 1000;
     }
   }
@@ -149,10 +149,10 @@ export class WyPlayerComponent implements OnInit {
   private showToolTip() {
     this.controlTooltip.show = true;
     timer(1500).subscribe(() => {
-       this.controlTooltip = {
-         title: '',
-         show: false
-       }
+      this.controlTooltip = {
+        title: '',
+        show: false
+      }
     })
   }
 
@@ -276,7 +276,7 @@ export class WyPlayerComponent implements OnInit {
   }
 
   onDeleteSong(song: Song) {
-  this.batchActionsServe.deleteSong(song);
+    this.batchActionsServe.deleteSong(song);
   }
 
   onClearSong() {
@@ -289,10 +289,12 @@ export class WyPlayerComponent implements OnInit {
 
   }
 
-  onClickOutSide() {
-    this.showVolumnPanel = false;
-    this.showPanel = false;
-    this.bindFlag = false;
+  onClickOutSide(target: HTMLElement) {
+    if (target.dataset.act !== 'delete') {
+      this.showVolumnPanel = false;
+      this.showPanel = false;
+      this.bindFlag = false;
+    }
   }
 
   toInfo(path: [string, number]) {
@@ -314,5 +316,10 @@ export class WyPlayerComponent implements OnInit {
     if (event.toState === 'show' && this.controlTooltip.title) {
       this.showToolTip();
     }
+  }
+
+  onError() {
+    this.playing = false;
+    this.bufferPercent = 0;
   }
 }
