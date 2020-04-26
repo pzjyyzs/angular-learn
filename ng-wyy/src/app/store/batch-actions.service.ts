@@ -104,7 +104,7 @@ export class BatchActionsService {
     this.store$.dispatch(SetCurrentAction({ currentAction: CurrentActions.Clear }));
   }
 
-  controlModal(modalVisible = true, modalType = ModalTypes.Default) {
+  controlModal(modalVisible = true, modalType?: ModalTypes) {
     this.store$.dispatch(SetModalType({  modalType }));
     this.store$.dispatch(SetModalVisible({  modalVisible }));
   }

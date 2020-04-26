@@ -8,6 +8,7 @@ import { SheetService } from 'src/app/service/sheet.service';
 
 import { getPlayer } from 'src/app/selectors/player.selectors';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
+import { ModalTypes } from 'src/app/reducers/member.reducer';
 
 @Component({
   selector: 'app-home',
@@ -62,6 +63,6 @@ export class HomeComponent implements OnInit {
   }
 
   openModal() {
-    this.batchActionsServe.controlModal();
+    this.batchActionsServe.controlModal(true, ModalTypes.Default);
   }
 }

@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { SearchService } from './service/search.service';
 import { SearchResult } from './service/data-types/common.types';
 import { isEmptyObject } from 'src/utils/tools';
+import { ModalTypes } from './reducers/member.reducer';
+import { AppStoreModule } from './store';
+import { Store } from '@ngrx/store';
+import { SetModalType } from './actions/member.action';
+import { BatchActionsService } from './store/batch-actions.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +25,11 @@ export class AppComponent {
 
 
   searchResult: SearchResult;
-  constructor(private searchServe: SearchService) {
+  constructor(
+    private searchServe: SearchService,
+    private store$: Store<AppStoreModule>,
+    private batchActionsServe: BatchActionsService
+  ) {
 
   }
   onSearch(keyword: string) {
@@ -45,5 +54,13 @@ export class AppComponent {
       });
     }
     return result;
+  }
+
+  onChangeModalType(modalType = ModalTypes.Default) {
+    this.store$.dispatch(SetModalType({ modalType }));
+  }
+
+  openModal(type: ModalTypes) {
+    this.batchActionsServe.controlModal(true, type);
   }
 }

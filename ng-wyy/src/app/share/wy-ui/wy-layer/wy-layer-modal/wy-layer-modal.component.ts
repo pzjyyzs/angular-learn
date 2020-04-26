@@ -1,46 +1,57 @@
-import { Component, OnInit, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, ViewChild, AfterViewInit, Renderer2, Inject } from '@angular/core';
-import { AppStoreModule } from 'src/app/store';
-import { select, Store } from '@ngrx/store';
-import { getMember, getModalType, getModalVisible } from 'src/app/selectors/member.selectors';
-import { ModalTypes } from 'src/app/reducers/member.reducer';
-import { Overlay, OverlayRef, OverlayKeyboardDispatcher, BlockScrollStrategy } from '@angular/cdk/overlay';
+import { Component, OnInit, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, AfterViewInit, ViewChild, Renderer2, Inject, Output, EventEmitter, Input, OnChanges, SimpleChanges, PLATFORM_ID } from '@angular/core';
+import { Overlay, OverlayRef, OverlayKeyboardDispatcher, BlockScrollStrategy, OverlayContainer } from '@angular/cdk/overlay';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { WINDOW } from 'src/app/service/service.module';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { trigger, style, transition, animate, state } from '@angular/animations';
+import { ModalTypes } from 'src/app/reducers/member.reducer';
+
+interface SizeType { w: number; h: number; }
 
 @Component({
   selector: 'app-wy-layer-modal',
   templateUrl: './wy-layer-modal.component.html',
   styleUrls: ['./wy-layer-modal.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [trigger('showHide', [
+    state('show', style({ transform: 'scale(1)', opacity: 1 })),
+    state('hide', style({ transform: 'scale(0)', opacity: 0 })),
+    transition('show<=>hide', animate('0.1s'))
+  ])]
 })
-export class WyLayerModalComponent implements OnInit, AfterViewInit {
+export class WyLayerModalComponent implements OnInit, AfterViewInit, OnChanges {
 
-  private visible = false;
-  private currentModalType = ModalTypes.Default;
+  modalTitle = {
+    register: '注册',
+    loginByPhone: '手机登录',
+    share: '分享',
+    like: '收藏',
+    default: ''
+  };
+
+  showModal = 'hide';
+  @Input() visible = false;
+  @Input() showSpin = false;
+  @Input() currentModalType = ModalTypes.Default;
   private overlayRef: OverlayRef;
-  showModal = false;
   private scrollStrategy: BlockScrollStrategy;
-  private resizeHandle: () => void;
+  private overlayContainerEl: HTMLElement;
+  private resizeHandler: () => void;
   @ViewChild('modalContainer', { static: false }) private modalRef: ElementRef;
+  @Output() onLoadMySheets = new EventEmitter<void>();
+  private isBrowser: boolean;
   constructor(
-    @Inject(Document) private doc: Document,
-    @Inject(WINDOW) private win: Window,
-    private store$: Store<AppStoreModule>,
+    @Inject(PLATFORM_ID) private plateformId: object,
+    @Inject(DOCUMENT) private doc: Document,
     private overlay: Overlay,
     private elementRef: ElementRef,
     private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
     private cdr: ChangeDetectorRef,
     private batchActionsServe: BatchActionsService,
-    private rd: Renderer2
+    private rd: Renderer2,
+    private overlayContainerServe: OverlayContainer
   ) {
-    const appStore$ = this.store$.pipe(select(getMember));
-    appStore$.pipe(select(getModalVisible)).subscribe(visib => {
-      this.watchModalVisible(visib);
-    });
-    appStore$.pipe(select(getModalType)).subscribe(type => {
-      this.watchModalType(type);
-    });
+    this.isBrowser = isPlatformBrowser(this.plateformId);
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
@@ -48,85 +59,87 @@ export class WyLayerModalComponent implements OnInit, AfterViewInit {
     this.createOverlay();
   }
 
+
   ngAfterViewInit() {
+    this.overlayContainerEl = this.overlayContainerServe.getContainerElement();
     this.listenResizeToCenter();
   }
 
-  private listenResizeToCenter() {
-    const modal = this.modalRef.nativeElement;
-    const modalSize = this.getHideDomSize(modal);
-    this.keepCenter(modal, modalSize);
-    this.resizeHandle = this.rd.listen('window', 'resize', () => {
-      this.keepCenter(modal, modalSize);
-    });
-  }
-  private getHideDomSize(dom: HTMLElement) {
-    return {
-      w: dom.offsetWidth,
-      h: dom.offsetWidth
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.visible && !changes.visible.firstChange) {
+      this.handleVisibleChange(this.visible);
     }
   }
 
-  private getWindowSize() {
-    return {
-      w: this.win.innerWidth || this.doc.documentElement.clientWidth ||  this.doc.body.offsetWidth,
-      h: this.win.innerHeight ||  this.doc.documentElement.clientHeight ||  this.doc.body.offsetHeight
-    }
-  }
-
-  private keepCenter(modal: HTMLElement, size: { w: number, h: number }) {
-    const left = (this.getWindowSize().w - size.w) / 2;
-    const top = (this.getWindowSize().h - size.h) / 2;
-    modal.style.left = left + 'px';
-    modal.style.top = top + 'px';
-
-  }
 
   private createOverlay() {
     this.overlayRef = this.overlay.create();
     this.overlayRef.overlayElement.appendChild(this.elementRef.nativeElement);
-    this.overlayRef.keydownEvents().subscribe(e => this.keydownListenert(e));
+    this.overlayRef.keydownEvents().subscribe(e => this.keydownListener(e));
   }
 
-  private keydownListenert(evt: KeyboardEvent) {
+  private keydownListener(evt: KeyboardEvent) {
     if (evt.keyCode === ESCAPE) {
       this.hide();
     }
   }
 
-  private watchModalVisible(visib: boolean) {
-    if (this.visible !== visib) {
-      this.visible = visib;
-      this.handleVisibleChange(visib);
-    }
-
-  }
-
-  private watchModalType(type: ModalTypes) {
-    if (this.currentModalType !== type) {
-      this.currentModalType = type;
-    }
-  }
 
   private handleVisibleChange(visib: boolean) {
-    this.showModal = visib;
     if (visib) {
+      this.showModal = 'show';
       this.scrollStrategy.enable();
       this.overlayKeyboardDispatcher.add(this.overlayRef);
       this.listenResizeToCenter();
+      this.changePointerEvents('auto');
     } else {
+      this.showModal = 'hide';
       this.scrollStrategy.disable();
       this.overlayKeyboardDispatcher.remove(this.overlayRef);
-      this.resizeHandle();
+      this.resizeHandler();
+      this.changePointerEvents('none');
     }
     this.cdr.markForCheck();
   }
 
-  private dissmissOverlay() {
-
+  private changePointerEvents(type: 'none' | 'auto') {
+    if (this.overlayContainerEl) {
+      this.overlayContainerEl.style.pointerEvents = type;
+    }
   }
 
   hide() {
     this.batchActionsServe.controlModal(false);
+  }
+
+
+  private listenResizeToCenter() {
+    if (this.isBrowser) {
+      const modal = this.modalRef.nativeElement;
+      const modalSize = this.getHideDomSize(modal);
+      this.keepCenter(modal, modalSize);
+      this.resizeHandler = this.rd.listen('window', 'resize', () => this.keepCenter(modal, modalSize));
+    }
+  }
+
+  private keepCenter(modal: HTMLElement, size: SizeType) {
+    const left = (this.getWIndowSize().w - size.w) / 2;
+    const top = (this.getWIndowSize().h - size.h) / 2;
+    modal.style.left = left + 'px';
+    modal.style.top = top + 'px';
+  }
+
+
+  private getHideDomSize(dom: HTMLElement): SizeType {
+    return {
+      w: dom.offsetWidth,
+      h: dom.offsetHeight
+    };
+  }
+  private getWIndowSize(): SizeType {
+    return {
+      w: window.innerWidth || this.doc.documentElement.clientWidth || this.doc.body.offsetWidth,
+      h: window.innerHeight || this.doc.documentElement.clientHeight || this.doc.body.offsetHeight
+    };
   }
 }
