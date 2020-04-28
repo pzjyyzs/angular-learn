@@ -7,6 +7,10 @@ import { AppStoreModule } from './store';
 import { Store } from '@ngrx/store';
 import { SetModalType } from './actions/member.action';
 import { BatchActionsService } from './store/batch-actions.service';
+import { LoginParams } from './share/wy-ui/wy-layer/wy-layer-login/wy-layer-login.component';
+import { MemberService } from './service/member.service';
+import { User } from './service/data-types/member.types';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-root',
@@ -25,12 +29,24 @@ export class AppComponent {
 
 
   searchResult: SearchResult;
+  user: User;
+  wyRememberLogin: LoginParams;
   constructor(
     private searchServe: SearchService,
     private store$: Store<AppStoreModule>,
-    private batchActionsServe: BatchActionsService
+    private batchActionsServe: BatchActionsService,
+    private memberServe: MemberService,
+    private messageServe: NzMessageService
   ) {
+    const userId = localStorage.getItem('wyUserId');
+    if (userId) {
+      this.memberServe.getUserDetail(userId).subscribe(user => this.user = user);
+    }
 
+    const wyRememberLogin = localStorage.getItem('wyUserId');
+    if (wyRememberLogin) {
+      this.wyRememberLogin = JSON.parse(wyRememberLogin);
+    }
   }
   onSearch(keyword: string) {
     if (keyword) {
@@ -62,5 +78,36 @@ export class AppComponent {
 
   openModal(type: ModalTypes) {
     this.batchActionsServe.controlModal(true, type);
+  }
+
+  onLogin(params: LoginParams) {
+    this.memberServe.login(params).subscribe(user => {
+      this.user = user;
+      this.batchActionsServe.controlModal(false);
+      this.alertMessage('success', '登陆成功');
+      localStorage.setItem('wyUserId', user.profile.userId.toString());
+
+      if (params.remember) {
+        localStorage.setItem('wyRememberLogin', JSON.stringify(params));
+      } else {
+        localStorage.removeItem('wyRememberLogin');
+      }
+    }, ({ error }) => {
+      this.alertMessage('error', error.message || '登陆失败');
+    });
+  }
+
+  onLogout() {
+    this.memberServe.logout().subscribe(res => {
+      this.user = null
+      this.alertMessage('success', '已退出');
+      localStorage.removeItem('wyUserId');
+    },  ({ error }) => {
+      this.alertMessage('error', error.message || '退出失败');
+    });
+  }
+
+  private alertMessage(type: string, msg: string) {
+    this.messageServe.create(type, msg);
   }
 }

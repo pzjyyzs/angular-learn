@@ -59,18 +59,23 @@ export type SongUrl = {
   url: string;
 }
 
-export type Lyric = {
+export interface Lyric {
   lyric: string;
   tlyric: string;
 }
 
-export type SheetList = {
+export interface SheetList {
   playlists: SongSheet[];
   total: NumberValueAccessor;
 }
 
-export type SearchResult = {
+export interface SearchResult {
   artists?: Singer[];
-  playlists?: SongSheet[],
-  songs?: Song[]
+  playlists?: SongSheet[];
+  songs?: Song[];
+}
+
+export interface sampleBack {
+  code: number;
+  [key: string]: any;
 }

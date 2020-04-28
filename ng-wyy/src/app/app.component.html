@@ -12,7 +12,7 @@
         <div class="right">
           <app-wy-search (onSearch)="onSearch($event)" [searchResult]="searchResult"></app-wy-search>
           <div class="member">
-            <div class="no-login">
+            <div class="no-login" *ngIf="!user else logined">
               <ul nz-menu nzTheme="dark" nzMode="horizontal">
                 <li nz-submenu>
                   <div title>
@@ -32,6 +32,27 @@
                 </li>
               </ul>
             </div>
+
+            <ng-template #logined>
+              <div class="login">
+                <ul nz-menu nzMode="horizontal" nzTheme="dark">
+                  <li nz-submenu>
+                    <div title>
+                      <nz-avatar nzIcon="user" [nzSrc]="user.profile.avatarUrl"></nz-avatar>
+                      <i nz-icon type="down" nzTheme="outline"></i>
+                    </div>
+                    <ul>
+                      <li nz-menu-item [routerLink]="['/member', user.profile.userId]">
+                        <i nz-icon nzType="user" nzTheme="outline"></i>我的主页
+                      </li>
+                      <li nz-menu-item (click)="onLogout()">
+                        <i nz-icon nzType="close-circle" nzTheme="outline"></i>退出
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>
@@ -47,6 +68,6 @@
 <app-wy-player></app-wy-player>
 
 <app-wy-layer-modal>
-  <app-wy-layer-login name="login" (onChangeModalType)="onChangeModalType($event)"></app-wy-layer-login>
+  <app-wy-layer-login name="login" [wyRememberLogin]="wyRememberLogin" (onLogin)="onLogin($event)" (onChangeModalType)="onChangeModalType($event)"></app-wy-layer-login>
   <app-wy-layer-default (onChangeModalType)="onChangeModalType($event)"></app-wy-layer-default>
 </app-wy-layer-modal>
