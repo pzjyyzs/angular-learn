@@ -6,7 +6,7 @@ import { map } from 'rxjs/internal/operators';
 import { LoginParams } from '../share/wy-ui/wy-layer/wy-layer-login/wy-layer-login.component';
 import { User } from './data-types/member.types';
 import queryString from 'query-string';
-import { sampleBack } from './data-types/common.types';
+import { SampleBack } from './data-types/common.types';
 
 @Injectable({
   providedIn: ServiceModule

@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { codeJson } from 'src/utils/base64';
 
 export type LoginParams = {
   phone: string;
@@ -54,11 +54,11 @@ export class WyLayerLoginComponent implements OnInit, OnChanges {
     }
   }
 
-  private setModel({ phone, password, remeber}) {
+  private setModel({ phone, password, remember }) {
     this.formModel = this.fb.group({
-      phone: ['', [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      remember: [false]
+      phone: [phone, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
+      password: [password, [Validators.required, Validators.minLength(6)]],
+      remember: [remember]
     });
   }
 }

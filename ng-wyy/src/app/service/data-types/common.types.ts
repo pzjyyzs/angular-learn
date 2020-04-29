@@ -75,7 +75,10 @@ export interface SearchResult {
   songs?: Song[];
 }
 
-export interface sampleBack {
-  code: number;
+export interface AnyJson {
   [key: string]: any;
+}
+
+export interface SampleBack extends AnyJson {
+  code: number;
 }
