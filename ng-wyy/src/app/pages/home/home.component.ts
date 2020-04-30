@@ -9,6 +9,11 @@ import { SheetService } from 'src/app/service/sheet.service';
 import { getPlayer } from 'src/app/selectors/player.selectors';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
 import { ModalTypes } from 'src/app/reducers/member.reducer';
+import { User } from 'src/app/service/data-types/member.types';
+import { AppStoreModule } from 'src/app/store';
+import { Store, select } from '@ngrx/store';
+import { getUserId, getMember } from 'src/app/selectors/member.selectors';
+import { MemberService } from 'src/app/service/member.service';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +27,7 @@ export class HomeComponent implements OnInit {
   hotTags: HotTag[];
   songSheetList: SongSheet[];
   singers: Singer[];
+  user: User;
 
 
   @ViewChild(NzCarouselComponent, { static: true }) private nzCarousel: NzCarouselComponent;
@@ -30,7 +36,9 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sheetService: SheetService,
-    private batchActionsServe: BatchActionsService
+    private batchActionsServe: BatchActionsService,
+    private store$: Store<AppStoreModule>,
+    private memberServe: MemberService
   ) {
     this.route.data.pipe(map(res => res.homeDatas)).subscribe(([banners, hotTags, songSheetList, singers]) => {
       this.banners = banners;
@@ -39,6 +47,14 @@ export class HomeComponent implements OnInit {
       this.singers = singers;
     });
 
+    const appStore$ = this.store$.pipe(select(getMember));
+    appStore$.pipe(select(getUserId)).subscribe(id => {
+      if (id) {
+        this.getUserDetail(id);
+      } else {
+         this.user = null;
+      }
+    });
   }
 
   ngOnInit() {
@@ -64,5 +80,9 @@ export class HomeComponent implements OnInit {
 
   openModal() {
     this.batchActionsServe.controlModal(true, ModalTypes.Default);
+  }
+
+  private getUserDetail(id: string) {
+    this.memberServe.getUserDetail(id).subscribe(user => this.user = user)
   }
 }

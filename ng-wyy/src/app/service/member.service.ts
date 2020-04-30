@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/internal/operators';
 import { LoginParams } from '../share/wy-ui/wy-layer/wy-layer-login/wy-layer-login.component';
-import { User } from './data-types/member.types';
+import { User, Signin } from './data-types/member.types';
 import queryString from 'query-string';
 import { SampleBack } from './data-types/common.types';
 
@@ -27,8 +27,13 @@ export class MemberService {
     .pipe(map((res) => res as User));
   }
 
-  logout(): Observable<sampleBack> {
+  logout(): Observable<SampleBack> {
     return this.http.get(this.uri + 'logout' )
-    .pipe(map(res => res as sampleBack));
+    .pipe(map(res => res as SampleBack));
+  }
+
+  signin(): Observable<Signin> {
+    const params = new HttpParams({ fromString: queryString.stringify({ type: 1 }) });
+    return this.http.get(this.uri + 'daily signin', { params }).pipe(map(res => res as Signin));
   }
 }

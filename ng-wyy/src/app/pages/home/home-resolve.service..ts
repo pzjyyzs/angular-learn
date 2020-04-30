@@ -1,19 +1,25 @@
 import { Resolve } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HomeService } from 'src/app/service/home.service';
 import { SingerService } from 'src/app/service/singer.service';
 import { Banner, HotTag, SongSheet, Singer } from 'src/app/service/data-types/common.types';
 import { first } from 'rxjs/internal/operators';
+import { MemberService } from 'src/app/service/member.service';
+import { StorageService } from 'src/app/service/storage.service';
+import { User } from 'src/app/service/data-types/member.types';
 
 type HomeDataType = [Banner[], HotTag[], SongSheet[], Singer[]]
 @Injectable({
   providedIn: 'root'
 })
 export class HomeResolverService implements Resolve<HomeDataType> {
-  constructor(private homeServe: HomeService, private singerServe: SingerService) {}
+  constructor(
+    private homeServe: HomeService,
+    private singerServe: SingerService
+  ) { }
   resolve(): Observable<HomeDataType> {
-     return forkJoin([
+    return forkJoin([
       this.homeServe.getBanners(),
       this.homeServe.getHotTags(),
       this.homeServe.getPerosonalSheetList(),
