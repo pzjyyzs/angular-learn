@@ -5,9 +5,6 @@ import { HomeService } from 'src/app/service/home.service';
 import { SingerService } from 'src/app/service/singer.service';
 import { Banner, HotTag, SongSheet, Singer } from 'src/app/service/data-types/common.types';
 import { first } from 'rxjs/internal/operators';
-import { MemberService } from 'src/app/service/member.service';
-import { StorageService } from 'src/app/service/storage.service';
-import { User } from 'src/app/service/data-types/member.types';
 
 type HomeDataType = [Banner[], HotTag[], SongSheet[], Singer[]]
 @Injectable({

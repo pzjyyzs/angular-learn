@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, takeUntil } from 'rxjs/internal/operators';
-import { SingerDetail, Song } from 'src/app/service/data-types/common.types';
+import { SingerDetail, Song, Singer } from 'src/app/service/data-types/common.types';
 import { SongService } from 'src/app/service/song.service';
 import { AppStoreModule } from 'src/app/store';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
@@ -19,6 +19,7 @@ import { Subject } from 'rxjs';
 export class SingerDetailComponent implements OnInit, OnDestroy {
 
   singerDetail: SingerDetail;
+  simiSingers: Singer[];
   currentSong: Song;
   currentIndex = -1;
   private destroy$ = new Subject<void>();
@@ -28,8 +29,9 @@ export class SingerDetailComponent implements OnInit, OnDestroy {
     private store$: Store<AppStoreModule>,
     private bachActionServe: BatchActionsService,
     private nzMessageServe: NzMessageService) {
-    this.route.data.pipe(map(res => res.SingerDetail)).subscribe(detail => {
+    this.route.data.pipe(map(res => res.SingerDetail)).subscribe(([detail, simiSingers]) => {
       this.singerDetail = detail;
+      this.simiSingers = simiSingers;
       this.listenCurrent();
     })
    }
@@ -74,7 +76,7 @@ export class SingerDetailComponent implements OnInit, OnDestroy {
           if (list.length) {
             this.bachActionServe.insertSong(list[0], isPlay);
           } else {
-            this.nzMessageServe.create('warning', 'NO URL')
+            this.nzMessageServe.create('warning', 'NO URL');
           }
         });
     }

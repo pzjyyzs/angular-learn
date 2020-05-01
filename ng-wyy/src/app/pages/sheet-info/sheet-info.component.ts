@@ -105,7 +105,7 @@ export class SheetInfoComponent implements OnInit, OnDestroy {
           if (list.length) {
             this.bachActionServe.insertSong(list[0], isPlay);
           } else {
-            this.nzMessageServe.create('warning', 'NO URL')
+            this.nzMessageServe.create('warning', 'NO URL');
           }
         });
     }
