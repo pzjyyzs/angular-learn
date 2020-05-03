@@ -29,6 +29,7 @@ export type SongSheet = {
   commentCount: number;
   subscribed: boolean;
   tracks: Song[];
+  trackCount: number;
 }
 
 export type Singer = {

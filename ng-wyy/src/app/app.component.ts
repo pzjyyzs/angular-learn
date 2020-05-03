@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
 import { SearchService } from './service/search.service';
-import { SearchResult } from './service/data-types/common.types';
+import { SearchResult, SongSheet } from './service/data-types/common.types';
 import { isEmptyObject } from 'src/utils/tools';
 import { ModalTypes } from './reducers/member.reducer';
 import { AppStoreModule } from './store';
-import { Store } from '@ngrx/store';
-import { SetModalType, SetUserId } from './actions/member.action';
+import { Store, select } from '@ngrx/store';
+import { SetModalType, SetUserId, SetModalVisible } from './actions/member.action';
 import { BatchActionsService } from './store/batch-actions.service';
 import { LoginParams } from './share/wy-ui/wy-layer/wy-layer-login/wy-layer-login.component';
-import { MemberService } from './service/member.service';
+import { MemberService, LikeSongParams } from './service/member.service';
 import { User } from './service/data-types/member.types';
 import { NzMessageService } from 'ng-zorro-antd';
 import { codeJson } from 'src/utils/base64';
 import { StorageService } from './service/storage.service';
+import { getMember, getLikeId, getModalType, getModalVisible } from './selectors/member.selectors';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,10 @@ export class AppComponent {
   searchResult: SearchResult;
   user: User;
   wyRememberLogin: LoginParams;
+  mySheets: SongSheet[];
+  likeId: string;
+  visible = false;
+  currentModalType = ModalTypes.Default;
   constructor(
     private searchServe: SearchService,
     private store$: Store<AppStoreModule>,
@@ -51,6 +56,7 @@ export class AppComponent {
     if (wyRememberLogin) {
       this.wyRememberLogin = JSON.parse(wyRememberLogin);
     }
+    this.listenStates();
   }
   onSearch(keyword: string) {
     if (keyword) {
@@ -121,5 +127,61 @@ export class AppComponent {
 
   private alertMessage(type: string, msg: string) {
     this.messageServe.create(type, msg);
+  }
+
+  onLoadMySheets() {
+    if (this.user) {
+      this.memberServe.getUserSheets(this.user.profile.userId.toString()).subscribe(userSheet => {
+        this.mySheets = userSheet.self;
+        this.store$.dispatch(SetModalVisible({ modalVisible: true }));
+      })
+    } else {
+      this.openModal(ModalTypes.Default);
+    }
+  }
+
+  private listenStates() {
+    const appStore$ = this.store$.pipe(select(getMember));
+    appStore$.pipe(select(getLikeId)).subscribe(id => this.watchId(id));
+    appStore$.pipe(select(getModalVisible)).subscribe(visib => this.watchModalVisible(visib));
+    appStore$.pipe(select(getModalType)).subscribe(type => this.watchModalType(type));
+  }
+
+  private watchId(id: string) {
+    if (id) {
+      this.likeId = id;
+    }
+  }
+
+  private watchModalVisible(visib: boolean) {
+    if (this.visible !== visib) {
+      this.visible = visib;
+    }
+  }
+
+  private watchModalType(type: ModalTypes) {
+    if (this.currentModalType !== type) {
+      if (type === ModalTypes.Like) {
+        this.onLoadMySheets();
+      }
+      this.currentModalType = type;
+    }
+  }
+
+  onLikeSong(args: LikeSongParams) {
+    this.memberServe.likeSong(args).subscribe(() => {
+      this.batchActionsServe.controlModal(false);
+      this.alertMessage('success', '收藏成功');
+    }, error => {
+      this.alertMessage('error', error.msg || '收藏失败');
+    });
+  }
+
+  onCreateSheet(sheetName: string) {
+    this.memberServe.createSheet(sheetName).subscribe(pid => {
+      this.onLikeSong({ pid, tracks: this.likeId });
+    }, error => {
+      this.alertMessage('error', error.msg || '新建失败');
+    })
   }
 }

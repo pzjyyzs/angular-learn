@@ -8,7 +8,8 @@ import { shuffle, findIndex } from 'src/utils/array';
 import { getPlayer } from '../selectors/player.selectors';
 import { getMember } from '../selectors/member.selectors';
 import { MemberState, ModalTypes } from '../reducers/member.reducer';
-import { SetModalType, SetModalVisible } from '../actions/member.action';
+import { SetModalType, SetModalVisible, SetLikeId } from '../actions/member.action';
+import { timer } from 'rxjs';
 
 @Injectable({
   providedIn: AppStoreModule
@@ -105,7 +106,17 @@ export class BatchActionsService {
   }
 
   controlModal(modalVisible = true, modalType?: ModalTypes) {
-    this.store$.dispatch(SetModalType({  modalType }));
+    if (modalType) {
+      this.store$.dispatch(SetModalType({  modalType }));
+    }
     this.store$.dispatch(SetModalVisible({  modalVisible }));
+    if (!modalVisible) {
+      timer(500).subscribe(() => this.store$.dispatch(SetModalType({  modalType: ModalTypes.Default })));
+    }
+  }
+
+  likeSong(id: string) {
+    this.store$.dispatch(SetModalType({ modalType: ModalTypes.Like }));
+    this.store$.dispatch(SetLikeId( { id } ));
   }
 }
