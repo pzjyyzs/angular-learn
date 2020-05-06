@@ -13,6 +13,13 @@ export type LikeSongParams = {
   pid: string;
   tracks: string;
 }
+
+export type ShareParams = {
+  id: string;
+  msg: string;
+  type: string;
+}
+
 export enum RecordType {
   allData,
   weekData
@@ -80,7 +87,7 @@ export class MemberService {
     return this.http.get(this.uri + 'playlist/subscribe', { params }).pipe(map((res: SampleBack) => res.code));
   }
 
-  shareResource(id: string, msg: string, type = 'song'): Observable<number> {
+  shareResource({ id, msg, type }: ShareParams): Observable<number> {
     const params = new HttpParams({ fromString: queryString.stringify({ id, msg, type })});
     return this.http.get(this.uri + 'share/resource', { params }).pipe(map((res: SampleBack) => res.code));
   }
