@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { AppStoreModule } from 'src/app/store';
 import { Store, select } from '@ngrx/store';
-import { Song } from 'src/app/service/data-types/common.types';
+import { Song, Singer } from 'src/app/service/data-types/common.types';
 import { getSongList, getPlayList, getCurrentIndex, getPlayMode, getCurrentSong, getPlayer, getCurrentAction } from 'src/app/selectors/player.selectors';
 import { PlayMode } from './player-type';
 import { SetCurrentIndex, SetPlayMode, SetPlayList, SetCurrentAction } from 'src/app/actions/player.action';
@@ -14,6 +14,7 @@ import { BatchActionsService } from 'src/app/store/batch-actions.service';
 import { Router } from '@angular/router';
 import { transition, animate, trigger, style, state, AnimationEvent } from '@angular/animations';
 import { CurrentActions } from 'src/app/reducers/player.reducer';
+import { SetShareInfo } from 'src/app/actions/member.action';
 
 const modeTypes: PlayMode[] = [{
   type: 'loop',
@@ -321,5 +322,19 @@ export class WyPlayerComponent implements OnInit {
   onError() {
     this.playing = false;
     this.bufferPercent = 0;
+  }
+
+  onShareSong(resource: Song, type = 'song') {
+    const txt = this.makeTxt('歌曲', resource.name, (resource as Song).ar);
+    this.store$.dispatch(SetShareInfo({info: { id: resource.id.toString(), type, txt }}));
+  }
+
+  private makeTxt(type: string, name: string, makeBy: Singer[]): string {
+    const makeByStr = makeBy.map(item => item.name).join('/');
+
+    return `${type}: ${name} -- ${makeByStr}`;
+  }
+  onLikeSong(id: string) {
+    this.batchActionsServe.likeSong(id);
   }
 }

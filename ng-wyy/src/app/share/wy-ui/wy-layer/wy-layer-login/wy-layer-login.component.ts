@@ -15,6 +15,7 @@ export type LoginParams = {
 })
 export class WyLayerLoginComponent implements OnInit, OnChanges {
   @Input() wyRememberLogin: LoginParams;
+  @Input() visible = false;
   @Output() onChangeModalType = new EventEmitter<string | void>();
   @Output() onLogin = new EventEmitter<LoginParams>();
   formModel: FormGroup;

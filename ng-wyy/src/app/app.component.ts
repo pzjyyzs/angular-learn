@@ -172,8 +172,12 @@ export class AppComponent {
 
   private watchShareInfo(info) {
     if (info) {
-      this.shareInfo = info;
-      this.openModal(ModalTypes.Share);
+      if (this.user) {
+        this.shareInfo = info;
+        this.openModal(ModalTypes.Share);
+      } else {
+        this.openModal(ModalTypes.Default);
+      }
     }
   }
   onLikeSong(args: LikeSongParams) {

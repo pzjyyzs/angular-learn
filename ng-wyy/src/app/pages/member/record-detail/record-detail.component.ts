@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, takeUntil } from 'rxjs/internal/operators';
 import { User, recordVal, UserSheet } from 'src/app/service/data-types/member.types';
 import { RecordType, MemberService } from 'src/app/service/member.service';
-import { Song } from 'src/app/service/data-types/common.types';
+import { Song, Singer } from 'src/app/service/data-types/common.types';
 import { Subject } from 'rxjs';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
 import { SongService } from 'src/app/service/song.service';
@@ -13,6 +13,7 @@ import { Store, select } from '@ngrx/store';
 import { getCurrentSong, getPlayer } from 'src/app/selectors/player.selectors';
 import { findIndex } from 'src/utils/array';
 import { SheetService } from 'src/app/service/sheet.service';
+import { SetShareInfo } from 'src/app/actions/member.action';
 
 @Component({
   selector: 'app-record-detail',
@@ -97,5 +98,19 @@ export class RecordDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  onShareSong(resource: Song, type = 'song') {
+    const txt = this.makeTxt('歌曲', resource.name, (resource as Song).ar);
+    this.store$.dispatch(SetShareInfo({info: { id: resource.id.toString(), type, txt }}));
+  }
+
+  private makeTxt(type: string, name: string, makeBy: Singer[]): string {
+    const makeByStr = makeBy.map(item => item.name).join('/');
+
+    return `${type}: ${name} -- ${makeByStr}`;
+  }
+  onLikeSong(id: string) {
+    this.batchActionsServe.likeSong(id);
   }
 }

@@ -8,12 +8,13 @@ import { RecordType, MemberService } from 'src/app/service/member.service';
 import { MemberState } from 'src/app/reducers/member.reducer';
 import { SongService } from 'src/app/service/song.service';
 import { NzMessageService } from 'ng-zorro-antd';
-import { Song } from 'src/app/service/data-types/common.types';
+import { Song, Singer } from 'src/app/service/data-types/common.types';
 import { AppStoreModule } from 'src/app/store';
 import { Store, select } from '@ngrx/store';
 import { getCurrentSong, getPlayer } from 'src/app/selectors/player.selectors';
 import { findIndex } from 'src/utils/array';
 import { Subject } from 'rxjs';
+import { SetShareInfo } from 'src/app/actions/member.action';
 
 @Component({
   selector: 'app-center',
@@ -98,5 +99,19 @@ export class CenterComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  onShareSong(resource: Song, type = 'song') {
+    const txt = this.makeTxt('歌曲', resource.name, (resource as Song).ar);
+    this.store$.dispatch(SetShareInfo({info: { id: resource.id.toString(), type, txt }}));
+  }
+
+  private makeTxt(type: string, name: string, makeBy: Singer[]): string {
+    const makeByStr = makeBy.map(item => item.name).join('/');
+
+    return `${type}: ${name} -- ${makeByStr}`;
+  }
+  onLikeSong(id: string) {
+    this.batchActionsServe.likeSong(id);
   }
 }

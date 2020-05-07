@@ -46,8 +46,8 @@ appClickoutside
       </div>
 
       <div class="oper">
-        <i class="like" title="收藏"></i>
-        <i class="share" title="分享"></i>
+        <i class="like" title="收藏"  (click)="onLikeSong(currentSong.id)"></i>
+        <i class="share" title="分享"  (click)="onShareSong(currentSong)"></i>
       </div>
       <div class="ctrl">
         <i class="volume" title="音量" (click)="toggleVolPanel($event)"></i>
@@ -71,6 +71,8 @@ appClickoutside
         (onDeleteSong)="onDeleteSong($event)"
         (onClearSong)="onClearSong($event)"
         (onToInfo)="toInfo($event)"
+        (onShareSong)="onShareSong($event)"
+        (onLikeSong)="onLikeSong($event)"
         >
       </app-wi-player-panel>
     </div>

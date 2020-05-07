@@ -10,6 +10,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { getPlayer, getCurrentSong } from 'src/app/selectors/player.selectors';
 import { findIndex } from 'src/utils/array';
 import { Subject } from 'rxjs';
+import { SetShareInfo } from 'src/app/actions/member.action';
+import { MemberService } from 'src/app/service/member.service';
 
 @Component({
   selector: 'app-singer-detail',
@@ -22,18 +24,20 @@ export class SingerDetailComponent implements OnInit, OnDestroy {
   simiSingers: Singer[];
   currentSong: Song;
   currentIndex = -1;
+  hasLiked = false;
   private destroy$ = new Subject<void>();
   constructor(
     private route: ActivatedRoute,
     private songServe: SongService,
     private store$: Store<AppStoreModule>,
     private bachActionServe: BatchActionsService,
-    private nzMessageServe: NzMessageService) {
+    private nzMessageServe: NzMessageService,
+    private memberServe: MemberService) {
     this.route.data.pipe(map(res => res.SingerDetail)).subscribe(([detail, simiSingers]) => {
       this.singerDetail = detail;
       this.simiSingers = simiSingers;
       this.listenCurrent();
-    })
+    });
    }
 
   ngOnInit() {
@@ -80,5 +84,43 @@ export class SingerDetailComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  onShareSong(resource: Song, type = 'song') {
+    const txt = this.makeTxt('歌曲', resource.name, (resource as Song).ar);
+    this.store$.dispatch(SetShareInfo({info: { id: resource.id.toString(), type, txt }}));
+  }
+
+  private makeTxt(type: string, name: string, makeBy: Singer[]): string {
+    const makeByStr = makeBy.map(item => item.name).join('/');
+
+    return `${type}: ${name} -- ${makeByStr}`;
+  }
+  onLikeSong(id: string) {
+    this.bachActionServe.likeSong(id);
+  }
+
+  onLikeSongs(songs: Song[]) {
+    const ids = songs.map(item => item.id).join(',');
+    this.onLikeSong(ids);
+  }
+
+  onLikeSinger(id: string) {
+    let typeInfo = {
+      type: 1,
+      msg: '收藏'
+    }
+    if (this.hasLiked) {
+      typeInfo = {
+        type: 2,
+        msg: '取消收藏'
+      }
+    }
+    this.memberServe.likeSinger(id, typeInfo.type).subscribe(() => {
+      this.hasLiked = !this.hasLiked;
+      this.nzMessageServe.create('success', typeInfo.msg + '成功');
+    }, error => {
+      this.nzMessageServe.create('error', error.msg || typeInfo.msg + '失败');
+    });
   }
 }
