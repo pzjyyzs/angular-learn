@@ -37,6 +37,7 @@ export class AppComponent {
   mySheets: SongSheet[];
   likeId: string;
   visible = false;
+  showSpin = false;
   currentModalType = ModalTypes.Default;
   shareInfo: ShareInfo;
   constructor(
@@ -92,6 +93,7 @@ export class AppComponent {
   }
 
   onLogin(params: LoginParams) {
+    this.showSpin = true;
     this.memberServe.login(params).subscribe(user => {
       this.user = user;
       this.closeModal();
@@ -110,7 +112,9 @@ export class AppComponent {
       } else {
         this.storageServe.removeStorage('wyRememberLogin');
       }
+      this.showSpin = false;
     }, error => {
+      this.showSpin = false;
       this.alertMessage('error', error.message || '登陆失败');
     });
   }
@@ -207,6 +211,10 @@ export class AppComponent {
       this.alertMessage('success', '分享成功');
     }, error => {
       this.alertMessage('error', error.msg || '分享失败');
-    })
+    });
+  }
+
+  onRegister(phone: string) {
+    this.alertMessage('success', '注册成功');
   }
 }
