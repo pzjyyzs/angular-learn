@@ -14,6 +14,11 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { codeJson } from 'src/utils/base64';
 import { StorageService } from './service/storage.service';
 import { getMember, getLikeId, getModalType, getModalVisible, getShareInfo } from './selectors/member.selectors';
+import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { filter, map, mergeMap, takeUntil } from 'rxjs/internal/operators';
+import { Observable, interval } from 'rxjs';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +35,7 @@ export class AppComponent {
     path: '/sheet'
   }];
 
-
+  loadPercent = 0;
   searchResult: SearchResult;
   user: User;
   wyRememberLogin: LoginParams;
@@ -40,13 +45,18 @@ export class AppComponent {
   showSpin = false;
   currentModalType = ModalTypes.Default;
   shareInfo: ShareInfo;
+  routeTitle = '';
+  private navEnd: Observable<NavigationEnd>;
   constructor(
     private searchServe: SearchService,
     private store$: Store<AppStoreModule>,
     private batchActionsServe: BatchActionsService,
     private memberServe: MemberService,
     private messageServe: NzMessageService,
-    private storageServe: StorageService
+    private storageServe: StorageService,
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private titleServe: Title,
   ) {
     const userId = this.storageServe.getStorage('wyUserId');
     if (userId) {
@@ -59,7 +69,41 @@ export class AppComponent {
       this.wyRememberLogin = JSON.parse(wyRememberLogin);
     }
     this.listenStates();
+
+    this.router.events.pipe(filter(evt => evt instanceof NavigationStart)).subscribe(() => {
+      this.loadPercent = 0;
+      this.setTitle();
+    });
+
+    this.navEnd = this.router.events.pipe(filter(evt  => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
+    this.setLoadingBar();
   }
+
+  private setLoadingBar() {
+    interval(100).pipe(takeUntil(this.navEnd)).subscribe(() => {
+      this.loadPercent = Math.max(95, ++this.loadPercent);
+    });
+    this.navEnd.subscribe(() => {
+      this.loadPercent = 100;
+    });
+  }
+
+  private setTitle() {
+    this.navEnd.pipe(
+      map(() => this.activateRoute),
+      map((route: ActivatedRoute) => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      mergeMap(route => route.data)
+    ).subscribe(data => {
+      this.routeTitle = data.title;
+      this.titleServe.setTitle(this.routeTitle);
+    });
+  }
+
   onSearch(keyword: string) {
     if (keyword) {
       this.searchServe.search(keyword).subscribe(res => {

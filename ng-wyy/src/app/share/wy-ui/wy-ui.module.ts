@@ -5,16 +5,17 @@ import { WyPlayerModule } from './wy-player/wy-player.module';
 import { WySearchModule } from './wy-search/wy-search.module';
 import { WyLayerModule } from './wy-layer/wy-layer.module';
 import { CommonModule } from '@angular/common';
+import { ImgDefaultDirective } from '../directives/img-default.directive';
 
 
 
 @NgModule({
-  declarations: [SingleSheetComponent, PlayCountPipe],
+  declarations: [SingleSheetComponent, PlayCountPipe, ImgDefaultDirective],
   imports: [
     WyPlayerModule,
     WySearchModule,
     WyLayerModule
   ],
-  exports: [SingleSheetComponent, PlayCountPipe, WyPlayerModule, WySearchModule, WyLayerModule]
+  exports: [SingleSheetComponent, PlayCountPipe, WyPlayerModule, WySearchModule, WyLayerModule, ImgDefaultDirective]
 })
 export class WyUiModule { }
