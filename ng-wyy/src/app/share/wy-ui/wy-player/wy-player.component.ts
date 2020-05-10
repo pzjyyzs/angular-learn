@@ -248,12 +248,6 @@ export class WyPlayerComponent implements OnInit {
     this.bindFlag = (this.showVolumnPanel || this.showPanel);
   }
 
-  private unbindDocumentClickListener() {
-    if (this.winClick) {
-      this.winClick.unsubscribe();
-      this.winClick = null;
-    }
-  }
 
   changeMode() {
     this.store$.dispatch(SetPlayMode({ playMode: modeTypes[++this.modeCount % 3] }));

@@ -132,6 +132,14 @@ export class AppComponent {
     this.store$.dispatch(SetModalType({ modalType }));
   }
 
+  openModalByMenu(type: 'loginByPhone' | 'register') {
+    if (type === 'loginByPhone') {
+      this.openModal(ModalTypes.LoginByPhone);
+    } else {
+      this.openModal(ModalTypes.Register);
+    }
+  }
+
   openModal(type: ModalTypes) {
     this.batchActionsServe.controlModal(true, type);
   }

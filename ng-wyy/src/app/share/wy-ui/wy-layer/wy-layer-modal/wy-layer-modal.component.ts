@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, AfterViewInit, ViewChild, Renderer2, Inject, Output, EventEmitter, Input, OnChanges, SimpleChanges, PLATFORM_ID } from '@angular/core';
-
 import { Overlay, OverlayRef, OverlayKeyboardDispatcher, BlockScrollStrategy, OverlayContainer } from '@angular/cdk/overlay';
 import { BatchActionsService } from 'src/app/store/batch-actions.service';
 import { ESCAPE } from '@angular/cdk/keycodes';

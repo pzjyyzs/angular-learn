@@ -46,11 +46,11 @@ appClickoutside
       </div>
 
       <div class="oper">
-        <i class="like" title="收藏"  (click)="onLikeSong(currentSong.id)"></i>
+        <i class="like" title="收藏"  (click)="onLikeSong(currentSong.id.toString())"></i>
         <i class="share" title="分享"  (click)="onShareSong(currentSong)"></i>
       </div>
       <div class="ctrl">
-        <i class="volume" title="音量" (click)="toggleVolPanel($event)"></i>
+        <i class="volume" title="音量" (click)="toggleVolPanel()"></i>
         <i [ngClass]="currentMode.type" [title]="currentMode.label" (click)="changeMode()"></i>
         <p nz-tooltip [nzTooltipTitle]="controlTooltip.title"  [nzVisible]="controlTooltip.show" nzOverlayClassName="tip-bg" class="open" (click)="toggleListPanel()">
           <span></span>
@@ -69,7 +69,7 @@ appClickoutside
         [playing]="playing"
         (onClose)="showPanel = false"
         (onDeleteSong)="onDeleteSong($event)"
-        (onClearSong)="onClearSong($event)"
+        (onClearSong)="onClearSong()"
         (onToInfo)="toInfo($event)"
         (onShareSong)="onShareSong($event)"
         (onLikeSong)="onLikeSong($event)"
