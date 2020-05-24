@@ -10,6 +10,8 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { AppRoutingModule } from './app-routing.module';
 import { SetupModule } from './pages/setup/setup.module';
+import { MainRoutingModule } from './pages/main/main-routing.module';
+import { MainModule } from './pages/main/main.module';
 
 registerLocaleData(en);
 
@@ -23,8 +25,10 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    SetupModule,
+    MainModule,
+    MainRoutingModule,
     AppRoutingModule,
-    SetupModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
