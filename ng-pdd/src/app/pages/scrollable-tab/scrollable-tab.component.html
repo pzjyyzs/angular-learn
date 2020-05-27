@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let menu of menus; let i = index">
+    <a href="#" (click)="handleSelection(i)" [class.active]="i === selectedIndex">{{menu.title}}</a>
+    <span class="indicator"  *ngIf="i === selectedIndex"></span>
+  </li>
+</ul>
