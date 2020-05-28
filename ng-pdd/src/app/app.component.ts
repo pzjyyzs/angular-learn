@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ImageSlideComponent } from './share/pdd-ui/image-slide/image-slide.component';
 
 
 @Component({
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
+  @ViewChild('imgslider', { static: true }) slider: ImageSlideComponent;
   topMenus: TopMenu[] = [
     {
       title: '热门',
@@ -77,4 +79,15 @@ export class AppComponent {
       link: ''
     }
   ];
+
+  scrollableTabBgColor = 'red';
+
+  imagesliders: ImageSlider[] = [];
+
+  handleTabSelected(topMenu: TopMenu) {
+    const colors = ['green', 'blue', 'black'];
+    const idx = Math.floor(Math.random() * 3);
+    this.scrollableTabBgColor = colors[idx];
+    console.log(topMenu);
+  }
 }

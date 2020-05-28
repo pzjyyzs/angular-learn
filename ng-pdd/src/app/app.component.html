@@ -1,1 +1,8 @@
-<app-scrollable-tab [menus]="topMenus"></app-scrollable-tab>
+<app-scrollable-tab [menus]="topMenus"
+[backgroundColor]="scrollableTabBgColor"
+  titleColor="#fff"
+  tilteActiveColor="yellow"
+  indicatorColor="yellow"
+  (tabSelected)="handleTabSelected($event)"
+  *ngIf="scrollableTabBgColor === 'red'"></app-scrollable-tab>
+<app-image-slide [sliders]="imagesliders"></app-image-slide>

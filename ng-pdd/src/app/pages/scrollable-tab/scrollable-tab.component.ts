@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-scrollable-tab',
@@ -9,6 +9,11 @@ export class ScrollableTabComponent implements OnInit {
   title = 'ng-pdd';
   selectedIndex = -1;
   @Input() menus: TopMenu[] = [];
+  @Input() backgroundColor = '#fff';
+  @Input() titleActiveColor = 'yellow';
+  @Input() titleColor = 'blue';
+  @Input() indicatorColor = 'brown';
+  @Output() tabSelected = new EventEmitter();
 
   handleSelection(index) {
     this.selectedIndex = index;
