@@ -5,7 +5,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, QueryList, ViewChildre
   templateUrl: './image-slide.component.html',
   styleUrls: ['./image-slide.component.less']
 })
-export class ImageSlideComponent implements OnInit,AfterViewInit {
+export class ImageSlideComponent implements OnInit, AfterViewInit {
 
   @Input() sliders: ImageSlider[] = [];
   @Input() scrollHeight = '160px';
