@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CategoryRoutingModule } from './category-routing.module';
+import { ShareModule } from '../share/share/share.module';
 
 
 @NgModule({

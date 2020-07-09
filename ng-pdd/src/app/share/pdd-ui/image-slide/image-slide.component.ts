@@ -1,43 +1,46 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, QueryList, ViewChildren, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef , Renderer2, AfterViewInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-image-slide',
   templateUrl: './image-slide.component.html',
   styleUrls: ['./image-slide.component.less']
 })
-export class ImageSlideComponent implements OnInit, AfterViewInit {
+export class ImageSlideComponent implements  OnInit, AfterViewInit, OnDestroy {
 
   @Input() sliders: ImageSlider[] = [];
-  @Input() scrollHeight = '160px';
-  @Input() intervalBySeconds = 2;
+  @Input() sliderHeight = '160px';
   @ViewChild('imageSlider', { static: true }) imgSlider: ElementRef;
-  @ViewChildren('img') img: QueryList<ElementRef>;
-
+  @Input() intervalBySeconds = 2;
   selectedIndex = 0;
-  constructor(private rd2: Renderer2) { }
-
-  ngOnInit() {
-  }
+  constructor(private rd2: Renderer2) {}
+  intervalId;
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
-    setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.rd2.setProperty(
         this.imgSlider.nativeElement,
         'scrollLeft',
-        (this.getIndex(++this.selectedIndex) * this.imgSlider.nativeElement.scrollWidth) / this.sliders.length
+        (this.getIndex(++this.selectedIndex) *
+          this.imgSlider.nativeElement.scrollWidth) /
+          this.sliders.length
       );
     }, this.intervalBySeconds * 1000);
-    this.img.forEach(item => {
-      this.rd2.setStyle(item.nativeElement, 'height', '100px');
-    });
   }
 
-  getIndex(idx: number) {
-    return idx >= 0 ? idx % this.sliders.length : this.sliders.length - (Math.abs(idx) % this.sliders.length);
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
 
-  handleScroll(event) {
-    let ratio = (event.target.scrollLeft * this.sliders.length) / event.target.scrollWidth;
+  getIndex(idx: number): number {
+    return idx >= 0
+      ? idx % this.sliders.length
+      : this.sliders.length - (Math.abs(idx) % this.sliders.length);
+  }
+
+  handleScroll(ev) {
+    const ratio =
+      ev.target.scrollLeft / (ev.target.scrollWidth / this.sliders.length);
     this.selectedIndex = Math.round(ratio);
   }
 }
