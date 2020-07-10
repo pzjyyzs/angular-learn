@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeContainerComponent } from './home/component/home-container/home-container.component';
+import { HomeDetailComponent } from './home/component/home-detail/home-detail.component';
 
 
 const routes: Routes = [
   {
     path: '', redirectTo: '/home', pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    component: HomeContainerComponent
   }
 ];
 
