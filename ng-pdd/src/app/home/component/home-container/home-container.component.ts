@@ -13,13 +13,13 @@ export class HomeContainerComponent implements OnInit {
   topMenus: TopMenu[];
 
   ngOnInit(): void {
-    this.service.getBanners().subscribe(tabs => {
-     // this.topMenus = tabs;
-    })
+    this.service.getTabs().subscribe(banner => {
+     this.topMenus = banner;
+    });
   }
 
   handleTabSelected(topMenu: TopMenu) {
-    this.router.navigate(['home', topMenu.link])
+    this.router.navigate(['home', topMenu.link]);
   }
 
 }

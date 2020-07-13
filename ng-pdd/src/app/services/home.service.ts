@@ -2,27 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/internal/operators';
+import { Observable } from 'rxjs';
+import { Channel } from '../share/pdd-ui/horizontal-grid/horizontal-grid.component';
+import { ServiceModule } from './service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: ServiceModule
 })
 export class HomeService {
 
   constructor(private http: HttpClient) { }
 
-  getBanners() {
-    return this.http.get(`${environment.baseUrl}/banners`,
-      { params: { icode: `${environment.icode}` } });
+  getBanners(): Observable<ImageSlider[]> {
+    return this.http.get(`${environment.baseUrl}/banners`)
+      .pipe(map((res: ImageSlider[]) => res));
   }
 
-  getChannels() {
-    return this.http.get(`${environment.baseUrl}/channels`,
-      { params: { icode: `${environment.icode}` } });
+  getChannels(): Observable<Channel[]> {
+    return this.http.get(`${environment.baseUrl}/channels`)
+      .pipe(map((res: Channel[]) => res));
   }
 
-  getTabs() {
-    return this.http.get(`${environment.baseUrl}/tabs`,
-    { params: { icode: `${environment.icode}` } })
+  getTabs(): Observable<TopMenu[]> {
+    return this.http.get(`${environment.baseUrl}/tabs`)
     .pipe(map((res) => res as TopMenu[]));
   }
 }
