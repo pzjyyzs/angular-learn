@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@
 import { Channel } from 'src/app/share/pdd-ui/horizontal-grid/horizontal-grid.component';
 import { ActivatedRoute } from '@angular/router';
 import { HomeService } from 'src/app/services/home.service';
+import { filter, map } from 'rxjs/internal/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home-detail',
@@ -12,23 +14,24 @@ import { HomeService } from 'src/app/services/home.service';
 export class HomeDetailComponent implements OnInit {
 
   selectLink = '';
-  imageSliders: ImageSlider[];
-  channels: Channel[];
-  constructor(private router: ActivatedRoute, private homeService: HomeService,
-              private cdr: ChangeDetectorRef) { }
+  imageSliders$: Observable<ImageSlider[]>;
+  channels$: Observable<Channel[]>;
+  selectedTabLink$: Observable<string>;
+  constructor(private router: ActivatedRoute, private homeService: HomeService) { }
 
   ngOnInit() {
-    this.router.paramMap.subscribe(params => {
-      this.selectLink = params.get('tabLink');
-    });
-    this.homeService.getBanners().subscribe(banners => {
-      this.imageSliders = banners;
-      this.cdr.markForCheck();
-    });
-    this.homeService.getChannels().subscribe(channels => {
-      this.channels = channels;
-      this.cdr.markForCheck();
-    });
+
+    this.selectedTabLink$ = this.router.paramMap
+      .pipe(
+        filter(params => {
+          console.log(params.has('tabLink'));
+          console.log(params);
+          return params.has('tabLink');
+        }),
+        map(params => params.get('tabLink'))
+      );
+    this.imageSliders$ = this.homeService.getBanners();
+    this.channels$ = this.homeService.getChannels();
   }
 
 }

@@ -8,6 +8,7 @@ import { FooterComponent } from '../pdd-ui/footer/footer.component';
 import { GridItemDirective } from '../directives/grid-item.directive';
 import { GridItemTitleDirective } from '../directives/grid-item-title.directive';
 import { GridItemImageDirective } from '../directives/grid-item-image.directive';
+import { CountDownComponent } from '../pdd-ui/count-down/count-down.component';
 
 
 
@@ -17,6 +18,7 @@ import { GridItemImageDirective } from '../directives/grid-item-image.directive'
     HorizontalGridComponent,
     ScrollableTabComponent,
     FooterComponent,
+    CountDownComponent,
     GridItemDirective,
     GridItemTitleDirective,
     GridItemImageDirective
@@ -32,6 +34,7 @@ import { GridItemImageDirective } from '../directives/grid-item-image.directive'
     HorizontalGridComponent,
     ScrollableTabComponent,
     FooterComponent,
+    CountDownComponent,
     GridItemDirective,
     GridItemTitleDirective,
     GridItemImageDirective
