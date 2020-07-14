@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HomeService } from 'src/app/services/home.service';
 import { Observable } from 'rxjs';
+import { TopMenu } from 'src/app/services/data-types/common';
 
 @Component({
   selector: 'app-home-container',

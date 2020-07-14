@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { TopMenu } from 'src/app/services/data-types/common';
 
-export interface TopMenu {
-  title: string;
-  link: string;
-}
 
 @Component({
   selector: 'app-scrollable-tab',

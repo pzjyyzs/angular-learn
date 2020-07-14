@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HomeService } from 'src/app/services/home.service';
 import { filter, map } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs';
+import { ImageSlider } from 'src/app/services/data-types/common';
 
 @Component({
   selector: 'app-home-detail',
@@ -24,8 +25,6 @@ export class HomeDetailComponent implements OnInit {
     this.selectedTabLink$ = this.router.paramMap
       .pipe(
         filter(params => {
-          console.log(params.has('tabLink'));
-          console.log(params);
           return params.has('tabLink');
         }),
         map(params => params.get('tabLink'))

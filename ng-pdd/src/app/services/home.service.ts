@@ -5,6 +5,7 @@ import { map } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs';
 import { Channel } from '../share/pdd-ui/horizontal-grid/horizontal-grid.component';
 import { ServiceModule } from './service.module';
+import { ImageSlider, TopMenu } from './data-types/common';
 
 @Injectable({
   providedIn: ServiceModule

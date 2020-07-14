@@ -20,6 +20,5 @@ export class GridItemImageDirective implements OnInit {
   }
   @HostListener('click', ['$event.target'])
   handleClick(ev) {
-    console.log(ev);
   }
 }

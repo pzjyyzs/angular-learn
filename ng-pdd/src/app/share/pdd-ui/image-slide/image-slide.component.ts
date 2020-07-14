@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef , Renderer2, AfterViewInit, OnDestroy } from '@angular/core';
+import { ImageSlider } from 'src/app/services/data-types/common';
 
 @Component({
   selector: 'app-image-slide',
