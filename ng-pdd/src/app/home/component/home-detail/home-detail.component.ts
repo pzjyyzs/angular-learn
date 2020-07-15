@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@
 import { Channel } from 'src/app/share/pdd-ui/horizontal-grid/horizontal-grid.component';
 import { ActivatedRoute } from '@angular/router';
 import { HomeService } from 'src/app/services/home.service';
-import { filter, map } from 'rxjs/internal/operators';
+import { filter, map, switchMap } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs';
-import { ImageSlider } from 'src/app/services/data-types/common';
+import { ImageSlider, Ad } from 'src/app/services/data-types/common';
 
 @Component({
   selector: 'app-home-detail',
@@ -18,6 +18,7 @@ export class HomeDetailComponent implements OnInit {
   imageSliders$: Observable<ImageSlider[]>;
   channels$: Observable<Channel[]>;
   selectedTabLink$: Observable<string>;
+  ad$: Observable<Ad>;
   constructor(private router: ActivatedRoute, private homeService: HomeService) { }
 
   ngOnInit() {
@@ -31,6 +32,11 @@ export class HomeDetailComponent implements OnInit {
       );
     this.imageSliders$ = this.homeService.getBanners();
     this.channels$ = this.homeService.getChannels();
+    this.ad$ = this.selectedTabLink$.pipe(
+      switchMap(tab => this.homeService.getAdByTab(tab) ),
+      filter(ads => ads.length > 0),
+      map(ads => ads[0])
+    )
   }
 
 }
