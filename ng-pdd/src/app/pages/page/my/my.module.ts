@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MyRoutingModule } from './my-routing.module';
-import { ShareModule } from '../share/share/share.module';
+import { ShareModule } from 'src/app/share/share/share.module';
 
 
 @NgModule({

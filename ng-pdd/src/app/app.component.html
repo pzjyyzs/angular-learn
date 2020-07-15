@@ -1,2 +1,2 @@
 <router-outlet></router-outlet>
-<app-footer [selectedIndex]="" (tabSelected)=""></app-footer>
+<app-footer [selectedIndex]="selectedIndex$ | async" (tabSelected)="handleTabSelect($event)"></app-footer>

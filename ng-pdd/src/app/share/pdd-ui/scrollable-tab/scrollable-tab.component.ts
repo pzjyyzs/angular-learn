@@ -9,7 +9,7 @@ import { TopMenu } from 'src/app/services/data-types/common';
 })
 export class ScrollableTabComponent implements OnInit {
   title = 'ng-pdd';
-  selectedIndex = -1;
+  @Input() selectedTabLink: string;
   @Input() menus: TopMenu[] = [];
   @Input() backgroundColor = '#fff';
   @Input() titleActiveColor = 'yellow';
@@ -18,8 +18,7 @@ export class ScrollableTabComponent implements OnInit {
   @Output() tabSelected = new EventEmitter();
 
   handleSelection(index) {
-    this.selectedIndex = index;
-    this.tabSelected.emit(this.menus[this.selectedIndex]);
+    this.tabSelected.emit(this.menus[index]);
   }
   constructor() { }
 

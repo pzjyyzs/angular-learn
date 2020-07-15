@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HomeService } from 'src/app/services/home.service';
 import { Observable } from 'rxjs';
 import { TopMenu } from 'src/app/services/data-types/common';
+import { filter, map } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-home-container',
@@ -13,10 +14,16 @@ import { TopMenu } from 'src/app/services/data-types/common';
 export class HomeContainerComponent implements OnInit {
 
   topMenus$: Observable<TopMenu[]>;
-  constructor(private router: Router, private service: HomeService) {}
+  selectedTabLink$: Observable<string>;
+  constructor(private router: Router, private service: HomeService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this. topMenus$ = this.service.getTabs();
+    this.selectedTabLink$ = this.route.firstChild.paramMap
+    .pipe(
+      filter(params => params.has('tabLink')),
+      map(params => params.get('tabLink'))
+    );
   }
 
   handleTabSelected(topMenu: TopMenu) {
