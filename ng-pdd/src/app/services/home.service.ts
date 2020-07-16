@@ -30,7 +30,7 @@ export class HomeService {
   }
 
   getAdByTab(tab: string): Observable<Ad[]> {
-    return this.http.post(`${environment.baseUrl}/ads`, { params: { categories_like: tab} })
+    return this.http.get(`${environment.baseUrl}/ads`, { params: { categories_like: tab} })
     .pipe(map((res) => res as Ad[]));
   }
 }

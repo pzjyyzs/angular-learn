@@ -17,3 +17,8 @@ export interface TabItem {
   link: string;
   selectedIcon: string;
 }
+
+export interface Ad {
+  imageUrl: string;
+  link: string;
+}
