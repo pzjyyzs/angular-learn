@@ -5,7 +5,7 @@ import { map } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs';
 import { Channel } from '../share/pdd-ui/horizontal-grid/horizontal-grid.component';
 import { ServiceModule } from './service.module';
-import { ImageSlider, TopMenu, Ad } from './data-types/common';
+import { ImageSlider, TopMenu, Ad, Product } from './data-types/common';
 
 @Injectable({
   providedIn: ServiceModule
@@ -32,5 +32,10 @@ export class HomeService {
   getAdByTab(tab: string): Observable<Ad[]> {
     return this.http.get(`${environment.baseUrl}/ads`, { params: { categories_like: tab} })
     .pipe(map((res) => res as Ad[]));
+  }
+
+  getProductsByTab(tab: string): Observable<Product[]> {
+    return this.http.get(`${environment.baseUrl}/products`, { params: { categories_like: tab} })
+    .pipe(map((res) => res as Product[]));
   }
 }
