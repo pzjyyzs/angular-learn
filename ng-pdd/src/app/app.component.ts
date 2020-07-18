@@ -3,6 +3,7 @@ import { TabItem } from './services/data-types/common';
 import { Observable } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/internal/operators';
+import { DialogService } from './services/dialog.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { filter, map } from 'rxjs/internal/operators';
 export class AppComponent implements OnInit {
 
   selectedIndex$: Observable<number>;
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialogService: DialogService) {
 
   }
 
@@ -34,5 +35,9 @@ export class AppComponent implements OnInit {
 
   handleTabSelect(tab: TabItem) {
     this.router.navigate([tab.link]);
+  }
+
+  removeDialog() {
+    this.dialogService.close();
   }
 }

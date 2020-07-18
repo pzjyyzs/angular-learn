@@ -15,6 +15,7 @@ import { TagDirective } from '../directives/tab.directive';
 import { AvatarDirective } from '../directives/avatar.directive';
 import { ProductTileComponent } from '../pdd-ui/product-tile/product-tile.component';
 import { BackButtonComponent } from '../pdd-ui/back-button/back-button.component';
+import { DialogComponent } from '../pdd-ui/dialog/dialog/dialog.component';
 
 
 
@@ -29,6 +30,7 @@ import { BackButtonComponent } from '../pdd-ui/back-button/back-button.component
     ProductCardComponent,
     ProductTileComponent,
     BackButtonComponent,
+    DialogComponent,
     GridItemDirective,
     GridItemTitleDirective,
     GridItemImageDirective,
@@ -51,6 +53,7 @@ import { BackButtonComponent } from '../pdd-ui/back-button/back-button.component
     VerticalGridComponent,
     ProductTileComponent,
     BackButtonComponent,
+    DialogComponent,
     GridItemDirective,
     GridItemTitleDirective,
     GridItemImageDirective,
