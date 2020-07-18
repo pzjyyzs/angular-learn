@@ -16,6 +16,7 @@ import { AvatarDirective } from '../directives/avatar.directive';
 import { ProductTileComponent } from '../pdd-ui/product-tile/product-tile.component';
 import { BackButtonComponent } from '../pdd-ui/back-button/back-button.component';
 import { DialogComponent } from '../pdd-ui/dialog/dialog/dialog.component';
+import { ProductAmountComponent } from '../pdd-ui/product-amount/product-amount.component';
 
 
 
@@ -31,6 +32,7 @@ import { DialogComponent } from '../pdd-ui/dialog/dialog/dialog.component';
     ProductTileComponent,
     BackButtonComponent,
     DialogComponent,
+    ProductAmountComponent,
     GridItemDirective,
     GridItemTitleDirective,
     GridItemImageDirective,
@@ -54,6 +56,7 @@ import { DialogComponent } from '../pdd-ui/dialog/dialog/dialog.component';
     ProductTileComponent,
     BackButtonComponent,
     DialogComponent,
+    ProductAmountComponent,
     GridItemDirective,
     GridItemTitleDirective,
     GridItemImageDirective,

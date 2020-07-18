@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ProductVariant } from '../../domain';
 import { map, filter, switchMap } from 'rxjs/internal/operators';
@@ -18,12 +18,13 @@ export class ProductComponent implements OnInit {
   variants$: Observable<ProductVariant[]>;
   selectedIndex = 0;
   constructor(
-    private router: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private orderService: OrderService,
     private dialogService: DialogService) { }
 
   ngOnInit() {
-    const productId$ = this.router.paramMap.pipe(
+    const productId$ = this.route.paramMap.pipe(
       filter(params => params.has('productId')),
       map(params => params.get('productId'))
     );
@@ -35,9 +36,25 @@ export class ProductComponent implements OnInit {
 
   handleGroupBuy(variants: ProductVariant[]) {
     const top = 40;
+    const formSubmitted = new EventEmitter();
+    formSubmitted.subscribe(ev => {
+      this.dialogService.saveData(ev);
+      this.router.navigate(['/order/confirm']);
+    })
+
+    const selected = new EventEmitter();
+    selected.subscribe(ev => {
+      this.selectedIndex = ev;
+    })
     this.dialogService.open(ProductVariantDialogComponent, {
-      inputs: {},
-      outputs: {},
+      inputs: {
+        variants,
+        selectedVariantIndex: this.selectedIndex
+      },
+      outputs: {
+        formSubmitted,
+        selected
+      },
       position: {
         top: `${top}%`,
         left: '0',
