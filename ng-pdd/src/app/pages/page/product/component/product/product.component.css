@@ -28,7 +28,7 @@ app-back-button {
   grid-column: 1/4;
 }
 .price-section .now-price {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #e02f29;
 }

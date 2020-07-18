@@ -21,7 +21,7 @@ export class RecommendComponent implements OnInit {
       filter(ads => ads.length > 0),
       map(ads => ads[0])
     );
-    this.products$ = this.homeService.getProductsByTab('men')
+    this.products$ = this.homeService.getProductsByTab('men');
   }
 
 }

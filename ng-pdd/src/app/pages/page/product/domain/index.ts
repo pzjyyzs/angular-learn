@@ -9,3 +9,12 @@ export interface ProductVariant {
   listPrice: number;
   productVariantsImages: ImageSlider[];
 }
+
+export interface GroupOrder {
+  id: number;
+  productId: number;
+  startBy: string;
+  avatar: string;
+  startAt: Date;
+  remainingNumber: number;
+}

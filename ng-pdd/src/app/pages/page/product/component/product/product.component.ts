@@ -20,7 +20,7 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     const productId$ = this.router.paramMap.pipe(
       filter(params => params.has('productId')),
-      map(params => params.get(productId$))
+      map(params => params.get('productId'))
     );
     this.variants$ = productId$.pipe(switchMap((productId: string) => this.orderService.getProductVariantsByProductId(productId)));
   }

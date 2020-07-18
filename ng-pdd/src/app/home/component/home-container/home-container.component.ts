@@ -18,7 +18,7 @@ export class HomeContainerComponent implements OnInit {
   constructor(private router: Router, private service: HomeService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this. topMenus$ = this.service.getTabs();
+    this.topMenus$ = this.service.getTabs();
     this.selectedTabLink$ = this.route.firstChild.paramMap
     .pipe(
       filter(params => params.has('tabLink')),
