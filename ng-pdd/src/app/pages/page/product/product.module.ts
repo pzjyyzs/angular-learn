@@ -5,15 +5,19 @@ import { ProductComponent } from './component/product/product.component';
 import { GroupShortListComponent } from './component/group-short-list/group-short-list.component';
 import { GroupItemComponent } from './component/group-item/group-item.component';
 import { ProductVariantDialogComponent } from './component/product-variant-dialog/product-variant-dialog.component';
+import { ConfirOrderComponent } from './component/confir-order/confir-order.component';
+import { PaymentComponent } from './component/payment/payment.component';
 
 
 
 @NgModule({
-  declarations: [ProductComponent, GroupShortListComponent, GroupItemComponent, ProductVariantDialogComponent],
+  // tslint:disable-next-line: max-line-length
+  declarations: [ProductComponent, GroupShortListComponent, GroupItemComponent, ConfirOrderComponent, ProductVariantDialogComponent, PaymentComponent],
   imports: [
     ShareModule,
     ProductRoutingModule
   ],
+  exports: [ConfirOrderComponent],
   entryComponents: [ProductVariantDialogComponent]
 })
 export class ProductModule { }
