@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { load, save } from 'src/utils/localStore';
 
 @Component({
   selector: 'app-root',
@@ -6,11 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   title = 'ng-todo';
   value = '';
-  todoList = [];
+  todoList = load('todoList') || [];
 
   id = 0;
+  constructor() {
+  }
   onAdd($event) {
     this.todoList.push({
       id: this.idMaker(),
@@ -18,16 +22,17 @@ export class AppComponent {
       status: null,
       deleted: false
     });
+    save('todoList', this.todoList);
   }
 
   toggle($event) {
     $event.item.status = $event.item.status === 'completed' ? '' : 'completed';
-    console.log($event.item)
+    save('todoList', this.todoList);
   }
 
   delete($event) {
-    console.log($event)
     $event.item.deleted = true;
+    save('todoList', this.todoList);
   }
 
   private idMaker() {
