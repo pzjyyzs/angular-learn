@@ -10,4 +10,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ng-new';
+  url: string = '';
+  conspan: number = 2;
+  isAbled: boolean = false;
+  customTitle: string = 'title';
+  btnCls = 'btn btnprimary';
+  btnCls2 = ['btn', 'btn-info'];
+  btnCls3: any = { btn: true, 'btn-info': false };
+  styleExpr = 'color: red; border: 1px solid';
+  styleExpr2 = ['color', 'blue', 'border', '1px solid']; // 有问题 不能用
+  styleExpr3 = { color: '#BF3349', backgroundfColor: '#E0FF95'}; // 'background-color' 也可以
 }
