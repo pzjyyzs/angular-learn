@@ -1,0 +1,17 @@
+<div class="transfer-panel border rounded">
+    <div class="head pl-3">
+        <p>
+            <span>12 / </span> 133项
+        </p>
+    </div>
+    <div class="search-box p-2">
+        <input type="text" class="form-control" placeholder="请输入关键字" />
+    </div>
+    <ul class="list mb-0 overflow-auto">
+        <li
+            *ngFor="let item of showList; trackBy: trackByItem"
+            class="list-item text-truncate list-group-item-action">
+            {{ item.value }}
+        </li>
+    </ul>
+</div>

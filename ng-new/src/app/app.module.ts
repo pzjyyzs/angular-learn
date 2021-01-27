@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TransferPanelComponent } from './components/transfer-panel/transfer-panel.component';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -14,7 +15,8 @@ import { AppComponent } from './app.component';
 // bootstrap 根模块中使用 指定整个项目的根组件
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TransferPanelComponent
   ],
   imports: [
     BrowserModule,
