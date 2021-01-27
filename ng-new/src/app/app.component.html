@@ -40,7 +40,7 @@
 <!-- 绑定单个style-->
 
 <div [style.width]="width">单个style</div> <!-- 不带单位是字符串 -->
-<div [style.width.px]="width">单个style</div> <!-- 带单位是数值 -->
+<div [style.width.px]="width2">单个style</div> <!-- 带单位是数值 -->
 
 <!-- 绑定多个style -->
 
@@ -50,4 +50,4 @@
 
 <!-- ngStyle 以后可能 会弃用 不推荐 -->
 
-<app-transfer-panel></app-transfer-panel>
+<app-transfer-panel [list]="list" (changed)="onChanged($event)"></app-transfer-panel>

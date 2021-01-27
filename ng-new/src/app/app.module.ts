@@ -25,4 +25,4 @@ import { TransferPanelComponent } from './components/transfer-panel/transfer-pan
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }  
+export class AppModule { }
