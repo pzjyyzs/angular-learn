@@ -7,6 +7,7 @@ import { TransferPanelComponent } from './components/transfer-panel/transfer-pan
 import { ExampleComponent } from './components/example/example.component';
 import { StructuralComponent } from './components/structural/structural.component';
 import { UnlessDirective } from './directives/unless.directive';
+import { TplContainerComponent } from './components/tpl-container/tpl-container.component';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -22,7 +23,8 @@ import { UnlessDirective } from './directives/unless.directive';
     TransferPanelComponent,
     ExampleComponent,
     StructuralComponent,
-    UnlessDirective
+    UnlessDirective,
+    TplContainerComponent
   ],
   imports: [
     BrowserModule,
