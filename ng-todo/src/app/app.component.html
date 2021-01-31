@@ -1,9 +1,1 @@
-<h1>我的待办</h1>
-<div class="inputwrapper">
-  <app-todo-input [value]="value"  (onAdd)="onAdd($event)"></app-todo-input>
-  <app-todo-item
-  *ngFor="let item of todoList"
-  [item]="item"
-  (toggle)="toggle($event)"
-  (delete)="delete($event)"></app-todo-item>
-</div>
+<app-layout></app-layout>

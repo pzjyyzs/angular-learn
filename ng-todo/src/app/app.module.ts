@@ -9,16 +9,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { AppRoutingModule } from './app-routing.module';
-import { TodoInputComponent } from './pages/todo-input/todo-input.component';
-import { TodoItemComponent } from './pages/todo-item/todo-item.component';
+import { LayoutComponent } from './pages/layout/layout.component';
+import { HerosComponent } from './pages/heros/heros.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodoInputComponent,
-    TodoItemComponent,
+    LayoutComponent,
+    HerosComponent,
   ],
   imports: [
     BrowserModule,

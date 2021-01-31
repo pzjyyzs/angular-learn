@@ -1,5 +1,0 @@
-<div [hidden]="item.deleted">
-  <input type="checkbox" [checked]="item.status === 'completed'" (change)="onToggle($event, item)" />
-  {{item.title}}
-  <button (click)="onDelete($event, item)">删除</button>
-</div>
