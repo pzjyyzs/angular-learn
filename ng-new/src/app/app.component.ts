@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TransferItem } from './components/transfer-panel/types';
+import { TransferItem } from './components/transfer/types';
 
 // selector 普通html选择器 选中app-root的标签
 // templateUrl 组件的模板
