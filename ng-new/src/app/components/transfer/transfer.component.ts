@@ -12,8 +12,8 @@ export class TransferComponent implements OnInit, OnChanges {
 
   @Input() sourceData: TransferItem[];
   @Input() search = false;
-  leftDatas: TransferItem[];
-  rightDatas: TransferItem[];
+  leftDatas: TransferItem[] = [];
+  rightDatas: TransferItem[] = [];
   constructor() { }
 
   ngOnInit(): void {

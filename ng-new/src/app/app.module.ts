@@ -10,6 +10,9 @@ import { UnlessDirective } from './directives/unless.directive';
 import { TplContainerComponent } from './components/tpl-container/tpl-container.component';
 import { LifeCycleComponent } from './components/life-cycle/life-cycle.component';
 import { TransferComponent } from './components/transfer/transfer.component';
+import { LayoutComponent } from './heroes/layout/layout.component';
+import { HerosComponent } from './heroes/heros/heros.component';
+import { FormsModule } from '@angular/forms';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -28,10 +31,13 @@ import { TransferComponent } from './components/transfer/transfer.component';
     UnlessDirective,
     TplContainerComponent,
     LifeCycleComponent,
-    TransferComponent
+    TransferComponent,
+    LayoutComponent,
+    HerosComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule
   ],
   providers: [],
