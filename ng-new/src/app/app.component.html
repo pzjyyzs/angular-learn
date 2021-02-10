@@ -51,10 +51,20 @@
 
 <!-- <app-transfer-panel [list]="list" (changed)="onChanged($event)"></app-transfer-panel> -->
 <!-- <app-transfer [sourceData]="list" [search]="true"></app-transfer> -->
+<!-- <app-exmple></app-exmple> -->
 
 <!-- <app-example></app-example>
 
 <app-tpl-container></app-tpl-container>
 
 <app-life-cycle title="dasdasdasd"></app-life-cycle> -->
-<app-layout></app-layout>
+<!-- <app-layout></app-layout> -->
+
+<div id="app">
+  <h2>Router Study</h2>
+  <nav>
+    <a routerLink="/crisi" routerLinkActive="active-link">crisi</a> /
+    <a routerLink="/heroes" routerLinkActive="active-link">heroes</a>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

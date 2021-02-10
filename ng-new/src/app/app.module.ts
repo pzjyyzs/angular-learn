@@ -14,6 +14,9 @@ import { LayoutComponent } from './heroes/layout/layout.component';
 import { HerosComponent } from './heroes/heros/heros.component';
 import { FormsModule } from '@angular/forms';
 import { ExmpleComponent } from './rxjs/exmple/exmple.component';
+import { HeroListComponent } from './router/hero-list/hero-list.component';
+import { HeroModule } from './router/hero.module';
+import { CrisisCenterModule } from './router/crisis-center/crisis-center.module';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -34,11 +37,13 @@ import { ExmpleComponent } from './rxjs/exmple/exmple.component';
     LifeCycleComponent,
     TransferComponent,
     LayoutComponent,
-    HerosComponent
+    HerosComponent,
     ExmpleComponent,
   ],
   imports: [
     BrowserModule,
+    HeroModule,
+    CrisisCenterModule,
     FormsModule,
     AppRoutingModule
   ],
