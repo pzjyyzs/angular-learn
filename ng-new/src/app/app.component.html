@@ -63,8 +63,10 @@
 <div id="app">
   <h2>Router Study</h2>
   <nav>
-    <a routerLink="/crisi" routerLinkActive="active-link">crisi</a> /
-    <a routerLink="/heroes" routerLinkActive="active-link">heroes</a>
+    <!-- <a routerLink="/crisi" routerLinkActive="active-link">crisi</a> /
+    <a routerLink="/heroes" routerLinkActive="active-link">heroes</a> -->
+    <a (click)="toCrisi()" routerLinkActive="active-link">crisi</a> /
+    <a (click)="toHeroes()" routerLinkActive="active-link">heroes</a>
   </nav>
   <router-outlet></router-outlet>
 </div>

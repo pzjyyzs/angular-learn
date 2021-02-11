@@ -1,7 +1,9 @@
 <div class="hero-list">
-    <h2>英雄列表</h2>
+    <h3>英雄列表</h3>
     <ul class="list-group">
         <li *ngFor="let hero of heroes$ | async" class="list-group-item" [class.active]="selectedId === hero.id"
-            (click)="onSelect(hero.id)">{{ hero.name }}</li>
+            [routerLink]="['/hero',hero.id]">
+            {{hero.name }}
+        </li>
     </ul>
 </div>

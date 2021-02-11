@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { TransferItem } from './components/transfer/types';
 
 // selector 普通html选择器 选中app-root的标签
@@ -20,11 +21,11 @@ export class AppComponent {
   btnCls3: any = { btn: true, 'btn-info': false };
   styleExpr = 'color: red; border: 1px solid';
   styleExpr2 = ['color', 'blue', 'border', '1px solid']; // 有问题 不能用
-  styleExpr3 = { color: '#BF3349', backgroundfColor: '#E0FF95'}; // 'background-color' 也可以
+  styleExpr3 = { color: '#BF3349', backgroundfColor: '#E0FF95' }; // 'background-color' 也可以
   width: string = '1px';
   width2: number = 1;
   list: TransferItem[] = [];
-  constructor() {
+  constructor(private router: Router) {
     this.setList();
   }
 
@@ -42,5 +43,15 @@ export class AppComponent {
 
   onChanged($event) {
     console.log($event);
+  }
+
+  toCrisi() {
+    //this.router.navigateByUrl('/crisi');
+    this.router.navigate(['/crisi']);
+  }
+
+  toHeroes() {
+    //this.router.navigateByUrl('/heroes');
+    this.router.navigate(['/heroes']);
   }
 }
