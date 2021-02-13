@@ -10,8 +10,6 @@ import { UnlessDirective } from './directives/unless.directive';
 import { TplContainerComponent } from './components/tpl-container/tpl-container.component';
 import { LifeCycleComponent } from './components/life-cycle/life-cycle.component';
 import { TransferComponent } from './components/transfer/transfer.component';
-import { LayoutComponent } from './heroes/layout/layout.component';
-import { HerosComponent } from './heroes/heros/heros.component';
 import { FormsModule } from '@angular/forms';
 import { ExmpleComponent } from './rxjs/exmple/exmple.component';
 import { HeroListComponent } from './router/hero-list/hero-list.component';
@@ -19,6 +17,10 @@ import { HeroModule } from './router/hero.module';
 import { CrisisCenterModule } from './router/crisis-center/crisis-center.module';
 import { AdminModule } from './router/admin/admin.module';
 import { AuthModule } from './router/auth/auth.module';
+import { HomeComponent } from './heroes/home/home.component';
+import { HeroesComponent } from './heroes/heroes/heroes.component';
+import { HomeModule } from './heroes/home/home.module';
+import { LoginModule } from './heroes/login/login.module';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -38,8 +40,6 @@ import { AuthModule } from './router/auth/auth.module';
     TplContainerComponent,
     LifeCycleComponent,
     TransferComponent,
-    LayoutComponent,
-    HerosComponent,
     ExmpleComponent,
   ],
   imports: [
@@ -47,7 +47,9 @@ import { AuthModule } from './router/auth/auth.module';
     HeroModule,
     CrisisCenterModule,
     AdminModule,
-    AuthModule,
+    /*AuthModule, */
+    HomeModule,
+    /*   LoginModule, */
     FormsModule,
     AppRoutingModule
   ],
