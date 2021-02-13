@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Hero, HeroArg } from 'src/app/configs/types';
 
 @Component({
-  selector: 'app-heros',
-  templateUrl: './heros.component.html',
-  styleUrls: ['./heros.component.scss']
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.scss']
 })
-export class HerosComponent implements OnInit {
+export class HeroesComponent implements OnInit {
   searchParams: HeroArg = {
     name: '',
     job: '',
