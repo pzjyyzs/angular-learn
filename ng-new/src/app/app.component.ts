@@ -46,12 +46,12 @@ export class AppComponent {
   }
 
   toCrisi() {
-    //this.router.navigateByUrl('/crisi');
+    // this.router.navigateByUrl('/crisi');
     this.router.navigate(['/crisi']);
   }
 
   toHeroes() {
-    //this.router.navigateByUrl('/heroes');
+    // this.router.navigateByUrl('/heroes');
     this.router.navigate(['/heroes']);
   }
 }
