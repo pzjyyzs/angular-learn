@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
       if (data.breadcrumb?.length) {
         this.breadcrumb = data.breadcrumb;
       }
-    })
+    });
   }
 
   ngOnInit(): void {

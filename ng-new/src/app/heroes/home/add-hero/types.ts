@@ -27,3 +27,9 @@ export interface LoginArg {
     name: string;
     password: string;
 }
+
+export interface HeroArg {
+    name: string;
+    job: string;
+    sort: 'desc' | 'asc';
+}

@@ -1,13 +1,13 @@
 <div class="heros">
   <div class="card">
     <div class="card-body">
-      <form>
+      <form (ngSubmit)="search()">
         <div class="form-row">
           <div class="col">
             <input [(ngModel)]="searchParams.name" type="text" name="name" class="form-control" placeholder="姓名" />
           </div>
           <div class="col">
-            <select class="form-control" name="job">
+            <select class="form-control" name="job" [(ngModel)]="searchParams.job">
               <option value="">职业</option>
               <option value="0">法师</option>
               <option value="1">战士</option>
@@ -17,13 +17,14 @@
             </select>
           </div>
           <div class="col">
-            <select name="sort" class="form-control">
+            <select name="sort" class="form-control" [(ngModel)]="searchParams.sort">
               <option value="desc">降序</option>
               <option value="asc">升序</option>
             </select>
           </div>
           <div class="col">
-            <button class="btn btn-primary" (click)="search()">搜索</button>
+            <button class="btn btn-primary">搜索</button>
+            <button clas="btn btn-secondary" type="button" (click)="reset()">重置</button>
           </div>
         </div>
       </form>
