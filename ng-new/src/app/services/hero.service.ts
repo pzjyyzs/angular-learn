@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Base, Hero } from '../heroes/home/add-hero/types';
 import { map } from 'rxjs/operators';
 import { HeroArg } from '../heroes/home/add-hero/types';
 import { stringify } from 'qs';
+import { catchError } from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,18 @@ export class HeroService {
     /* const params = new HttpParams().set('name', args.name); */
     const params = new HttpParams({ fromString: stringify(args)});
     return this.http.get(this.prefix + 'list', { params })
-    .pipe(map((res: Base<Hero[]>) => res.data));
+    .pipe(
+      map((res: Base<Hero[]>) => res.data),
+      catchError(error => this.handlerError(error))
+      );
+  }
+
+  private handlerError(error: HttpErrorResponse): Observable<never> {
+    if (typeof error.error?.code === 'number') {
+      alert(error.error.message);
+    } else {
+      alert('请求失败');
+    }
+    return throwError(error);
   }
 }
