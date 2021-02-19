@@ -15,6 +15,7 @@ export class HeroesComponent implements OnInit {
     sort: 'desc'
   };
   heros: Hero[] = [];
+  showSpin = true;
   constructor(private heroServe: HeroService, private cdr: ChangeDetectorRef) {
   }
 
@@ -27,10 +28,12 @@ export class HeroesComponent implements OnInit {
   }
 
   getList() {
+    this.showSpin = true;
     this.heroServe.heroes(this.searchParams).subscribe(data => {
       console.log('data', data);
       this.heros = data;
       this.cdr.markForCheck();
+      this.showSpin = false;
     });
   }
 
