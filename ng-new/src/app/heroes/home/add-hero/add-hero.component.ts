@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Console } from 'console';
+import { HeroService } from 'src/app/services/hero.service';
 
 @Component({
   selector: 'app-add-hero',
@@ -26,7 +28,7 @@ export class AddHeroComponent implements OnInit {
 
   formValues: FormGroup;
   private submitted = false;
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private heroServe: HeroService) {
     this.formValues = this.fb.group({
       name: ['', [
         Validators.required,
@@ -60,7 +62,8 @@ export class AddHeroComponent implements OnInit {
       job: this.formValues.get('job'),
       role: this.formValues.get('role'),
       brief: this.formValues.get('brief'),
-    }
+    };
+
     return {
       name: {
         control: controls.name,
@@ -102,7 +105,12 @@ export class AddHeroComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.cancel()
+    if (this.formValues.valid) {
+      this.heroServe.addHero(this.formValues.value).subscribe(res => {
+        console.log(res);
+      });
+    }
+    this.cancel();
   }
 
   cancel() {
@@ -111,7 +119,7 @@ export class AddHeroComponent implements OnInit {
 
   canDeactivate() {
     if (this.formValues.dirty && !this.submitted) {
-      return confirm('表单未保存,确定离开？')
+      return confirm('表单未保存,确定离开？');
     }
     return true;
   }

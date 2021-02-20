@@ -26,6 +26,15 @@ export class HeroService {
       );
   }
 
+  addHero(args: HeroArg): Observable<any> {
+    const params = new HttpParams({ fromString: stringify(args)});
+    return this.http.post(this.prefix + 'add', args)
+    .pipe(
+      map((res: Base<any[]>) => res.data),
+      catchError(error => this.handlerError(error))
+    );
+  }
+
   private handlerError(error: HttpErrorResponse): Observable<never> {
     if (typeof error.error?.code === 'number') {
       alert(error.error.message);
