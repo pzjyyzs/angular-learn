@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import {  filter, switchMap } from 'rxjs/operators';
+import { UserService } from './../../services/user.service';
+import { Hero } from './add-hero/types';
 
 @Component({
   selector: 'app-home',
@@ -9,15 +12,28 @@ import { filter, switchMap } from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit {
 
+  currentUser: Hero;
   breadcrumb: string[] = [];
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private userServe: UserService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      switchMap(() => this.route.firstChild.data)
-    ).subscribe(data => {
+      switchMap(() => {
+        return combineLatest(
+          this.route.firstChild.data,
+          this.userServe.user$
+        );
+      })
+    ).subscribe(([data, user]) => {
+      console.log('NavigationEnd');
+      console.log(user);
       if (data.breadcrumb?.length) {
         this.breadcrumb = data.breadcrumb;
       }
+      this.currentUser = user;
     });
   }
 

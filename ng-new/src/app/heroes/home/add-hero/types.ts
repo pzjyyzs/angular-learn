@@ -18,7 +18,7 @@ export interface Hero {
     brief?: string;
 }
 
-interface LoginType {
+export interface LoginType {
     user: Hero;
     token: string;
 }

@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { TransferItem } from './components/transfer/types';
+import { switchMap } from 'rxjs/internal/operators';
+import { UserService } from './services/user.service';
+import { AuthKey } from './configs/contsant';
+import { AccountService } from 'src/app/services/account.service';
+import { EMPTY } from 'rxjs';
 
 // selector 普通html选择器 选中app-root的标签
 // templateUrl 组件的模板
@@ -8,7 +14,8 @@ import { TransferItem } from './components/transfer/types';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'ng-new';
@@ -25,8 +32,21 @@ export class AppComponent {
   width: string = '1px';
   width2: number = 1;
   list: TransferItem[] = [];
-  constructor(private router: Router) {
-    this.setList();
+  constructor(private router: Router, private userServe: UserService, private accountServe: AccountService) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationStart),
+      switchMap(() => this.userServe.user$),
+      switchMap(user => {
+        const authKey = localStorage.getItem(AuthKey);
+        if (!user && authKey) {
+          return this.accountServe.account(authKey);
+        }
+        return EMPTY;
+      })
+    ).subscribe(({ user, token }) => {
+      localStorage.setItem(AuthKey, token);
+      this.userServe.setUser(user);
+    });
   }
 
   private setList() {

@@ -27,7 +27,6 @@ export class HeroService {
   }
 
   addHero(args: HeroArg): Observable<any> {
-    const params = new HttpParams({ fromString: stringify(args)});
     return this.http.post(this.prefix + 'add', args)
     .pipe(
       map((res: Base<any[]>) => res.data),

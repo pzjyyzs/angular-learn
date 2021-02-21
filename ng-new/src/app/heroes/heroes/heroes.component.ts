@@ -30,7 +30,6 @@ export class HeroesComponent implements OnInit {
   getList() {
     this.showSpin = true;
     this.heroServe.heroes(this.searchParams).subscribe(data => {
-      console.log('data', data);
       this.heros = data;
       this.cdr.markForCheck();
       this.showSpin = false;

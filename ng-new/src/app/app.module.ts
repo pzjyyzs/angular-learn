@@ -22,7 +22,6 @@ import { HeroesComponent } from './heroes/heroes/heroes.component';
 import { HomeModule } from './heroes/home/home.module';
 import { LoginModule } from './heroes/login/login.module';
 import { HttpClientModule } from '@angular/common/http';
-import { SpinComponent } from './heroes/spin/spin.component';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -43,7 +42,6 @@ import { SpinComponent } from './heroes/spin/spin.component';
     LifeCycleComponent,
     TransferComponent,
     ExmpleComponent,
-    SpinComponent,
   ],
   imports: [
     BrowserModule,
