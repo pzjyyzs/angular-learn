@@ -17,29 +17,14 @@ export class AccountService {
   login(args: LoginArg): Observable<LoginType> {
     return this.http.post(this.prefix + 'login', { ...args })
     .pipe(
-      map((res: Base<LoginType>) => res.data),
-      catchError(error => this.handlerError(error))
+      map((res: Base<LoginType>) => res.data)
     );
   }
 
   account(auth: string): Observable<LoginType> {
-    return this.http.get(this.prefix + 'account', {
-      headers: new HttpHeaders({
-        [AuthKey]: auth
-      })
-    })
+    return this.http.get(this.prefix + 'account')
     .pipe(
-      map((res: Base<LoginType>) => res.data),
-      catchError(error => this.handlerError(error))
+      map((res: Base<LoginType>) => res.data)
     );
-  }
-
-  private handlerError(error: HttpErrorResponse): Observable<never> {
-    if (typeof error.error?.code === 'number') {
-      alert(error.error.message);
-    } else {
-      alert('请求失败');
-    }
-    return throwError(error);
   }
 }

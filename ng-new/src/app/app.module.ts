@@ -12,16 +12,12 @@ import { LifeCycleComponent } from './components/life-cycle/life-cycle.component
 import { TransferComponent } from './components/transfer/transfer.component';
 import { FormsModule } from '@angular/forms';
 import { ExmpleComponent } from './rxjs/exmple/exmple.component';
-import { HeroListComponent } from './router/hero-list/hero-list.component';
 import { HeroModule } from './router/hero.module';
 import { CrisisCenterModule } from './router/crisis-center/crisis-center.module';
 import { AdminModule } from './router/admin/admin.module';
-import { AuthModule } from './router/auth/auth.module';
-import { HomeComponent } from './heroes/home/home.component';
-import { HeroesComponent } from './heroes/heroes/heroes.component';
 import { HomeModule } from './heroes/home/home.module';
-import { LoginModule } from './heroes/login/login.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, } from '@angular/common/http';
+import interceptors from './services/interceptors/index';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -55,7 +51,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: interceptors,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
