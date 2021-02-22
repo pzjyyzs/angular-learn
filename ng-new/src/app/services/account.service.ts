@@ -21,7 +21,7 @@ export class AccountService {
     );
   }
 
-  account(auth: string): Observable<LoginType> {
+  account(): Observable<LoginType> {
     return this.http.get(this.prefix + 'account')
     .pipe(
       map((res: Base<LoginType>) => res.data)

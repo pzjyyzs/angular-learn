@@ -37,9 +37,8 @@ export class AppComponent {
       filter(event => event instanceof NavigationStart),
       switchMap(() => this.userServe.user$),
       switchMap(user => {
-        const authKey = localStorage.getItem(AuthKey);
-        if (!user && authKey) {
-          return this.accountServe.account(authKey);
+        if (!user) {
+          return this.accountServe.account();
         }
         return EMPTY;
       })

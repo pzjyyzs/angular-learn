@@ -26,6 +26,7 @@ const routes: Routes = [
         loadChildren: () => import('./add-hero/add-hero.module').then(m => m.AddHeroModule),
         data: {
           title: '新增英雄',
+          auths: ['admin'],
           breadcrumb: ['首页', '新增英雄']
         }
       },
@@ -34,6 +35,7 @@ const routes: Routes = [
         loadChildren: () => import('./update-hero/update-hero.module').then(m => m.UpdateHeroModule),
         data: {
           title: '修改英雄',
+          auths: ['admin'],
           breadcrumb: ['首页', '修改英雄']
         }
       },
