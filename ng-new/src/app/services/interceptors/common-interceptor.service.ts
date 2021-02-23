@@ -3,13 +3,14 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { AuthKey } from './../../configs/contsant';
 import { catchError } from 'rxjs/internal/operators';
+import { WindowService } from '../window.service';
 
 @Injectable()
 export class CommonInterceptorService implements HttpInterceptor {
 
-  constructor() { }
+  constructor(private windowServe: WindowService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const auth = localStorage.getItem(AuthKey);
+    const auth = this.windowServe.getStorage(AuthKey);
     let httpConfig = {};
     if (auth) {
       httpConfig = { headers: req.headers.set(AuthKey, auth)};
@@ -22,7 +23,7 @@ export class CommonInterceptorService implements HttpInterceptor {
     if (typeof error.error?.code === 'number') {
       alert(error.error.message);
     } else {
-      alert('请求失败');
+      this.windowServe.alert('请求失败');
     }
     return throwError(error);
   }

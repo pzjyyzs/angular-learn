@@ -12,6 +12,7 @@ import { AuthKey } from './../configs/contsant';
 })
 export class AccountService {
   private prefix = environment.baseUrl + '/hero/';
+  redirectTo = '';
   constructor(private http: HttpClient) { }
 
   login(args: LoginArg): Observable<LoginType> {
