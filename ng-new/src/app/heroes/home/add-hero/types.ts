@@ -33,3 +33,5 @@ export interface HeroArg {
     job: string;
     sort: 'desc' | 'asc';
 }
+
+export type UpdateHeroArg = Omit<Hero, 'id' | 'createTime' | 'genderText' | 'jobText'>;

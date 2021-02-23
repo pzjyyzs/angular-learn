@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, throwError } from 'rxjs';
-import { Base, Hero } from '../heroes/home/add-hero/types';
+import { Base, Hero, UpdateHeroArg } from '../heroes/home/add-hero/types';
 import { map } from 'rxjs/operators';
 import { HeroArg } from '../heroes/home/add-hero/types';
 import { stringify } from 'qs';
@@ -25,10 +25,10 @@ export class HeroService {
       );
   }
 
-  addHero(args: HeroArg): Observable<any> {
+  addHero(args: UpdateHeroArg): Observable<Base<void>> {
     return this.http.post(this.prefix + 'add', args)
     .pipe(
-      map((res: Base<any[]>) => res.data)
+      map((res: Base<void>) => res)
     );
   }
 
