@@ -31,7 +31,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'update-hero',
+        path: 'update-hero/:id',
         loadChildren: () => import('./update-hero/update-hero.module').then(m => m.UpdateHeroModule),
         data: {
           title: '修改英雄',

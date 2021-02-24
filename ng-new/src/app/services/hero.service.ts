@@ -32,4 +32,17 @@ export class HeroService {
     );
   }
 
+  hero(id: string): Observable<Hero> {
+    return this.http.get(this.prefix + 'detail/' + id)
+    .pipe(
+      map((res: Base<Hero>) => res.data)
+    );
+  }
+
+  updateHero(id: string, args: UpdateHeroArg): Observable<Base<void>> {
+    return this.http.post(this.prefix + 'modify/' + id, args)
+    .pipe(
+      map((res: Base<void>) => res)
+    );
+  }
 }
