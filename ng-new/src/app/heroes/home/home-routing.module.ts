@@ -40,6 +40,14 @@ const routes: Routes = [
         }
       },
       {
+        path: 'user-center',
+        loadChildren: () => import('./user-center/user-center.module').then(m => m.UserCenterModule),
+        data: {
+          title: '个人中心',
+          breadcrumb: ['个人中心']
+        }
+      },
+      {
         path: '',
         redirectTo: 'heroes',
         pathMatch: 'full'
