@@ -18,6 +18,7 @@ import { AdminModule } from './router/admin/admin.module';
 import { HomeModule } from './heroes/home/home.module';
 import { HttpClientModule, } from '@angular/common/http';
 import interceptors from './services/interceptors/index';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // 这是一个类 被@NgModule这个装饰器给装饰 就称为angular module
 // 这个装饰器 接受一个对象作为参数  这个对象在angular中 被称为元数据
 // 其中的四个属性是用得最多的
@@ -41,6 +42,7 @@ import interceptors from './services/interceptors/index';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     HeroModule,
     CrisisCenterModule,
