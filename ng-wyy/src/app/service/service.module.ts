@@ -13,7 +13,7 @@ export const WINDOW =  new InjectionToken('WindowToken');
      // /api/
     // { provide: API_CONFIG, useValue: 'http://localhost:3000/' },
     { provide: API_CONFIG, useValue: environment.production ? '/' : '/api/' },
-    httpInterceptorProvides
+    /* httpInterceptorProvides */
   ]
 })
 export class ServiceModule { }

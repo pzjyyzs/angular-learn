@@ -6,7 +6,8 @@ import { Directive, HostListener } from '@angular/core';
 export class ImgDefaultDirective {
 
   constructor() { }
-  @HostListener('mousedown', ['$event']) onMouseDown(event) {
+  @HostListener('mousedown', ['$event'])
+  onMouseDown(event) {
     event.preventDefault();
   }
 }

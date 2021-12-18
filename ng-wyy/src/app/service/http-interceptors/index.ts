@@ -3,4 +3,4 @@ import { CommonInterceptor } from './common-interceptor';
 
 export const httpInterceptorProvides = [
   { provide: HTTP_INTERCEPTORS, useClass: CommonInterceptor, mulit: true}
-]
+];

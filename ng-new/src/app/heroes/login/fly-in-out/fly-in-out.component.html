@@ -1,9 +1,0 @@
-<div class="fly-in-out container">
-    <button class="btn btn-primary" (click)="add()">
-        add
-    </button>
-    <ul class="list-group">
-        <li [@flyInOut]="'in'" class="list-group-item" *ngFor="let item of heroes"
-        (click)="remove(item.id)">{{ item.name }}</li>
-    </ul>
-</div>

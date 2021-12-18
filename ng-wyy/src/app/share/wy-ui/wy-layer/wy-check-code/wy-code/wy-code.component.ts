@@ -1,4 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, forwardRef, ViewChild, ElementRef, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  forwardRef, ViewChild, ElementRef, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/internal/operators';
@@ -34,7 +37,7 @@ export class WyCodeComponent implements OnInit, ControlValueAccessor, AfterViewI
   ngAfterViewInit(): void {
     this.inputEl = this.codeWrap.nativeElement.getElementsByClassName('item') as HTMLElement[];
     this.inputEl[0].focus();
-    for (let a = 0;a < this.inputEl.length; a++) {
+    for (let a = 0; a < this.inputEl.length; a++) {
       const item = this.inputEl[a];
       fromEvent(item, 'keyup').pipe(takeUntil(this.destory$)).subscribe((event: KeyboardEvent) => this.listenKeyUp(event));
       fromEvent(item, 'click').pipe(takeUntil(this.destory$)).subscribe(() => this.currentFocusIndex = a);
@@ -42,7 +45,7 @@ export class WyCodeComponent implements OnInit, ControlValueAccessor, AfterViewI
   }
 
   private listenKeyUp(event: KeyboardEvent) {
-    const target = <HTMLInputElement>event.target;
+    const target = event.target as HTMLInputElement;
     const value = target.value;
     const isBackSpack = event.keyCode === BACKSPACE;
     if (/\D/.test(value)) {
@@ -82,7 +85,7 @@ export class WyCodeComponent implements OnInit, ControlValueAccessor, AfterViewI
     this.onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   ngOnInit() {

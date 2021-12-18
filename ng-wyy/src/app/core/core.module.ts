@@ -29,7 +29,7 @@ registerLocaleData(zh);
     ShareModule,
     AppRoutingModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [/* { provide: NZ_I18N, useValue: zh_CN } */],
 })
 export class CoreModule {
   constructor(@SkipSelf() @Optional() parentModule: CoreModule) {
