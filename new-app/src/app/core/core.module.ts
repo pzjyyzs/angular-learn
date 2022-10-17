@@ -23,7 +23,8 @@ registerLocaleData(en);
     AppRoutingModule,
   ],
   exports: [
-    ShareModule
+    ShareModule,
+    AppRoutingModule
   ]
 })
 export class CoreModule {
