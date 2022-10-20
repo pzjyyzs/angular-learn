@@ -1,4 +1,5 @@
 var express = require("express");
+const fs = require('fs');
 var app = express();
 
 const cors = require('cors');
@@ -28,6 +29,25 @@ app.get('/test', function(req, res) {
 });
 
 app.get('/get', function(req, res){
+    var query = req.query;
+    var selected = data.heroes.find(item => item.id == query.id);
+    res.json(selected);
+});
+
+app.post('/update', function(req, res){
+    var hero = req.body;
+    var selected = data.heroes.find(item => item.id == hero.id);
+    selected.name = hero.name;
+    res.json('success');
+});
+
+app.post('/add', function(req, res){
+    newHero = req.body;
+    data.heroes.push(newHero);
+    res.json(req.body);
+});
+
+app.delete('/delete', function(req, res){
     var query = req.query;
     var selected = data.heroes.find(item => item.id == query.id);
     res.json(selected);
