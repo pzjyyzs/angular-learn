@@ -53,6 +53,12 @@ app.delete('/delete', function(req, res){
     res.json(selected);
 });
 
+app.get('/search', function(req, res){
+    var query = req.query;
+    var selected = data.heroes.filter(item => item.name.includes(query.name));
+    res.json(selected);
+});
+
 var server = app.listen(3000, function() {
     var host = server.address().address;
     var port = server.address().port;
