@@ -26,10 +26,13 @@
 
 [nz-menu] {
   line-height: 70px;
+  border-bottom: none;
+  & > li {
+    border-bottom: none;
+  }
 }
 
 nz-content {
-  padding: 0 50px;
 }
 
 nz-footer {
