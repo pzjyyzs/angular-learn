@@ -1,1 +1,18 @@
-<app-wy-carousel></app-wy-carousel>
+<div>
+  <div class="wrap">
+    <div class="ban f-pr">
+      <app-wy-carousel nzAutoPlay>
+        <div appWyCarouselContent *ngFor="let index of array">
+          <h3>{{ index }}</h3>
+        </div>
+      </app-wy-carousel>
+
+      <a href="javascript:void(0)" class="btnl click-flag f-alpha">
+        <span nz-icon nzType="left" nzTheme="outline"></span>
+      </a>
+      <a href="javascript:void(0)" class="btnr click-flag f-alpha">
+        <span nz-icon nzType="right" nzTheme="outline"></span>
+      </a>
+    </div>
+  </div>
+</div>
