@@ -5,9 +5,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShareModule } from '../share/share.module';
-import { ServicesModule } from '../services/services.module';
 import { PagesModule } from '../pages/pages.module';
 import en from '@angular/common/locales/en';
+import { ServicesModule } from '../services/services.module';
 
 registerLocaleData(en);
 

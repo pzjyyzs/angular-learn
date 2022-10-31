@@ -9,6 +9,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WithConfig } from 'ng-zorro-antd/core/config';
+import { HomeService } from 'src/app/services/home.service';
 
 @Component({
   selector: 'app-wy-carousel',
@@ -40,6 +41,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
 
   constructor(
     elementRef: ElementRef,
+    private homeService: HomeService,
     private readonly renderer: Renderer2,
     public readonly ngZone: NgZone,
     private readonly platform: Platform,
@@ -48,23 +50,26 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   ) {
     this.renderer.addClass(elementRef.nativeElement, 'app-wy-carousel');
     this.el = elementRef.nativeElement;
+    this.homeService.getBanners().subscribe(data => {
+      console.log('123', data);
+
+    });
   }
 
   ngOnInit(): void {
     // this.slickListEl = this.slickList.nativeElement;
     this.slickTrackEl = this.slickTrack.nativeElement;
 
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    /* this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       // this.dir = direction;
       this.markContentActive(this.activeIndex);
       this.cdr.detectChanges();
-    });
+    }); */
 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzEffect, nzDotPosition } = changes;
-    console.log('ngChange', nzEffect);
     this.scheduleNextTransition();
   }
 
