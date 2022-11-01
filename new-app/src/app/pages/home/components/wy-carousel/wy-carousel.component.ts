@@ -41,7 +41,6 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
 
   constructor(
     elementRef: ElementRef,
-    private homeService: HomeService,
     private readonly renderer: Renderer2,
     public readonly ngZone: NgZone,
     private readonly platform: Platform,
@@ -50,10 +49,6 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   ) {
     this.renderer.addClass(elementRef.nativeElement, 'app-wy-carousel');
     this.el = elementRef.nativeElement;
-    this.homeService.getBanners().subscribe(data => {
-      console.log('123', data);
-
-    });
   }
 
   ngOnInit(): void {

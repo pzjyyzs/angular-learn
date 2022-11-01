@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Banner } from './data-types';
 import { API_CONFIG, ServicesModule } from './services.module';
 
 @Injectable({
@@ -11,9 +12,8 @@ export class HomeService {
 
   constructor(private http: HttpClient, @Inject(API_CONFIG) private url: string) { }
 
-  getBanners(): Observable<any> {
-    console.log(this.url + 'banner');
+  getBanners(): Observable<Banner[]> {
     return this.http.get(this.url + 'banner')
-      .pipe(map((res: any) => res));
+      .pipe(map((res: { banners: Banner[]  }) => res.banners));
   }
 }
