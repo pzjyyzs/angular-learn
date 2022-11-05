@@ -1,5 +1,5 @@
 import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, ContentChildren, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnInit,
+  Component, ContentChildren, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit,
   Optional,
   Output, QueryList, Renderer2, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CarouselStrategy } from './strategy/carouselStrategy';
@@ -18,7 +18,7 @@ import { HomeService } from 'src/app/services/home.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnChanges, OnInit {
+export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnChanges, OnInit, OnDestroy {
 
   activeIndex = 0;
   el: HTMLElement;
@@ -52,14 +52,14 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   }
 
   ngOnInit(): void {
-    // this.slickListEl = this.slickList.nativeElement;
+    this.slickListEl = this.slickList.nativeElement;
     this.slickTrackEl = this.slickTrack.nativeElement;
 
-    /* this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // this.dir = direction;
       this.markContentActive(this.activeIndex);
       this.cdr.detectChanges();
-    }); */
+    });
 
   }
 
@@ -84,6 +84,16 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     this.layout();
   }
 
+  ngOnDestroy(): void {
+    this.clearScheduledTransition();
+    if (this.strategy) {
+      this.strategy.dispose();
+    }
+
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private markContentActive(index: number): void {
     this.activeIndex = index;
 
@@ -93,7 +103,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
       });
     }
 
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   private switchStrategy(): void{
@@ -116,7 +126,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   }
 
   goTo(index: number): void {
-    if (this.carouselContents && this.carouselContents.length && !this.isTransiting) {
+    if (this.carouselContents && this.carouselContents.length) {
       const length = this.carouselContents.length;
       const from = this.activeIndex;
       const to = (index + length) % length;
@@ -136,6 +146,18 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     if (this.strategy) {
       this.strategy.withCarouselContents(this.carouselContents);
     }
+  }
+
+  onLiClick(i: number): void {
+    this.goTo(i);
+  }
+
+  next(): void {
+    this.goTo(this.activeIndex + 1);
+  }
+
+  pre(): void {
+    this.goTo(this.activeIndex - 1);
   }
 }
 

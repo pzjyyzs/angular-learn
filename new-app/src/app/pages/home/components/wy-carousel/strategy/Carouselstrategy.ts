@@ -25,7 +25,6 @@ export class CarouselStrategy< T = any > {
     protected options?: T
   ){
     this.carouselComponent = carouselComponent;
-    console.log(carouselComponent);
   }
 
   withCarouselContents(contents: QueryList<WyCarouselContentDirective> | null): void {
@@ -59,10 +58,10 @@ export class CarouselStrategy< T = any > {
       this.renderer.setStyle(content.el, 'opacity', t === i ? '1' : '0');
     });
 
-    setTimeout(() => {
-      complete$.next();
-      complete$.complete();
-    }, 2000);
+    // setTimeout(() => {
+    complete$.next();
+    complete$.complete();
+    // }, 10);
 
     return complete$;
   }
@@ -72,4 +71,7 @@ export class CarouselStrategy< T = any > {
     return { from: (f + length) % length, to: (t + length) % length };
   }
 
+  dispose(): void {
+    this.renderer.setStyle(this.slickTrackEl, 'transform', null);
+  }
 }

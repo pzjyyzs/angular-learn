@@ -1,7 +1,7 @@
 <div class="wrap-bg" [style.backgroundImage]='indexColor'>
   <div class="wrap">
     <div class="ban f-pr">
-      <app-wy-carousel nzAutoPlay (nzBeforeChange)="beforeChange($event)">
+      <app-wy-carousel #carousel nzAutoPlay (nzBeforeChange)="beforeChange($event)">
         <div appWyCarouselContent *ngFor="let img of banner">
           <img [src]="img.imageUrl" [title]="img.typeTitle" />
           <div class="download">
@@ -11,10 +11,10 @@
         </div>
       </app-wy-carousel>
 
-      <a href="javascript:void(0)" class="btnl click-flag f-alpha">
+      <a href="javascript:void(0)" class="btnl click-flag f-alpha" (click)="changeImage('prev')">
         <span nz-icon nzType="left" nzTheme="outline"></span>
       </a>
-      <a href="javascript:void(0)" class="btnr click-flag f-alpha">
+      <a href="javascript:void(0)" class="btnr click-flag f-alpha" (click)="changeImage('next')">
         <span nz-icon nzType="right" nzTheme="outline"></span>
       </a>
     </div>

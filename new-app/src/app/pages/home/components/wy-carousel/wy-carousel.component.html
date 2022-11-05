@@ -1,11 +1,17 @@
 <div class="slick-initialized slick-slider">
-  <div class="slick-list">
+  <div class="slick-list" #slickList>
     <div class="slick-track" #slickTrack>
       <ng-content></ng-content>
     </div>
   </div>
 
   <ul class="slick-dots">
-    <li></li>
+    <li
+      *ngFor="let content of carouselContents;let i = index"
+      [class.slick-active]="i === activeIndex"
+      (click)="onLiClick(i)"
+    >
+      <button>{{i}}</button>
+    </li>
   </ul>
 </div>

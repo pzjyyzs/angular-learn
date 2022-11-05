@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Banner } from 'src/app/services/data-types';
 import { HomeService } from 'src/app/services/home.service';
+import { WyCarouselComponent } from '../components/wy-carousel/wy-carousel.component';
 
 @Component({
   selector: 'app-recommend',
@@ -9,8 +10,9 @@ import { HomeService } from 'src/app/services/home.service';
 })
 export class RecommendComponent implements OnInit {
   banner: Banner[];
-
   _indexColor: string;
+
+  @ViewChild('carousel') carousel: WyCarouselComponent;
 
   get indexColor(): string {
     return this._indexColor;
@@ -35,8 +37,15 @@ export class RecommendComponent implements OnInit {
   }
 
   beforeChange(item: {from: number, to: number}): void {
-    if (item.to) {
-      this.indexColor = this.banner[item.to].imageUrl;
+    this.indexColor = this.banner[item.to].imageUrl;
+  }
+
+  changeImage(value: string): void {
+    console.log('123', value);
+    if (value === 'prev') {
+      this.carousel.pre();
+    } else {
+      this.carousel.next();
     }
   }
 }
