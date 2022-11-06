@@ -58,10 +58,10 @@ export class CarouselStrategy< T = any > {
       this.renderer.setStyle(content.el, 'opacity', t === i ? '1' : '0');
     });
 
-    // setTimeout(() => {
-    complete$.next();
-    complete$.complete();
-    // }, 10);
+    setTimeout(() => {
+      complete$.next();
+      complete$.complete();
+    }, 10);
 
     return complete$;
   }
