@@ -41,7 +41,6 @@ export class RecommendComponent implements OnInit {
   }
 
   changeImage(value: string): void {
-    console.log('123', value);
     if (value === 'prev') {
       this.carousel.pre();
     } else {
