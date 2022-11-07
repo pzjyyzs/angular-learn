@@ -43,6 +43,11 @@
               <a href="" class="s-fc3">更多</a>
             </span>
           </div>
+          <ul class="m-cvrlst f-cb">
+            <li *ngFor="let song of songSheet">
+              <app-sing-sheet [song]="song"></app-sing-sheet>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
