@@ -2,6 +2,8 @@
   <div class="u-cover u-cover-1">
     <img [src]="song.picUrl" alt="" />
     <div class="bottom">
+      <i nz-icon nzType="play-circle" nzTheme="outline" class="play"></i>
+      <i nz-icon nzType="eye" nzTheme="outline" class="music"></i>
       <span class="nb">{{ song.playCount | playCount }}</span>
     </div>
   </div>

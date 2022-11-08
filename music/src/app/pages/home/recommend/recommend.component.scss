@@ -96,8 +96,8 @@
     .v-hd2 {
       height: 33px;
       padding: 0 10px 0 34px;
-      background-position: -225px -156px;
       border-bottom: 2px solid #C10D0C;
+      background-position: -225px -156px;
       .tit {
         float: left;
         font-size: 20px;
@@ -118,6 +118,14 @@
       .more {
         float: right;
         margin-top: 9px;
+        .s-bg {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          margin-left: 4px;
+          vertical-align: middle;
+          background-position: 0 -240px;
+        }
       }
     }
   }

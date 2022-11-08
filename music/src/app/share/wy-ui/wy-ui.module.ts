@@ -4,6 +4,7 @@ import { SingSheetComponent } from './sing-sheet/sing-sheet.component';
 import { WyCarouselComponent } from './wy-carousel/wy-carousel.component';
 import { WyCarouselContentDirective } from './wy-carousel/wy-carousel-content.directive';
 import { PlayCountPipe } from '../pipes/play-count.pipe';
+import { NgZorroAntdModule } from 'src/app/ng-zorro-antd/ng-zorro-antd.module';
 
 
 
@@ -16,6 +17,7 @@ import { PlayCountPipe } from '../pipes/play-count.pipe';
   ],
   imports: [
     CommonModule,
+    NgZorroAntdModule,
   ],
   exports: [
     SingSheetComponent,
