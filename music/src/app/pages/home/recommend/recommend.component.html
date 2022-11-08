@@ -1,0 +1,56 @@
+<div class="wrap-bg" [style.backgroundImage]='indexColor'>
+  <div class="wrap">
+    <div class="ban f-pr">
+      <app-wy-carousel #carousel [nzAutoPlay]="true" (nzBeforeChange)="beforeChange($event)">
+        <div appWyCarouselContent *ngFor="let img of banner">
+          <img [src]="img.imageUrl" [title]="img.typeTitle" />
+          <div class="download">
+            <a class="btn">下载客户端</a>
+            <p>PC 安卓 iPhone WP iPad Mac 六大客户端</p>
+          </div>
+        </div>
+      </app-wy-carousel>
+
+      <a href="javascript:void(0)" class="btnl click-flag f-alpha" (click)="changeImage('prev')">
+        <span nz-icon nzType="left" nzTheme="outline"></span>
+      </a>
+      <a href="javascript:void(0)" class="btnr click-flag f-alpha" (click)="changeImage('next')">
+        <span nz-icon nzType="right" nzTheme="outline"></span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="discover-module" class="g-bd1">
+  <div class="g-mn1">
+    <div class="g-mn1c">
+      <div class="g-wrap3">
+        <div class="n-rcmd">
+          <div class="v-hd2">
+            <a href="" class="tit f-tdn">热门推荐</a>
+            <div class="tab">
+              <a href="" class="s-fc3">华语</a>
+              <span class="line">|</span>
+              <a href="" class="s-fc3">流行</a>
+              <span class="line">|</span>
+              <a href="" class="s-fc3">摇滚</a>
+              <span class="line">|</span>
+              <a href="" class="s-fc3">民谣</a>
+              <span class="line">|</span>
+              <a href="" class="s-fc3">电子</a>
+            </div>
+            <span class="more">
+              <a href="" class="s-fc3">更多</a>
+            </span>
+          </div>
+          <ul class="m-cvrlst f-cb">
+            <li *ngFor="let song of songSheet">
+              <app-sing-sheet [song]="song"></app-sing-sheet>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="g-sd1"></div>
+</div>
