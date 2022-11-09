@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div id="discover-module" class="g-bd1">
+<div id="discover-module" class="g-bd1 f-cb">
   <div class="g-mn1">
     <div class="g-mn1c">
       <div class="g-wrap3">
@@ -59,7 +59,40 @@
             </span>
           </div>
           <div class="n-disk">
+            <div class="inner">
+              <a href="javascript:void(0)" class="click-flag pre s-bg s-bg-7 f-tdn">
+              </a>
+              <div class="roll f-pr">
+                <app-wy-carousel #carousel [nzAutoPlay]="false">
+                  <ul appWyCarouselContent class="f-cb roller-flag" *ngFor="let album of albums">
+                    <li *ngFor="let item of album">
+                      <div class="u-cover u-cover-albl">
+                        <img [src]="item.picUrl" alt="">
+                        <a href="" class="msk"></a>
+                      </div>
+                      <p class="f-thide">
+                        <a href="">{{ item.name }}</a>
+                      </p>
+                      <p class="tit f-thide">
+                        <a href="" class="s-fc3">{{ item.artist.name }}</a>
+                      </p>
+                    </li>
+                  </ul>
+                </app-wy-carousel>
 
+              </div>
+              <a href="javascript:void(0)" class="click-flag nxt s-bg s-bg-8 f-tdn">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="n-bill">
+          <div class="v-hd2">
+            <a href="" class="tit f-tdn">榜单</a>
+            <span class="more">
+              <a href="" class="s-fc3">更多</a>
+              <i class="s-bg"></i>
+            </span>
           </div>
         </div>
       </div>

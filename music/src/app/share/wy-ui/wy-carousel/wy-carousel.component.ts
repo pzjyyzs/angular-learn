@@ -35,7 +35,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   @ViewChild('slickList', { static: true }) slickList!: ElementRef<HTMLElement>;
   @ViewChild('slickTrack', { static: true }) slickTrack!: ElementRef<HTMLElement>;
 
-  @Input() @WithConfig() nzAutoPlay = true;
+  @Input() nzAutoPlay = false;
   @Output() readonly nzBeforeChange = new EventEmitter<any>();
   @Output() readonly nzAfterChange = new EventEmitter<number>();
 
@@ -65,7 +65,11 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzEffect, nzDotPosition } = changes;
-    this.scheduleNextTransition();
+    if (!this.nzAutoPlay) {
+      this.clearScheduledTransition();
+    } else {
+      this.scheduleNextTransition();
+    }
   }
 
   ngAfterContentInit(): void {

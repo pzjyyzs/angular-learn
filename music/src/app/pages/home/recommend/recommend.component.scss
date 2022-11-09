@@ -156,3 +156,65 @@
   height: 204px;
   padding-left: 42px;
 }
+
+.n-disk {
+  position: relative;
+  zoom: 1;
+  height: 186px;
+  margin: 20px 0 37px;
+  border: 1px solid #d3d3d3;
+
+  .inner {
+    height: 184px;
+    padding-left: 16px;
+    background: #f5f5f5;
+    border: 1px solid #fff;
+  }
+
+  .roll {
+    float: left;
+    width: 645px;
+    height: 180px;
+    overflow: hidden;
+  }
+
+  ul {
+    position: absolute;
+    top: 0;
+    width: 645px;
+    margin: 28px 0 0 0;
+  }
+
+  li {
+    float: left;
+    display: inline;
+    width: 118px;
+    height: 150px;
+    margin-left: 11px;
+    background-position: -260px 100px;
+  }
+
+  .u-cover {
+    margin-bottom: 7px;
+  }
+
+  p {
+    width: 90%;
+    line-height: 18px;
+  }
+
+  .pre {
+    position: absolute;
+    top: 71px;
+    left: 4px;
+    width: 17px;
+    height: 17px;
+  }
+
+  .nxt {
+    position: absolute;
+    top: 71px;
+    width: 17px;
+    height: 17px;
+  }
+}

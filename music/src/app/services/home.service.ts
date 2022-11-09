@@ -13,12 +13,18 @@ export class HomeService {
   constructor(private http: HttpClient, @Inject(API_CONFIG) private url: string) { }
 
   getBanners(): Observable<any> {
-    return this.http.get<{ banners: Banner[]}>(this.url + 'banner')
+    return this.http.get<{ banners: Banner[]}>(this.url + '/banner')
       .pipe(map((res: { banners: Banner[]}) => res.banners));
   }
 
   getTopPlaylist(): Observable<SongSheet[]> {
-    return this.http.get<{ result: SongSheet[]}>(this.url + '/personalized?limit=8').
-      pipe(map((res: { result: SongSheet[]}) =>  res.result));
+    return this.http.get<{ result: SongSheet[]}>(this.url + '/personalized?limit=8')
+      .pipe(map((res: { result: SongSheet[]}) =>  res.result));
   }
-}
+
+  getTopAlbum(): Observable<any> {
+    return this.http.get(this.url + '/album/newest')
+      .pipe(map(res => res));
+  }
+
+ }
