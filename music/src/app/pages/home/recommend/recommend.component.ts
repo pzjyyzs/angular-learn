@@ -6,6 +6,18 @@ import { HomeService } from 'src/app/services/home.service';
 import { WyCarouselComponent } from '../../../share/wy-ui/wy-carousel/wy-carousel.component';
 import { SongService } from 'src/app/services/song.service';
 
+type tracks = {
+  name: string;
+}
+type Playlist  = {
+  coverImgUrl: string,
+  name: string,
+  tracks: tracks[]
+}
+
+type Toplist =  {
+  playlist: Playlist
+}
 @Component({
   selector: 'app-recommend',
   templateUrl: './recommend.component.html',
@@ -15,7 +27,11 @@ export class RecommendComponent implements OnInit {
   banner: Banner[] = [];
   songSheet: SongSheet[] = [];
   albums?: any[] = []
+  toplist?: Toplist;
+  newList?: Toplist;
+  hotList?: Toplist;
   _indexColor: string = "";
+  isHoving: number = -1;
 
   @ViewChild('carousel') carousel!: WyCarouselComponent;
 
@@ -31,8 +47,8 @@ export class RecommendComponent implements OnInit {
     private homeService: HomeService,
     private songService: SongService,
   ) {
-    combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(),
-        this.homeService.getTopAlbum()])
+    combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(),this.homeService.getTopAlbum(),
+      this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678)])
       .subscribe(data => {
         console.log('123', data)
         this.banner = data[0];
@@ -43,6 +59,9 @@ export class RecommendComponent implements OnInit {
         this.songSheet = data[1];
         this.albums = this.sliceAlbums(data[2]?.albums);
 
+        this.toplist = data[3];
+        this.newList = data[4];
+        this.hotList = data[5];
     })
   }
 
@@ -68,5 +87,13 @@ export class RecommendComponent implements OnInit {
       total.push(arr.splice(0, 5));
     }
     return total;
+  }
+
+  addClass(index: number): void {
+    this.isHoving = index;
+  }
+
+  removeClass(): void {
+    this.isHoving = -1;
   }
 }
