@@ -219,5 +219,47 @@
         <a href="#" class="btn s-bg s-bg-2 f-tdn">用户登录</a>
       </div>
     </div>
+    <div class="n-singer">
+      <h3 class="v-hd3">
+        <span class="f-fl">入驻歌手</span>
+        <a href="" class="more s-fc3">查看全部</a>
+      </h3>
+      <ul class="n-enter f-cb">
+        <li *ngFor="let song of singerList | slice:0:6;">
+          <a href="" class="itm f-tdn">
+            <div class="head">
+              <img [src]="song.picUrl" alt="">
+            </div>
+            <div class="ifo">
+              <h4>
+                <span class="nm f-fs1 f-ib f-thide">{{ song.name }}</span>
+              </h4>
+              <p class="f-thide s-fc3">专辑: {{ song.albumSize }}</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <div>
+        <a href="" class="u-btn2 u-btn2-1">
+          <i>申请成为网易音乐人</i>
+        </a>
+      </div>
+    </div>
+    <div class="n-dj n-dj-1">
+      <h3 class="v-hd3">热门主播</h3>
+      <ul class="n-hotdj f-cb">
+        <li *ngFor="let dj of djList">
+          <a href="" class="cver">
+            <img [src]="dj.avatarUrl" alt="">
+          </a>
+          <div class="info">
+            <p>
+              <a href="" class="nm-icn f-thide s-fc0">{{ dj.nickName }}</a>
+            </p>
+            <p class="f-thide s-fc3"></p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

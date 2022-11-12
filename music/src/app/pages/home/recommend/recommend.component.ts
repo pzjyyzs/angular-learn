@@ -1,4 +1,4 @@
-import { SongSheet } from './../../../services/data-types';
+import { Singer, SongSheet, Dj } from './../../../services/data-types';
 import { combineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Banner } from 'src/app/services/data-types';
@@ -32,6 +32,8 @@ export class RecommendComponent implements OnInit {
   hotList?: Toplist;
   _indexColor: string = "";
   isHoving: number = -1;
+  singerList: Singer[];
+  djList: Dj[];
 
   @ViewChild('carousel') carousel!: WyCarouselComponent;
 
@@ -48,7 +50,9 @@ export class RecommendComponent implements OnInit {
     private songService: SongService,
   ) {
     combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(),this.homeService.getTopAlbum(),
-      this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678)])
+      this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678),
+      this.songService.getIndexSongList(), this.songService.getTopListDj(),
+    ])
       .subscribe(data => {
         console.log('123', data)
         this.banner = data[0];
@@ -62,6 +66,8 @@ export class RecommendComponent implements OnInit {
         this.toplist = data[3];
         this.newList = data[4];
         this.hotList = data[5];
+        this.singerList = data[6];
+        this.djList = data[7];
     })
   }
 
