@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { RecommendComponent } from './recommend/recommend.component';
+import { SheetInfoComponent } from './sheet-info/sheet-info.component';
 
 const routes: Routes = [
   {
@@ -10,6 +10,7 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: 'recommend', component: RecommendComponent },
+      { path: 'sheetinfo/:id', component: SheetInfoComponent },
     ]
   },
 ];

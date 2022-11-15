@@ -46,7 +46,9 @@
           </div>
           <ul class="m-cvrlst f-cb">
             <li *ngFor="let song of songSheet">
-              <app-sing-sheet [song]="song"></app-sing-sheet>
+              <a [routerLink]="['../sheetinfo', song.id]" >
+                <app-sing-sheet [song]="song"></app-sing-sheet>
+              </a>
             </li>
           </ul>
         </div>
