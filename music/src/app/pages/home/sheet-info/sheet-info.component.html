@@ -20,8 +20,57 @@
 
               <div class="user f-cb">
                 <a href="" class="face">
-                  <img src="" alt="">
+                  <img [src]="user?.profile.avatarUrl" alt="">
                 </a>
+                <span class="name">
+                  <a href="" class="s-fc7">{{ user?.profile.nickname }}</a>
+                </span>
+                <img *ngIf="user?.identify"  style="height:13px;width:13px;display:inline-block;vertical-align:middle;" [src]="user?.identify.imageUrl" alt="">
+                <span class="time s-fc4">{{ playList.createTime | date: 'yyyy-MM-dd' }} 创建</span>
+              </div>
+
+              <div class="btns f-cb">
+                <a href="" class="u-btn2 u-btn2-2 u-btni-addply f-fl">
+                  <i>
+                    <em class="ply"></em>
+                    播放
+                  </i>
+                </a>
+                <a href="" class="u-btni u-btni-add"></a>
+                <a class="u-btni u-btni-fav">
+                  <i>{{ playList.subscribedCount }}</i>
+                </a>
+                <a class="u-btni u-btni-share ">
+                  <i>{{ playList.shareCount }}</i>
+                </a>
+                <a class="u-btni u-btni-dl">
+                  <i>下载</i>
+                </a>
+                <a class="u-btni u-btni-cmmt">
+                  <i>
+                    <span>{{ playList.commentCount }}</span>
+                  </i>
+                </a>
+              </div>
+
+              <div class="tags f-cb">
+                <b>标签： </b>
+                <a class="u-tag" *ngFor="let tag of playList.tags">
+                  <i>{{ tag }}</i>
+                </a>
+              </div>
+
+              <div class="intr f-brk" [class.f-hide]="controlDesc.isExpand">
+                <p [innerHTML]="description.short"></p>
+              </div>
+
+              <div class="intr f-brk" [class.f-hide]="!controlDesc.isExpand">
+                <p [innerHTML]="description.long"></p>
+              </div>
+
+              <div class="expand" (click)="toggleDesc()" *ngIf="description.long">
+                <span>{{controlDesc.label}}</span>
+                <i nz-icon [nzType]="controlDesc.iconCls" nzTheme="outline"></i>
               </div>
             </div>
           </div>

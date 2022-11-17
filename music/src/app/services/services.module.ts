@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 export const API_CONFIG = new InjectionToken('ApiConfigToken');
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule
   ],
