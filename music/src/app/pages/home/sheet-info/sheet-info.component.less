@@ -39,11 +39,42 @@
   .user {
     margin: 0 0 20px;
     line-height: 35px;
+
+    .face {
+      float: left;
+      margin-right: 10px;
+      width: 35px;
+      height: 35px;
+
+      img {
+        float: left;
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    .time {
+      margin-left: 15px;
+    }
+
+    .btns {
+      margin-bottom: 25px;
+      margin-right: -10px;
+    }
+
   }
 
   .btns {
     margin-bottom: 25px;
     margin-right: -10px;
+    .u-btni-add {
+      margin-right: 5px;
+    }
+
+    .u-btni {
+      margin-right: 6px;
+      font-family: simsun,\5b8b\4f53;
+    }
   }
 
   .tags {
@@ -61,6 +92,29 @@
     margin-left: 64px;
     position: relative;
   }
+
+  .tags {
+    margin: 25px 0 5px;
+    line-height: 22px;
+    .u-tag {
+      float: left;
+      margin: 0px 10px 3px 0;
+    }
+    b {
+      float: left;
+    }
+  }
+
+  b {
+    font-weight: normal;
+    color: #666;
+  }
+
+  .intr {
+    margin-top: 4px;
+    line-height: 18px;
+    color: #666;
+  }
 }
 
 .u-cover-dj .msk {
@@ -69,4 +123,9 @@
   background-position: 0 -1285px;
   top: -4px;
   left: -4px;
+}
+
+.u-btni-share i, .u-btni-fav i, .u-btni-cmmt i, .u-btni-dl i, .u-btni-unfav i {
+  padding-right: 2px;
+  padding-left: 28px;
 }
