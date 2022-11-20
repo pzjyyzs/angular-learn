@@ -21,7 +21,7 @@ type Toplist =  {
 @Component({
   selector: 'app-recommend',
   templateUrl: './recommend.component.html',
-  styleUrls: ['./recommend.component.scss']
+  styleUrls: ['./recommend.component.less']
 })
 export class RecommendComponent implements OnInit {
   banner: Banner[] = [];
@@ -31,7 +31,7 @@ export class RecommendComponent implements OnInit {
   newList?: Toplist;
   hotList?: Toplist;
   _indexColor: string = "";
-  isHoving: number = -1;
+  isHoving: string = '';
   singerList: Singer[];
   djList: Dj[];
 
@@ -95,11 +95,11 @@ export class RecommendComponent implements OnInit {
     return total;
   }
 
-  addClass(index: number): void {
-    this.isHoving = index;
+  addClass(index: number, item: any): void {
+    this.isHoving = index + item.name;
   }
 
   removeClass(): void {
-    this.isHoving = -1;
+    this.isHoving = '';
   }
 }

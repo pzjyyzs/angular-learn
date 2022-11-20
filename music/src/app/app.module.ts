@@ -13,7 +13,6 @@ import { CoreModule } from './core/core.module';
 registerLocaleData(zh);
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -14,7 +14,7 @@ import { CarouselStrategy } from './strategy/Carouselstrategy';
 @Component({
   selector: 'app-wy-carousel',
   templateUrl: './wy-carousel.component.html',
-  styleUrls: ['./wy-carousel.component.scss'],
+  styleUrls: ['./wy-carousel.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
