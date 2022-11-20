@@ -4,7 +4,9 @@ import { HomeModule } from './home/home.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+
+  ],
   imports: [
     HomeModule
   ]

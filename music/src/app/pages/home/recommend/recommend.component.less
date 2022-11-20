@@ -301,6 +301,7 @@
     line-height: 32px;
 
     .nm {
+      box-sizing: content-box;
       float: left;
       width: 170px;
       height: 32px;
@@ -310,6 +311,9 @@
       height: 32px;
       &:hover .nm {
         width: 96px;
+        &:last-of-type {
+          width: 90px;
+        }
       }
 
       &.z-hvr .oper {
@@ -333,6 +337,7 @@
     }
 
     .oper {
+      box-sizing: content-box;
       display: none;
       float: right;
       width: 82px;
