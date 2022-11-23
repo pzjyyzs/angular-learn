@@ -25,3 +25,17 @@ export interface Dj {
   nickName: string;
   avatarUrl: string;
 }
+
+export interface Song {
+  id: number;
+  name: string;
+  url: string;
+  ar: Singer[];
+  al: { id: number; name: string; picUrl: string };
+  dt: number;
+}
+
+export interface SongUrl {
+  id: number;
+  url: string;
+}

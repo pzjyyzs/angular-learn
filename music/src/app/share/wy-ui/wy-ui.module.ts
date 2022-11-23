@@ -5,6 +5,7 @@ import { WyCarouselComponent } from './wy-carousel/wy-carousel.component';
 import { WyCarouselContentDirective } from './wy-carousel/wy-carousel-content.directive';
 import { PlayCountPipe } from '../pipes/play-count.pipe';
 import { NgZorroAntdModule } from 'src/app/ng-zorro-antd/ng-zorro-antd.module';
+import { PlayerComponent } from './player/player.component';
 
 
 
@@ -13,7 +14,8 @@ import { NgZorroAntdModule } from 'src/app/ng-zorro-antd/ng-zorro-antd.module';
     SingSheetComponent,
     WyCarouselComponent,
     WyCarouselContentDirective,
-    PlayCountPipe
+    PlayCountPipe,
+    PlayerComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { NgZorroAntdModule } from 'src/app/ng-zorro-antd/ng-zorro-antd.module';
     SingSheetComponent,
     WyCarouselComponent,
     WyCarouselContentDirective,
-    PlayCountPipe
+    PlayCountPipe,
+    PlayerComponent
   ]
 })
 export class WyUiModule { }

@@ -15,6 +15,7 @@ specifiers:
   '@angular/platform-browser-dynamic': ^14.2.0
   '@angular/router': ^14.2.0
   '@ant-design/icons-angular': ^14.1.0
+  '@ngrx/store': ^14.3.2
   '@types/jasmine': ~4.0.0
   jasmine-core: ~4.3.0
   karma: ~6.4.0
@@ -41,6 +42,7 @@ dependencies:
   '@angular/platform-browser-dynamic': 14.2.9_sa5qsytebt3lzloeb2hiyqjqom
   '@angular/router': 14.2.9_vk63podrph7tnrzcj3wcs4qwfm
   '@ant-design/icons-angular': 14.1.0_vk63podrph7tnrzcj3wcs4qwfm
+  '@ngrx/store': 14.3.2_7m4pc4sup4phcyoce7cdzdyotq
   ng-zorro-antd: 14.1.1_fzbfkpxyrqtdaeorbhe6r6xhpu
   query-string: 7.1.1
   rxjs: 7.5.7
@@ -1910,6 +1912,17 @@ packages:
   /@leichtgewicht/ip-codec/2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
     dev: true
+
+  /@ngrx/store/14.3.2_7m4pc4sup4phcyoce7cdzdyotq:
+    resolution: {integrity: sha512-XGHjr0arh6gClo8Ce+xqJLvW9PkeXPW2tCo9Z5qMtHFI/z5dUppLVKGmMgD/fQBDyoqWTK5xu+89tDkdeZfRjQ==}
+    peerDependencies:
+      '@angular/core': ^14.0.0
+      rxjs: ^6.5.3 || ^7.5.0
+    dependencies:
+      '@angular/core': 14.2.9_rxjs@7.5.7+zone.js@0.11.8
+      rxjs: 7.5.7
+      tslib: 2.4.1
+    dev: false
 
   /@ngtools/webpack/14.2.8_iy2uddugxj5oq7tgnqq3u5hya4:
     resolution: {integrity: sha512-ugQRiOgQBbZUFSRRfj+KOUrtGHWI7IyVfnK3HA08+QFQOygY6igs07D6v4l5RHkUnyQkCgUE30EaFaj58fGJjg==}
