@@ -8,6 +8,7 @@ import { ShareModule } from '../share/share.module';
 import { PagesModule } from '../pages/pages.module';
 import en from '@angular/common/locales/en';
 import { ServicesModule } from '../services/services.module';
+import { StoreIndexModule } from '../store/store.module';
 
 registerLocaleData(en);
 
@@ -20,6 +21,7 @@ registerLocaleData(en);
     ShareModule,
     ServicesModule,
     PagesModule,
+    StoreIndexModule,
     AppRoutingModule,
   ],
   exports: [
