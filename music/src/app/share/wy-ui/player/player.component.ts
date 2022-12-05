@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Song } from 'src/app/services/data-types';
+import { StoreIndexModule } from 'src/app/store/store.module';
 
 @Component({
   selector: 'app-player',
@@ -10,7 +12,9 @@ export class PlayerComponent implements OnInit {
 
   currentSong: Song | undefined;
   playList: Song[];
-  constructor() { }
+  constructor(
+    private store$: Store<StoreIndexModule>
+  ) { }
 
   ngOnInit(): void {
   }
