@@ -1,5 +1,5 @@
-import { Dj, Singer } from './data-types';
-import { map, Observable, combineLatest } from 'rxjs';
+import { Dj, Singer, Song, SongUrl } from './data-types';
+import { map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { API_CONFIG, ServicesModule } from './services.module';
@@ -47,5 +47,28 @@ export class SongService {
     const params = new HttpParams({ fromString: queryString.stringify(args) });
     return this.http.get<{ data: { list: Dj[] }}>(this.url + '/dj/toplist/popular', { params })
       .pipe(map((res: { data: { list: Dj[] }}) => res.data.list));
+  }
+
+  getSongUrl(ids: string): Observable<SongUrl[]> {
+    const params = new HttpParams().set('id', ids);
+    return this.http.get<{data: SongUrl[]}>(this.url + '/song/url', { params })
+      .pipe(map((res: { data: SongUrl[] }) => res.data));
+  }
+
+  getSongList(songs: Song | Song[]): Observable<Song[]> {
+    const songArr = Array.isArray(songs) ? songs.slice() : [songs];
+    const ids = songArr.map(item => item.id).join(',');
+    return this.getSongUrl(ids).pipe(map(urls => this.generateSongList(songArr, urls)));
+  }
+
+  private generateSongList(songs: Song[], urls: SongUrl[]): Song[] {
+    const result: Song[] = [];
+    songs.forEach(song => {
+      const item = urls.find(url => url.id === song.id);
+      if (item && item.url) {
+        result.push({ ...song, url: item.url });
+      }
+    });
+    return result;
   }
 }

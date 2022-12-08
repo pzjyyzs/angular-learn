@@ -1,18 +1,16 @@
-import { Singer, SongSheet, Dj } from './../../../services/data-types';
+import { Singer, SongSheet, Dj, Song } from './../../../services/data-types';
 import { combineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Banner } from 'src/app/services/data-types';
 import { HomeService } from 'src/app/services/home.service';
 import { WyCarouselComponent } from '../../../share/wy-ui/wy-carousel/wy-carousel.component';
 import { SongService } from 'src/app/services/song.service';
+import { BatchActionService } from 'src/app/store/batch-action.service';
 
-type tracks = {
-  name: string;
-}
 type Playlist  = {
   coverImgUrl: string,
   name: string,
-  tracks: tracks[]
+  tracks: Song[]
 }
 
 type Toplist =  {
@@ -48,6 +46,7 @@ export class RecommendComponent implements OnInit {
   constructor(
     private homeService: HomeService,
     private songService: SongService,
+    private batchService: BatchActionService,
   ) {
     combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(),this.homeService.getTopAlbum(),
       this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678),
@@ -101,5 +100,16 @@ export class RecommendComponent implements OnInit {
 
   removeClass(): void {
     this.isHoving = '';
+  }
+
+  onPlay(item: Song) {
+    this.songService.getSongList(item).subscribe(list => {
+      if (list.length) {
+        this.batchService.insertSong(list[0])
+      } else {
+        //this.a
+      }
+      console.log(list);
+    })
   }
 }
