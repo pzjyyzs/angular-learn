@@ -94,8 +94,8 @@ export class RecommendComponent implements OnInit {
     return total;
   }
 
-  addClass(index: number, item: any): void {
-    this.isHoving = index + item.name;
+  addClass(index: number, item: any, cate: 'hot' | 'new' | 'top'): void {
+    this.isHoving = index + item.name + cate;
   }
 
   removeClass(): void {

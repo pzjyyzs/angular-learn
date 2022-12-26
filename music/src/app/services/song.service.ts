@@ -50,8 +50,8 @@ export class SongService {
   }
 
   getSongUrl(ids: string): Observable<SongUrl[]> {
-    const params = new HttpParams().set('id', ids);
-    return this.http.get<{data: SongUrl[]}>(this.url + '/song/url', { params })
+    const params = new HttpParams().set('id', ids).set('level', 'exhigh');
+    return this.http.get<{data: SongUrl[]}>(this.url + '/song/url/v1', { params })
       .pipe(map((res: { data: SongUrl[] }) => res.data));
   }
 

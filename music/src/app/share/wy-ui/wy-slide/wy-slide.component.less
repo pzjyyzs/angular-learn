@@ -1,0 +1,57 @@
+ .barbg, .cur, .rdy, .left {
+  background: url(../../../../assets/img/statbar.png) no-repeat 0 9999px;
+}
+
+.btn {
+  background: url(../../../../assets/img/iconall.png) no-repeat;
+}
+
+.barbg.vertical {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  background: none;
+}
+
+.cur.vertical {
+  background: url(../../../../assets/img/playbar.png) no-repeat 0 9999px;
+  background-position: -40px bottom;
+}
+.cur, .rdy {
+  height: 9px;
+  background-position: right 0;
+}
+.barbg {
+  background-position: right 0;
+}
+
+.rdy {
+  background-position: right -30px;
+}
+
+.cur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1%;
+  background-position: left -66px;
+  &.vertical {
+    position: relative;
+    width: 4px;
+  }
+}
+
+.btn {
+  position: absolute;
+  top: -7px;
+  right: -13px;
+  width: 22px;
+  height: 24px;
+  margin-left: -11px;
+  background-position: 0 -250px;
+  _background-position: 0 0;
+
+  &.vertical {
+    right: -9px;
+  }
+}

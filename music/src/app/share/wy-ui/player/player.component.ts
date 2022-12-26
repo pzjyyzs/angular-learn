@@ -14,7 +14,18 @@ export class PlayerComponent implements OnInit {
   currentSong: Song | undefined;
   playList: Song[];
   songList: Song[];
+  songReady = false;
+  // 播放状态
+  playing = false;
 
+  playUrl: string = '';
+  progressBar: string = '0%';
+  duration: number = 0;
+  currentTime: number = 0;
+  percent: number = 0;
+  bufferPercent: number = 0;
+  volume: number = 60;
+  private audioEl: HTMLAudioElement;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   constructor(
     private store$: Store<StoreIndexModule>
@@ -26,20 +37,65 @@ export class PlayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.audioEl = this.audio.nativeElement;
   }
 
   watchCurrentSong(song: Song) {
     this.currentSong = song;
   }
 
+  onCanPlay() {
+    this.songReady = true;
+    console.log('can play')
+    this.play();
+  }
+
+  onToggle() {
+
+    /* if (!this.currentSong) {
+
+    } else { */
+      if (this.songReady) {
+        this.playing = !this.playing;
+        if (this.playing) {
+          this.audioEl.play();
+
+        } else {
+          this.audioEl.pause();
+        }
+      }
+    // }
+  }
+
+  onTimeUpdate(e: Event) {
+    this.currentTime = (e.target as HTMLAudioElement).currentTime;
+    this.percent = (this.currentTime / this.duration) * 100;
+  }
+
   private watchList(list: Song[], type: 'playList' | 'songList') {
 
     this[type] = list;
-    this.currentSong = list[0];
-    if (list[0]) {
-      console.log(list[0].url)
-      //this.audio?.nativeElement.play();
+    this.currentSong = list[list.length - 1];
+    if (this.currentSong) {
+     this.playUrl = `https://music.163.com/song/media/outer/url?id=${this.currentSong.id}.mp3`;
+     this.duration = this.currentSong.dt / 1000;
+    }
+  }
 
+  private play() {
+    this.audioEl.play();
+    this.playing = true;
+  }
+
+  get picUrl(): string {
+    return this.currentSong ? this.currentSong.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg';
+  }
+
+  onLoadbar(){
+    let duration = this.audioEl.duration;
+    var bufferedEnd = this.audioEl.buffered.end(this.audioEl.buffered.length - 1);
+    if (duration > 0) {
+      this.progressBar = ((bufferedEnd / duration)*100) + "%";
     }
   }
 }

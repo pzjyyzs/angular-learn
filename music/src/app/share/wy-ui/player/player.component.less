@@ -5,7 +5,7 @@
   background: url(../../../../assets/img/playbar.png) no-repeat 0 9999px;
 }
 
-.m-pbar .barbg, .m-pbar .cur, .m-pbar .rdy, .m-pbar .left {
+.m-pbar .barbg, .m-pbar .cur, .m-pbar .left {
   background: url(../../../../assets/img/statbar.png) no-repeat 0 9999px;
 }
 
@@ -144,6 +144,9 @@
       height: 36px;
       margin-top: 0;
       background-position: 0 -204px;
+      &.pas {
+        background-position: 0 -165px;
+      }
     }
 
     .nxt {
@@ -178,6 +181,9 @@
       max-width: 220px;
       margin-left: 15px;
       color: #9b9b9b;
+      a {
+        color: #9b9b9b;
+      }
     }
 
     .oper {
@@ -285,6 +291,13 @@
       width: 32px;
       height: 113px;
       background-position: 0 -503px;
+      &-bar {
+        position: absolute;
+        top: 0;
+        left: 14px;
+        width: 4px;
+        height: calc(100% - 8px);
+      }
     }
 
     .vbg {
@@ -314,7 +327,7 @@
       background-position: -40px -250px;
       _background-position: 0 0;
       cursor: pointer;
-  }
+    }
   }
 }
 
@@ -330,22 +343,7 @@
   position: relative;
   width: 499px;
 
-  .barbg, .cur, .rdy {
-    height: 9px;
-    background-position: right 0;
-  }
 
-  .rdy {
-    background-position: right -30px;
-  }
-
-  .cur {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1%;
-    background-position: left -66px;
-  }
 
   .btn {
     position: absolute;

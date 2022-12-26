@@ -22,11 +22,12 @@ export class BatchActionService {
    }
 
   insertSong(song: Song) {
-    console.log(song)
     //let songList = this.playerState.songList.slice();
     let playList = this.playerState.playList.slice();
-
-    playList.push(song);
-    this.store$.dispatch(SetPlayList({ playList }));
+    let isSongHas = playList.find(item => item.id === song.id);
+    if (!isSongHas) {
+      playList.push(song);
+      this.store$.dispatch(SetPlayList({ playList }));
+    }
   }
 }

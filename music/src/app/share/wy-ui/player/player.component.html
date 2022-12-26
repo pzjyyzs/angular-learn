@@ -12,36 +12,34 @@
     <div class="wrap">
       <div class="btns">
         <a class="prv">上一首</a>
-        <a class="ply j-flag">播放/暂停(p)</a>
+        <a href="javascript: void(0)" class="ply j-flag" [class.pas]="playing" (click)="onToggle()">播放/暂停(p)</a>
         <a class="nxt">下一首</a>
       </div>
 
       <div class="head j-flag">
-        <img src="" />
+        <img [src]="picUrl" />
         <a class="mask"></a>
       </div>
 
       <div class="play">
         <div class="j-flag words">
-          <a class="f-thide name fc1 f-fl"></a>
+          <a href="javascript: void(0);" class="f-thide name fc1 f-fl">{{ currentSong?.name }}</a>
           <span class="by f-thide f-fl">
-            <span>
-              <a></a>
+            <span *ngIf="currentSong">
+              <a href="javascript: void(0);" *ngFor="let singer of currentSong?.ar;let i = index">
+                {{ singer.name }}
+                <ng-container *ngIf="i !== currentSong.ar.length - 1">
+                  /
+                </ng-container>
+              </a>
             </span>
           </span>
-          <a class="src"></a>
+          <a class="src" *ngIf="currentSong"></a>
         </div>
         <div class="m-pbar">
-          <div class="barbg j-flag">
-            <div class="rdy"></div>
-            <div class="cur">
-              <span class="btn f-tdn f-alpha">
-                <i></i>
-              </span>
-            </div>
-          </div>
+          <app-wy-slide [bufferOffset]="percent" [progressBar]="progressBar"></app-wy-slide>
           <span class="j-flag time">
-            <em>00:00</em> / 00:00
+            <em>{{ currentTime | formatTime }}</em> / {{ duration | formatTime}}
           </span>
         </div>
       </div>
@@ -53,17 +51,23 @@
       </div>
 
       <div class="ctrl f-fl f-pr j-flag">
-        <div class="m-vol"></div>
+        <div class="m-vol">
+          <div class="barbg"></div>
+          <div class="barbg-bar">
+            <app-wy-slide [bufferOffset]="volume" direction="vertical"></app-wy-slide>
+          </div>
+        </div>
         <a class="icn icn-vol"></a>
         <a class="icn icn-loop"></a>
         <span class="add f-pr">
           <span class="tip" style="display: none;">已添加到播放列表</span>
-          <a class="icn icn-list s-fc3">2</a>
+          <a class="icn icn-list s-fc3">{{ playList.length }}</a>
         </span>
-        <div class="tip tip-1">循环</div>
+        <!-- <div class="tip tip-1">循环</div> -->
       </div>
     </div>
   </div>
 </div>
 
-<audio #audio [src]="currentSong?.url"></audio>
+<!-- <audio #audio [src]="currentSong?.url" (canplay)="onCanPlay()"></audio> -->
+<audio #audio [src]="playUrl" (canplay)="onCanPlay()" (progress)="onLoadbar()" (timeupdate)="onTimeUpdate($event)"></audio>
