@@ -8,14 +8,10 @@ export interface SliderEventObserverConfig {
   start: string;
   move: string;
   end: string;
-  filter: (e: Event) => boolean;
+  filter: (e: MouseEvent) => boolean;
   pluckKey: string[];
   startPlucked$?: Observable<number>;
   moveResolved$?: Observable<number>;
   end$?: Observable<Event>;
 }
 
-export function sliderEvent(e: Event) {
-  e.stopPropagation();
-  e.preventDefault();
-}
