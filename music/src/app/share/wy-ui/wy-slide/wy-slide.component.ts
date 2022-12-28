@@ -1,32 +1,57 @@
-import { pluck, takeUntil } from 'rxjs/operators';
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { distinctUntilChanged, filter, from, fromEvent, map, tap } from 'rxjs';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { distinctUntilChanged, filter, map, tap, Observable, fromEvent, Subscription } from 'rxjs';
 import { SlideDirection, SliderEventObserverConfig, SlideValue } from './wy-slide.type';
 import { DOCUMENT } from '@angular/common';
 import { getElementOffset, sliderEvent } from './wy-slide-help';
-import { limitNumberInRange } from 'src/app/utils/number';
+import { getPercent, limitNumberInRange } from 'src/app/utils/number';
+import { inArray } from 'src/app/utils/array';
+import { ControlValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-wy-slide',
   templateUrl: './wy-slide.component.html',
   styleUrls: ['./wy-slide.component.less']
 })
-export class WySlideComponent implements OnInit {
-
+export class WySlideComponent implements OnInit, ControlValueAccessor {
 
   @Input() bufferOffset: SlideValue = 0;
   @Input() progressBar: string = '0%';
   @Input() wyMin = 0;
   @Input() wyMax = 100;
   @Input() direction: SlideDirection = 'horizontal';
+  @Output() wyOnAfterChange = new EventEmitter<SlideValue>();
 
   @ViewChild('wySlider', { static: true }) private wySlider: ElementRef;
+
+  value: SlideValue = null;
+  offset: SlideValue = null;
+
   private sliderDom: HTMLDivElement;
-  constructor(@Inject(DOCUMENT) private doc: Document) { }
+  private dragStart$: Observable<number>;
+  private dragMove$: Observable<number>;
+  private dragEnd$: Observable<Event>;
+  private dragStart_: Subscription | null;
+  private dragMove_: Subscription | null;
+  private dragEnd_: Subscription | null;
+  private isDragging = false;
+  private onValueChange(value: SlideValue): void {}
+  private onTouched(): void {}
+  constructor(@Inject(DOCUMENT) private doc: Document, private cdr: ChangeDetectorRef) { }
+  writeValue(obj: any): void {
+
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn
+  }
+
+  registerOnChange(fn: (value: SlideValue) => void): void {
+    this.onValueChange = fn;
+  }
 
   ngOnInit(): void {
     this.sliderDom = this.wySlider.nativeElement;
     this.createDraggingObservables();
+    this.subscribeDrag(['start']);
   }
 
   private createDraggingObservables() {
@@ -39,19 +64,107 @@ export class WySlideComponent implements OnInit {
       pluckKey: [orientField]
     };
 
-    mouseHandle.startPlucked$ = fromEvent<MouseEvent>(this.sliderDom, 'mousedown')
+    this.dragStart$ = fromEvent<MouseEvent>(this.sliderDom, 'mousedown')
       .pipe(
         filter(mouseHandle.filter),
         tap(sliderEvent),
         map((item) => item.pageX),
+        distinctUntilChanged(),
         map((position: number) => {
           return this.findClosestValue(position);
         })
       )
 
-      mouseHandle.startPlucked$.subscribe(() => {
+      this.dragEnd$ = fromEvent(this.doc, 'mouseup');
+      this.dragMove$ = fromEvent<MouseEvent>(this.doc, "mousemove").pipe(
+        filter(mouseHandle.filter),
+        tap(sliderEvent),
+        map((item) => item.pageX),
+        distinctUntilChanged(),
+        map((position: number) => {
+          return this.findClosestValue(position);
+        })
+      )
 
-      })
+  }
+
+  private onDragStart(value: number) {
+    this.toggleDragMoving(true);
+    this.setValue(value);
+  }
+
+  private onDragMove(value: number) {
+    if (this.isDragging) {
+      this.setValue(value);
+      this.cdr.markForCheck();
+    }
+  }
+  private onDragEnd() {
+    this.wyOnAfterChange.emit(this.value);
+    this.toggleDragMoving(false);
+    this.cdr.markForCheck();
+  }
+
+  private subscribeDrag(events: string[] = ['start', 'move', 'end']) {
+    if (inArray(events, 'start') && this.dragStart$ && !this.dragStart_) {
+      this.dragStart_ = this.dragStart$.subscribe(this.onDragStart.bind(this))
+    }
+    if (inArray(events, 'move') && this.dragMove$ && !this.dragMove_) {
+      this.dragMove_ = this.dragMove$.subscribe(this.onDragMove.bind(this));
+    }
+    if (inArray(events, 'end') && this.dragEnd$ && !this.dragEnd_) {
+      this.dragEnd_ = this.dragEnd$.subscribe(this.onDragEnd.bind(this));
+    }
+  }
+
+  private toggleDragMoving(movable: boolean) {
+    this.isDragging = movable;
+    if (movable) {
+      this.subscribeDrag(['move', 'end']);
+    } else {
+      this.unsubscribeDrag(['move', 'end']);
+    }
+  }
+
+  private unsubscribeDrag(events: string[] = ['start', 'move', 'end']) {
+    if (inArray(events, 'start') && this.dragStart_) {
+      this.dragStart_.unsubscribe();
+      this.dragStart_ = null;
+    }
+    if (inArray(events, 'move') && this.dragMove_) {
+      this.dragMove_.unsubscribe();
+      this.dragMove_ = null;
+    }
+    if (inArray(events, 'end') && this.dragEnd_) {
+      this.dragEnd_.unsubscribe();
+      this.dragEnd_ = null;
+    }
+  }
+
+  private setValue(value: SlideValue, needCheck = false) {
+    if (needCheck) {
+      if (this.isDragging) { return; }
+      this.value = this.formatValue(value)
+    } else if (!this.valuesEqual(this.value, value)){
+      this.value = value;
+      this.updateTrackAndHandles();
+      this.onValueChange(this.value);
+    }
+  }
+
+  private formatValue(value: SlideValue): SlideValue {
+    let res = value;
+    if(value){
+      res = this.assertValueValid(value) ? this.wyMin : limitNumberInRange(value, this.wyMin, this.wyMax);
+    }
+    return res;
+  }
+
+  private assertValueValid(value: SlideValue): boolean {
+    if(value) {
+      return isNaN(typeof value !== 'number' ? parseFloat(value): value);
+    }
+    return false;
   }
 
   private findClosestValue(position: number): number {
@@ -73,7 +186,21 @@ export class WySlideComponent implements OnInit {
 
   private getSliderStartPosition(): number {
     const offset = getElementOffset(this.sliderDom);
-    console.log('123', offset)
     return this.direction === "vertical" ? offset.top : offset.left;
+  }
+
+  private updateTrackAndHandles() {
+    this.offset = this.getValueToOffset(this.value);
+    this.cdr.markForCheck();
+  }
+
+  private valuesEqual(valA: SlideValue, valB: SlideValue): boolean {
+    if (typeof valA !== typeof valB) {
+      return false;
+    }
+    return valA === valB;
+  }
+  private getValueToOffset(value: SlideValue): SlideValue {
+    return getPercent(this.wyMin, this.wyMax, value || 0);
   }
 }
