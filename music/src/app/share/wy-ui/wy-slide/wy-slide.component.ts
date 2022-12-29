@@ -1,24 +1,33 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Inject, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { distinctUntilChanged, filter, map, tap, Observable, fromEvent, Subscription } from 'rxjs';
 import { SlideDirection, SliderEventObserverConfig, SlideValue } from './wy-slide.type';
 import { DOCUMENT } from '@angular/common';
 import { getElementOffset, sliderEvent } from './wy-slide-help';
 import { getPercent, limitNumberInRange } from 'src/app/utils/number';
 import { inArray } from 'src/app/utils/array';
-import { ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-wy-slide',
   templateUrl: './wy-slide.component.html',
-  styleUrls: ['./wy-slide.component.less']
+  styleUrls: ['./wy-slide.component.less'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => WySlideComponent),
+    multi: true
+  }]
 })
 export class WySlideComponent implements OnInit, ControlValueAccessor {
 
   @Input() bufferOffset: SlideValue = 0;
-  @Input() progressBar: string = '0%';
+  @Input() progressBar: number = 0;
   @Input() wyMin = 0;
   @Input() wyMax = 100;
   @Input() direction: SlideDirection = 'horizontal';
+  @Input() needProgressBar: boolean = false;
   @Output() wyOnAfterChange = new EventEmitter<SlideValue>();
 
   @ViewChild('wySlider', { static: true }) private wySlider: ElementRef;
@@ -37,8 +46,9 @@ export class WySlideComponent implements OnInit, ControlValueAccessor {
   private onValueChange(value: SlideValue): void {}
   private onTouched(): void {}
   constructor(@Inject(DOCUMENT) private doc: Document, private cdr: ChangeDetectorRef) { }
-  writeValue(obj: any): void {
 
+  writeValue(value: SlideValue): void {
+    this.setValue(value, true);
   }
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn
@@ -83,7 +93,8 @@ export class WySlideComponent implements OnInit, ControlValueAccessor {
         distinctUntilChanged(),
         map((position: number) => {
           return this.findClosestValue(position);
-        })
+        }),
+        takeUntil(this.dragEnd$)
       )
 
   }
@@ -145,6 +156,7 @@ export class WySlideComponent implements OnInit, ControlValueAccessor {
     if (needCheck) {
       if (this.isDragging) { return; }
       this.value = this.formatValue(value)
+      this.updateTrackAndHandles();
     } else if (!this.valuesEqual(this.value, value)){
       this.value = value;
       this.updateTrackAndHandles();
@@ -190,7 +202,16 @@ export class WySlideComponent implements OnInit, ControlValueAccessor {
   }
 
   private updateTrackAndHandles() {
-    this.offset = this.getValueToOffset(this.value);
+    let offset = this.getValueToOffset(this.value);
+    if (this.needProgressBar) {
+      if (offset && this.progressBar > offset) {
+        this.bufferOffset = offset;
+      }
+    } else {
+      if (offset) {
+        this.bufferOffset = offset;
+      }
+    }
     this.cdr.markForCheck();
   }
 

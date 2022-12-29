@@ -37,7 +37,7 @@
           <a class="src" *ngIf="currentSong"></a>
         </div>
         <div class="m-pbar">
-          <app-wy-slide [bufferOffset]="percent" [progressBar]="progressBar"></app-wy-slide>
+          <app-wy-slide  [(ngModel)]="percent" [progressBar]="progressBar" [needProgressBar]="true" (wyOnAfterChange)="onPercentChange($event)"></app-wy-slide>
           <span class="j-flag time">
             <em>{{ currentTime | formatTime }}</em> / {{ duration | formatTime}}
           </span>

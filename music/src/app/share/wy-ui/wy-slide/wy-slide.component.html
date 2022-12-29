@@ -1,6 +1,6 @@
 <div class="barbg j-flag" #wySlider  [class.vertical]="direction === 'vertical'">
   <ng-container *ngIf="direction === 'vertical' else horizontalTemplate">
-    <div  class="cur vertical" [style.height]="bufferOffset + '%'">
+    <div class="cur vertical" [style.height]="bufferOffset + '%'">
       <span class="btn f-tdn f-alpha vertical">
         <i></i>
       </span>
@@ -9,7 +9,7 @@
 </div>
 
 <ng-template #horizontalTemplate>
-  <div class="rdy" [style.width]="progressBar"></div>
+  <div class="rdy" [style.width]="progressBar + '%'"></div>
   <div class="cur"  [style.width]="bufferOffset + '%'">
     <span class="btn f-tdn f-alpha">
       <i></i>

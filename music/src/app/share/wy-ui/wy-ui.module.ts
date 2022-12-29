@@ -8,6 +8,7 @@ import { NgZorroAntdModule } from 'src/app/ng-zorro-antd/ng-zorro-antd.module';
 import { PlayerComponent } from './player/player.component';
 import { FormatTimePipe } from '../pipes/format-time.pipe';
 import { WySlideComponent } from './wy-slide/wy-slide.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -23,6 +24,7 @@ import { WySlideComponent } from './wy-slide/wy-slide.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     NgZorroAntdModule,
   ],
   exports: [

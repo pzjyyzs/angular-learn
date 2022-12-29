@@ -19,12 +19,13 @@ export class PlayerComponent implements OnInit {
   playing = false;
 
   playUrl: string = '';
-  progressBar: string = '0%';
+  progressBar: number = 0;
   duration: number = 0;
   currentTime: number = 0;
   percent: number = 0;
   bufferPercent: number = 0;
   volume: number = 60;
+  isPercentChange: boolean = false;
   private audioEl: HTMLAudioElement;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   constructor(
@@ -38,6 +39,7 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.audioEl = this.audio.nativeElement;
+    this.audioEl.volume = 0.3;
   }
 
   watchCurrentSong(song: Song) {
@@ -46,7 +48,6 @@ export class PlayerComponent implements OnInit {
 
   onCanPlay() {
     this.songReady = true;
-    console.log('can play')
     this.play();
   }
 
@@ -95,7 +96,14 @@ export class PlayerComponent implements OnInit {
     let duration = this.audioEl.duration;
     var bufferedEnd = this.audioEl.buffered.end(this.audioEl.buffered.length - 1);
     if (duration > 0) {
-      this.progressBar = ((bufferedEnd / duration)*100) + "%";
+      this.progressBar = (bufferedEnd / duration)*100;
+    }
+  }
+
+  onPercentChange(per: number | null) {
+    if (this.currentSong && per) {
+      const currentTime =  this.duration * ( per / 100);
+      this.audioEl.currentTime = currentTime;
     }
   }
 }
