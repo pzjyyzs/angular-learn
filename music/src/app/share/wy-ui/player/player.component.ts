@@ -1,6 +1,8 @@
+import { getPlayMode } from './../../../store/selector/player.selector';
+import { SetPlayMode } from './../../../store/actions/play.action';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Song } from 'src/app/services/data-types';
+import { PlayMode, Song } from 'src/app/services/data-types';
 import { getCurrentSong, getPlayer, getPlayList } from 'src/app/store/selector/player.selector';
 import { StoreIndexModule } from 'src/app/store/store.module';
 
@@ -26,6 +28,24 @@ export class PlayerComponent implements OnInit {
   bufferPercent: number = 0;
   volume: number = 60;
   isPercentChange: boolean = false;
+  showVolumnPanel: boolean = false;
+  // 模式选择
+  currentMode: PlayMode;
+  modelTypes: PlayMode[] = [
+    {
+      type: 'loop',
+      label: '循环',
+    },
+    {
+      type: 'random',
+      label: '循环'
+    },
+    {
+      type: 'singleLoop',
+      label: '单曲循环'
+    }
+  ]
+  modeCount: number = 0;
   private audioEl: HTMLAudioElement;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   constructor(
@@ -33,13 +53,13 @@ export class PlayerComponent implements OnInit {
   ) {
     const appStore$ = this.store$.pipe(select(getPlayer));
     //appStore$.pipe(select(getSongList)).subscribe(list => this.watchList(list, 'songList'))
-    appStore$.pipe(select(getPlayList)).subscribe(list => this.watchList(list, 'playList'))
-    appStore$.pipe(select(getCurrentSong)).subscribe(song => this.watchCurrentSong(song))
+    appStore$.pipe(select(getPlayList)).subscribe(list => this.watchList(list, 'playList'));
+    appStore$.pipe(select(getCurrentSong)).subscribe(song => this.watchCurrentSong(song));
+    appStore$.pipe(select(getPlayMode)).subscribe(playMode => this.watchPlayMode(playMode))
   }
 
   ngOnInit(): void {
     this.audioEl = this.audio.nativeElement;
-    this.audioEl.volume = 0.3;
   }
 
   watchCurrentSong(song: Song) {
@@ -88,6 +108,10 @@ export class PlayerComponent implements OnInit {
     this.playing = true;
   }
 
+  private watchPlayMode(playMode: PlayMode) {
+    this.currentMode = playMode;
+  }
+
   get picUrl(): string {
     return this.currentSong ? this.currentSong.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg';
   }
@@ -105,5 +129,28 @@ export class PlayerComponent implements OnInit {
       const currentTime =  this.duration * ( per / 100);
       this.audioEl.currentTime = currentTime;
     }
+  }
+
+  onVolumeChange(per: number | null) {
+    if (per) {
+      this.volume = per;
+    }
+  }
+
+  toggleVolPanel() {
+    this.showVolumnPanel = !this.showVolumnPanel;
+  }
+
+  onEnded() {
+    this.playing = false;
+    if (this.currentMode.type === 'singleLoop') {
+
+    } else {
+
+    }
+  }
+
+  changeMode() {
+    this.store$.dispatch(SetPlayMode({ playMode: this.modelTypes[++this.modeCount % 3]}))
   }
 }

@@ -51,14 +51,14 @@
       </div>
 
       <div class="ctrl f-fl f-pr j-flag">
-        <div class="m-vol">
+        <div class="m-vol" [hidden]="!showVolumnPanel">
           <div class="barbg"></div>
           <div class="barbg-bar">
-            <app-wy-slide [bufferOffset]="volume" direction="vertical"></app-wy-slide>
+            <app-wy-slide [(ngModel)]="volume" direction="vertical" (wyOnAfterChange)="onVolumeChange($event)"></app-wy-slide>
           </div>
         </div>
-        <a class="icn icn-vol"></a>
-        <a class="icn icn-loop"></a>
+        <a href="javascript: void(0)" class="icn icn-vol" (click)="toggleVolPanel()"></a>
+        <a href="javascript: void(0)" class="icn" [class]="currentMode.type" [title]="currentMode.type" (click)="changeMode()"></a>
         <span class="add f-pr">
           <span class="tip" style="display: none;">已添加到播放列表</span>
           <a class="icn icn-list s-fc3">{{ playList.length }}</a>
@@ -69,5 +69,5 @@
   </div>
 </div>
 
-<!-- <audio #audio [src]="currentSong?.url" (canplay)="onCanPlay()"></audio> -->
-<audio #audio [src]="playUrl" (canplay)="onCanPlay()" (progress)="onLoadbar()" (timeupdate)="onTimeUpdate($event)"></audio>
+<audio #audio [src]="playUrl" [volume]="volume / 100"
+  (canplay)="onCanPlay()" (progress)="onLoadbar()" (timeupdate)="onTimeUpdate($event)" (ended)="onEnded()"></audio>

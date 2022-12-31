@@ -12,7 +12,6 @@ import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular
   selector: 'app-wy-slide',
   templateUrl: './wy-slide.component.html',
   styleUrls: ['./wy-slide.component.less'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{
     provide: NG_VALUE_ACCESSOR,
@@ -78,7 +77,7 @@ export class WySlideComponent implements OnInit, ControlValueAccessor {
       .pipe(
         filter(mouseHandle.filter),
         tap(sliderEvent),
-        map((item) => item.pageX),
+        map((item) => item[orientField]),
         distinctUntilChanged(),
         map((position: number) => {
           return this.findClosestValue(position);
@@ -89,7 +88,7 @@ export class WySlideComponent implements OnInit, ControlValueAccessor {
       this.dragMove$ = fromEvent<MouseEvent>(this.doc, "mousemove").pipe(
         filter(mouseHandle.filter),
         tap(sliderEvent),
-        map((item) => item.pageX),
+        map((item) => item[orientField]),
         distinctUntilChanged(),
         map((position: number) => {
           return this.findClosestValue(position);

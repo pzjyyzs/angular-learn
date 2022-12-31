@@ -210,6 +210,18 @@
     height: 25px;
     margin: 11px 2px 0 0;
     text-indent: -9999px;
+
+    &.loop {
+      background-position: -3px -344px;
+    }
+
+    &.random {
+      background-position: -66px -248px;
+    }
+
+    &.singleLoop {
+      background-position: -66px -344px;
+    }
   }
 
   .ctrl {
@@ -225,9 +237,7 @@
     background-position: -2px -248px;
   }
 
-  .icn-loop {
-    background-position: -3px -344px;
-  }
+
 
   .add {
     float: left;
@@ -293,10 +303,10 @@
       background-position: 0 -503px;
       &-bar {
         position: absolute;
-        top: 0;
+        top: 6px;
         left: 14px;
         width: 4px;
-        height: calc(100% - 8px);
+        height: calc(100% - 12px);
       }
     }
 

@@ -6,3 +6,4 @@ const selectPlayerStates = (state: PlayState) => state;
 export const getPlayer = createFeatureSelector<PlayState>('player');
 export const getCurrentSong = createSelector(selectPlayerStates, ({ playList, currentIndex}: PlayState) => playList[currentIndex]);
 export const getPlayList = createSelector(selectPlayerStates, (state: PlayState) => state.playList);
+export const getPlayMode = createSelector(selectPlayerStates, (state: PlayState) => state.playMode);

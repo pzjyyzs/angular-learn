@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from "@ngrx/store";
 import { PlayMode, Song } from "src/app/services/data-types";
-import { SetPlaying, SetPlayList } from "../actions/play.action";
+import { SetPlaying, SetPlayList, SetPlayMode } from "../actions/play.action";
 
 export enum CurrentActions {
   Add,
@@ -43,6 +43,7 @@ const reducer = createReducer(
   initialState,
   on(SetPlaying, (state, { playing }) => ({ ...state, playing })),
   on(SetPlayList, (state, { playList }) => ({ ...state, playList })),
+  on(SetPlayMode, (state, { playMode }) => ({ ...state, playMode })),
 )
 
 export function playerReducer(state: PlayState | undefined, action: Action) {
