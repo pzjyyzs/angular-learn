@@ -1,4 +1,4 @@
-import { getPlayMode } from './../../../store/selector/player.selector';
+import { getPlayMode, getCurrentIndex, getSongList } from './../../../store/selector/player.selector';
 import { SetPlayMode } from './../../../store/actions/play.action';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
@@ -46,24 +46,31 @@ export class PlayerComponent implements OnInit {
     }
   ]
   modeCount: number = 0;
+  currentIndex: number;
   private audioEl: HTMLAudioElement;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   constructor(
     private store$: Store<StoreIndexModule>
   ) {
     const appStore$ = this.store$.pipe(select(getPlayer));
-    //appStore$.pipe(select(getSongList)).subscribe(list => this.watchList(list, 'songList'))
+    appStore$.pipe(select(getSongList)).subscribe(list => this.watchList(list, 'songList'))
     appStore$.pipe(select(getPlayList)).subscribe(list => this.watchList(list, 'playList'));
+    appStore$.pipe(select(getPlayMode)).subscribe(playMode => this.watchPlayMode(playMode));
+    appStore$.pipe(select(getCurrentIndex)).subscribe(currentIndex => this.watchCurrentIndex(currentIndex));
+    // 这个是 setCurrentIndex 触发的
     appStore$.pipe(select(getCurrentSong)).subscribe(song => this.watchCurrentSong(song));
-    appStore$.pipe(select(getPlayMode)).subscribe(playMode => this.watchPlayMode(playMode))
   }
 
   ngOnInit(): void {
     this.audioEl = this.audio.nativeElement;
   }
 
-  watchCurrentSong(song: Song) {
-    this.currentSong = song;
+  private watchCurrentSong(song: Song) {
+    if (song) {
+      this.currentSong = song;
+      this.playUrl = `https://music.163.com/song/media/outer/url?id=${this.currentSong.id}.mp3`;
+      this.duration = this.currentSong.dt / 1000;
+    }
   }
 
   onCanPlay() {
@@ -94,13 +101,7 @@ export class PlayerComponent implements OnInit {
   }
 
   private watchList(list: Song[], type: 'playList' | 'songList') {
-
     this[type] = list;
-    this.currentSong = list[list.length - 1];
-    if (this.currentSong) {
-     this.playUrl = `https://music.163.com/song/media/outer/url?id=${this.currentSong.id}.mp3`;
-     this.duration = this.currentSong.dt / 1000;
-    }
   }
 
   private play() {
@@ -110,6 +111,11 @@ export class PlayerComponent implements OnInit {
 
   private watchPlayMode(playMode: PlayMode) {
     this.currentMode = playMode;
+  }
+
+  private watchCurrentIndex(index: number) {
+    console.log('current');
+    this.currentIndex = index;
   }
 
   get picUrl(): string {
@@ -152,5 +158,14 @@ export class PlayerComponent implements OnInit {
 
   changeMode() {
     this.store$.dispatch(SetPlayMode({ playMode: this.modelTypes[++this.modeCount % 3]}))
+  }
+
+  onPrev(index: number) {
+    if (!this.songReady) { return; }
+    if (this.playList.length === 1) {
+
+    } else {
+      const newIndex = index < 0 ? this.playList.length - 1 : index;
+    }
   }
 }
