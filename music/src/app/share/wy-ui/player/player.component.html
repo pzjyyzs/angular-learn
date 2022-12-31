@@ -11,9 +11,9 @@
     <div class="hand"></div>
     <div class="wrap">
       <div class="btns">
-        <a class="prv">上一首</a>
-        <a href="javascript: void(0)" class="ply j-flag" [class.pas]="playing" (click)="onToggle()">播放/暂停(p)</a>
-        <a class="nxt">下一首</a>
+        <a href="javascript: void(0);" class="prv" (click)="onPrev(currentIndex - 1)">上一首</a>
+        <a href="javascript: void(0);" class="ply j-flag" [class.pas]="playing" (click)="onToggle()">播放/暂停(p)</a>
+        <a href="javascript: void(0);" class="nxt">下一首</a>
       </div>
 
       <div class="head j-flag">

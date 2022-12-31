@@ -102,10 +102,10 @@ export class RecommendComponent implements OnInit {
     this.isHoving = '';
   }
 
-  onPlay(item: Song) {
+  onPlay(item: Song, isPlay: boolean = false) {
     this.songService.getSongList(item).subscribe(list => {
       if (list.length) {
-        this.batchService.insertSong(list[0])
+        this.batchService.insertSong(list[0], true);
       } else {
         //this.a
       }

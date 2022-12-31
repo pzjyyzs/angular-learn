@@ -1,3 +1,4 @@
+import { SetSongList, SetCurrentIndex } from './../actions/play.action';
 import { Action, createReducer, on } from "@ngrx/store";
 import { PlayMode, Song } from "src/app/services/data-types";
 import { SetPlaying, SetPlayList, SetPlayMode } from "../actions/play.action";
@@ -44,6 +45,8 @@ const reducer = createReducer(
   on(SetPlaying, (state, { playing }) => ({ ...state, playing })),
   on(SetPlayList, (state, { playList }) => ({ ...state, playList })),
   on(SetPlayMode, (state, { playMode }) => ({ ...state, playMode })),
+  on(SetSongList, (state, { songList }) => ({ ...state, songList })),
+  on(SetCurrentIndex, (state, { currentIndex }) => ({ ...state, currentIndex })),
 )
 
 export function playerReducer(state: PlayState | undefined, action: Action) {
