@@ -1,0 +1,65 @@
+<div class="list" [hidden]="show">
+  <div class="listhd">
+    <div class="listhdc">
+      <h4>
+        播放列表(
+        <span class="j-flag">{{ songList.length }}</span>
+        )
+      </h4>
+
+      <a href="javascript:;" class="addall">
+        <span class="ico ico-add"></span>
+        收藏全部
+      </a>
+      <span class="line"></span>
+      <a href="javascript:;" class="clear">
+        <span class="ico icn-del"></span>
+        清除
+      </a>
+      <p class="lytit f-thide">歌名</p>
+      <span class="close">关闭</span>
+    </div>
+  </div>
+  <div class="listbd">
+    <img class="imgbg j-flag" src="" alt="">
+    <div class="msk"></div>
+    <div class="listbdc">
+      <ul class="f-cb">
+        <li *ngFor="let song of songList" [class.z-sel]="song.id === currentSong?.id">
+          <div class="col col-1">
+            <div class="playicn" [style.display]="song.id === currentSong?.id ? 'block' : 'none'"></div>
+          </div>
+          <div class="col col-2">{{ song.name }}</div>
+          <div class="col col-3">
+            <div class="icns">
+              <i class="ico icn-del"></i>
+              <i class="ico ico-dl"></i>
+              <i class="ico ico-share"></i>
+              <i class="ico ico-add"></i>
+            </div>
+          </div>
+          <div class="col col-4">
+            <span>
+              <a href="javascript:;" *ngFor="let singer of song.ar;let i = index">
+                {{ singer.name }}
+                <ng-container *ngIf="i !== song.ar.length - 1">
+                  /
+                </ng-container>
+              </a>
+            </span>
+          </div>
+          <div class="col col-5">{{ (song.dt / 1000) | formatTime }}</div>
+          <div class="col col-6">
+            <a href="javascript:;" class="ico ico-src"></a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="bline"></div>
+    <div class="msk2"></div>
+    <div class="listlyric"></div>
+    <div class="bline bline-1">
+      <span class="scrol scrol-1"></span>
+    </div>
+  </div>
+</div>

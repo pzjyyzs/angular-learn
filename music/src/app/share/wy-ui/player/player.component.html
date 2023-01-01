@@ -1,6 +1,11 @@
 
 <div class="g-btmbar">
-  <div class="m-playbar m-playbar-unlock">
+  <div
+    class="m-playbar m-playbar-unlock"
+    appClickoutside
+    [bindFlag]="bindFlag"
+    (onClickOutSide)="onClickOutSide($event)"
+  >
     <div class="updn">
       <div class="left f-fl">
         <a class="btn"></a>
@@ -13,7 +18,7 @@
       <div class="btns">
         <a href="javascript: void(0);" class="prv" (click)="onPrev(currentIndex - 1)">上一首</a>
         <a href="javascript: void(0);" class="ply j-flag" [class.pas]="playing" (click)="onToggle()">播放/暂停(p)</a>
-        <a href="javascript: void(0);" class="nxt">下一首</a>
+        <a href="javascript: void(0);" class="nxt" (click)="onNext(currentIndex + 1)">下一首</a>
       </div>
 
       <div class="head j-flag">
@@ -61,11 +66,17 @@
         <a href="javascript: void(0)" class="icn" [class]="currentMode.type" [title]="currentMode.type" (click)="changeMode()"></a>
         <span class="add f-pr">
           <span class="tip" style="display: none;">已添加到播放列表</span>
-          <a class="icn icn-list s-fc3">{{ playList.length }}</a>
+          <a href="javascript: void(0);" class="icn icn-list s-fc3" (click)="togglePanel()">{{ playList.length }}</a>
         </span>
         <!-- <div class="tip tip-1">循环</div> -->
       </div>
     </div>
+    <app-wy-player-panel
+      [playing]="playing"
+      [songList]="songList"
+      [currentSong]="currentSong"
+      [show]="showPanel"
+    ></app-wy-player-panel>
   </div>
 </div>
 

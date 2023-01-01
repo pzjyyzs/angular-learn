@@ -9,6 +9,8 @@ import { PlayerComponent } from './player/player.component';
 import { FormatTimePipe } from '../pipes/format-time.pipe';
 import { WySlideComponent } from './wy-slide/wy-slide.component';
 import { FormsModule } from '@angular/forms';
+import { WyPlayerPanelComponent } from './wy-player-panel/wy-player-panel.component';
+import { ClickoutsideDirective } from '../directives/clickoutside.directive';
 
 
 
@@ -21,6 +23,8 @@ import { FormsModule } from '@angular/forms';
     PlayerComponent,
     FormatTimePipe,
     WySlideComponent,
+    WyPlayerPanelComponent,
+    ClickoutsideDirective
   ],
   imports: [
     CommonModule,
@@ -34,7 +38,9 @@ import { FormsModule } from '@angular/forms';
     PlayCountPipe,
     PlayerComponent,
     FormatTimePipe,
-    WySlideComponent
+    WySlideComponent,
+    WyPlayerPanelComponent,
+    ClickoutsideDirective
   ]
 })
 export class WyUiModule { }

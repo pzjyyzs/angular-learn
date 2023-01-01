@@ -1,5 +1,5 @@
 import { getPlayMode, getCurrentIndex, getSongList } from './../../../store/selector/player.selector';
-import { SetPlayMode } from './../../../store/actions/play.action';
+import { SetPlayMode, SetCurrentIndex } from './../../../store/actions/play.action';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { PlayMode, Song } from 'src/app/services/data-types';
@@ -29,6 +29,7 @@ export class PlayerComponent implements OnInit {
   volume: number = 60;
   isPercentChange: boolean = false;
   showVolumnPanel: boolean = false;
+  showPanel: boolean = true;
   // 模式选择
   currentMode: PlayMode;
   modelTypes: PlayMode[] = [
@@ -47,6 +48,8 @@ export class PlayerComponent implements OnInit {
   ]
   modeCount: number = 0;
   currentIndex: number;
+
+  bindFlag: boolean = false;
   private audioEl: HTMLAudioElement;
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   constructor(
@@ -160,12 +163,45 @@ export class PlayerComponent implements OnInit {
     this.store$.dispatch(SetPlayMode({ playMode: this.modelTypes[++this.modeCount % 3]}))
   }
 
+  private updateIndex(index: number) {
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: index }));
+    this.songReady = false;
+  }
+
+  private loop() {
+    this.audioEl.currentTime = 0;
+    this.play();
+    // if ()
+  }
+
   onPrev(index: number) {
     if (!this.songReady) { return; }
     if (this.playList.length === 1) {
-
+      this.loop();
     } else {
       const newIndex = index < 0 ? this.playList.length - 1 : index;
+      this.updateIndex(newIndex);
+    }
+  }
+
+  onNext(index: number) {
+    if (!this.songReady) { return; }
+    if (this.playList.length === 1) {
+      this.loop();
+    } else {
+      const newIndex = index >= this.playList.length ? 0 : index;
+      this.updateIndex(newIndex);
+    }
+  }
+
+  togglePanel() {
+    this.showPanel = !this.showPanel;
+    this.bindFlag = !this.showPanel;
+  }
+
+  onClickOutSide(target: HTMLElement) {
+    if (target.dataset['act'] !== 'delete') {
+      this.showPanel = true;
     }
   }
 }

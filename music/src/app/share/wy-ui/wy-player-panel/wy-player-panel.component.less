@@ -1,0 +1,379 @@
+.ico {
+  height: 16px;
+}
+
+.list {
+  position: absolute;
+  left: 50%;
+  bottom: 47px;
+  _bottom: 46px;
+  width: 986px;
+  _width: 982px;
+  height: 301px;
+  margin-left: -493px;
+  _marign-left: -491px;
+
+  .close, .playicn, .ico {
+    background: url(../../../../assets/img/playlist.png) no-repeat 0 9999px;
+  }
+
+  ul {
+    color: #ccc;
+  }
+
+  li {
+    float: left;
+    width: 100%;
+    &.z-sel {
+      background-color: rgba(0,0,0,0.3);
+    }
+
+    &:hover {
+      background-color: rgba(0,0,0, 0.4);
+      .icns {
+        display: block;
+      }
+    }
+  }
+}
+
+.listhd, .listbd {
+  padding: 0 5px;
+  background: url(../../../../assets/img/playlist_bg.png) no-repeat;
+}
+
+.listhd {
+  background-position: 0 0;
+  height: 41px;
+  .listhdc {
+    position: relative;
+    height: 40px;
+
+    .clear, .addall {
+      position: absolute;
+      left: 490px;
+      top: 12px;
+      height: 15px;
+      line-height: 15px;
+      cursor: pointer;
+    }
+
+    h4 {
+      position: absolute;
+      top: 0;
+      left: 25px;
+      height: 39px;
+      line-height: 39px;
+      font-size: 14px;
+      color: #e2e2e2;
+    }
+
+    a {
+      color: #ccc;
+    }
+
+    .addall {
+      left: 398px;
+    }
+
+    .line {
+      position: absolute;
+      top: 13px;
+      left: 477px;
+      height: 15px;
+      border-left: 1px solid #000;
+      border-right: 1px solid #2c2c2c;
+    }
+
+    .clear {
+      position: absolute;
+      left: 490px;
+      top: 12px;
+      height: 15px;
+      line-height: 15px;
+      cursor: pointer;
+    }
+
+    .lytit {
+      position: absolute;
+      left: 595px;
+      top: 0;
+      width: 346px;
+      text-align: center;
+      height: 39px;
+      line-height: 39px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      overflow: hidden;
+      text-indent: -999px;
+      cursor: pointer;
+      background-position: -195px 9px;
+    }
+
+    .ico {
+      float: left;
+      margin: 1px 6px 0 0;
+    }
+
+    .icn-del {
+      width: 13px;
+      background-position: -51px 0;
+    }
+
+    .ico-add {
+      width: 16px;
+      background-position: -24px 0;
+    }
+
+    .lytit {
+      position: absolute;
+      left: 595px;
+      top: 0;
+      width: 346px;
+      text-align: center;
+      height: 39px;
+      line-height: 39px;
+      color: #fff;
+      font-size: 14px;
+    }
+  }
+}
+
+.listbd {
+  box-sizing: content-box;
+  position: absolute;
+  left: 0;
+  top: 41px;
+  width: 976px;
+  _width: 972px;
+  height: 260px;
+  overflow: hidden;
+  background-position: -1014px 0;
+  _background-position: -1018px 0;
+  background-repeat: repeat-y;
+
+  .msk {
+    position: absolute;
+    left: 2px;
+    _left: 0;
+    top: 0;
+    z-index: 2;
+    width: 558px;
+    height: 260px;
+    background: #121212;
+    opacity: .5;
+    filter: Alpha(opacity=50);
+  }
+
+  .imgbg {
+    position: absolute;
+    left: 2px;
+    _left: 0;
+    top: -1px;
+    z-index: 1;
+    width: 980px;
+    height: auto;
+    opacity: .2;
+    filter: Alpha(opacity=20);
+  }
+
+  .listbdc {
+    position: absolute;
+    left: 2px;
+    _left: 0;
+    top: 0;
+    z-index: 4;
+    height: 260px;
+    width: 553px;
+    overflow: hidden;
+  }
+
+  .bline {
+    position: absolute;
+    left: 555px;
+    _left: 553px;
+    top: -1px;
+    z-index: 2;
+    width: 6px;
+    height: 260px;
+    background: #000;
+    opacity: .5;
+    filter: Alpha(opacity=50);
+  }
+
+  .msk2 {
+    position: absolute;
+    left: 560px;
+    _left: 560px;
+    top: 0;
+    z-index: 3;
+    width: 420px;
+    height: 250px;
+    background: #121212;
+    opacity: .01;
+    filter: Alpha(opacity=1);
+  }
+
+  .listlyric {
+    position: absolute;
+    right: 40px;
+    top: 0;
+    z-index: 4;
+    margin: 21px 0 20px 0;
+    height: 219px;
+    width: 354px;
+    overflow: hidden;
+  }
+
+  .bline {
+    position: absolute;
+    left: 555px;
+    _left: 553px;
+    top: -1px;
+    z-index: 2;
+    width: 6px;
+    height: 260px;
+    background: #000;
+    opacity: .5;
+    filter: Alpha(opacity=50);
+  }
+
+  .bline-1 {
+    left: auto;
+    right: 2px;
+    _right: 0;
+  }
+
+  .scrol {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    width: 4px;
+    border-radius: 5px;
+    height: 100px;
+    cursor: pointer;
+    background: #868686;
+    border: 1px solid #a6a6a6;
+    opacity: .8;
+    filter: Alpha(opacity=80);
+  }
+
+  .scrol-1 {
+    left: auto;
+    right: 0;
+  }
+
+  .playicn {
+    display: none;
+    margin-top: 8px;
+    width: 10px;
+    height: 13px;
+    background-position: -182px 0;
+  }
+}
+
+.f-thide {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+.col {
+  box-sizing: content-box;
+  float: left;
+  padding-left: 10px;
+  height: 28px;
+  line-height: 28px;
+  _line-height: 29px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &-1 {
+    width: 10px;
+  }
+
+  &-2 {
+    width: 256px;
+  }
+
+  &-3 {
+    position: relative;
+    width: 78px;
+  }
+
+  &-4 {
+    width: 70px;
+  }
+
+  &-2, &-4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &-5 {
+    width: 35px;
+    color: #666;
+  }
+
+  &-6 {
+    width: 37px;
+    padding-left: 6px;
+  }
+
+  a {
+    color: #fff;
+  }
+
+  .ico {
+    float: right;
+    overflow: hidden;
+    margin: 7px 0 0 10px;
+    text-indent: -9999px;
+  }
+
+  .ico-src {
+    width: 14px;
+    margin-left: 0;
+    background-position: -80px 0px;
+  }
+
+  .icns {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
+    height: 23px;
+  }
+
+  .icn-del {
+    width: 13px;
+    background-position: -51px 0;
+  }
+
+  .ico-dl {
+    width: 14px;
+    background-position: -57px -50px;
+  }
+
+  .ico-share {
+    width: 14px;
+    background-position: 0 0;
+  }
+
+  .ico-add {
+    width: 16px;
+    background-position: -24px 0;
+  }
+
+}
