@@ -1,4 +1,4 @@
-import { Dj, Singer, Song, SongUrl } from './data-types';
+import { Dj, Singer, Song, SongUrl, Lyric } from './data-types';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
@@ -59,6 +59,24 @@ export class SongService {
     const songArr = Array.isArray(songs) ? songs.slice() : [songs];
     const ids = songArr.map(item => item.id).join(',');
     return this.getSongUrl(ids).pipe(map(urls => this.generateSongList(songArr, urls)));
+  }
+
+  getLyric(id: number): Observable<Lyric> {
+    const params = new HttpParams().set('id', id.toString());
+    return this.http.get<{[key: string]: { lyric: string; } }>(this.url + 'lyric', { params })
+      .pipe(map((res: { [key: string]: { lyric: string; } }) => {
+        try {
+          return {
+            lyric: res['lrc'].lyric,
+            tlyric: res['tlyric'].lyric,
+          };
+        } catch (err) {
+          return {
+            lyric: '',
+            tlyric: '',
+          };
+        }
+    }));
   }
 
   private generateSongList(songs: Song[], urls: SongUrl[]): Song[] {

@@ -31,7 +31,7 @@ export interface Song {
   name: string;
   url: string;
   ar: Singer[];
-  al: { id: number; name: string; picUrl: string };
+  al: { id: number; name: string; picUrl: string, pic_str: string };
   dt: number;
 }
 
@@ -43,4 +43,9 @@ export interface SongUrl {
 export interface PlayMode {
   type: 'loop' | 'random' | 'singleLoop';
   label: '循环' | '随机' | '单曲循环';
+}
+
+export interface Lyric {
+  lyric: string;
+  tlyric: string;
 }

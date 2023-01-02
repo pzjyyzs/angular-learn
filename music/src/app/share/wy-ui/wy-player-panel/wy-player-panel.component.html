@@ -16,12 +16,12 @@
         <span class="ico icn-del"></span>
         清除
       </a>
-      <p class="lytit f-thide">歌名</p>
+      <p class="lytit f-thide">{{ currentSong?.name }}</p>
       <span class="close">关闭</span>
     </div>
   </div>
   <div class="listbd">
-    <img class="imgbg j-flag" src="" alt="">
+    <img class="imgbg j-flag" [src]="picUrl" alt="">
     <div class="msk"></div>
     <div class="listbdc">
       <ul class="f-cb">
@@ -57,7 +57,11 @@
     </div>
     <div class="bline"></div>
     <div class="msk2"></div>
-    <div class="listlyric"></div>
+    <div class="listlyric">
+      <p *ngFor="let item of currentLyric; let i = index" [class.z-sel]="currentLineNum === i">
+        {{ item.txt }} <br /> {{ item.txtCn }}
+      </p>
+    </div>
     <div class="bline bline-1">
       <span class="scrol scrol-1"></span>
     </div>
