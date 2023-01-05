@@ -57,13 +57,10 @@
     </div>
     <div class="bline"></div>
     <div class="msk2"></div>
-    <div class="listlyric">
+    <div class="listlyric" #listlyric>
       <p *ngFor="let item of currentLyric; let i = index" [class.z-sel]="currentLineNum === i">
         {{ item.txt }} <br /> {{ item.txtCn }}
       </p>
-    </div>
-    <div class="bline bline-1">
-      <span class="scrol scrol-1"></span>
     </div>
   </div>
 </div>

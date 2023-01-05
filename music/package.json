@@ -23,6 +23,7 @@
     "@ant-design/icons-angular": "^14.1.0",
     "@ngrx/store": "^14.3.2",
     "@ngrx/store-devtools": "14.3.2",
+    "better-scroll": "^2.5.0",
     "ng-zorro-antd": "14.1.1",
     "query-string": "^7.1.1",
     "rxjs": "~7.5.0",

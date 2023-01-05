@@ -193,7 +193,7 @@
     z-index: 4;
     height: 260px;
     width: 553px;
-    overflow: hidden;
+    overflow: auto;
   }
 
   .bline {
@@ -230,7 +230,7 @@
     margin: 21px 0 20px 0;
     height: 219px;
     width: 354px;
-    overflow: hidden;
+    overflow: auto;
     p {
       color: #989898;
       word-wrap: break-word;
@@ -240,6 +240,12 @@
       height: 32px;
       min-height: 32px;
       transition: color 0.7s linear;
+
+      &.z-sel {
+        color: #fff;
+        font-size: 14px;
+        transition: color .7s linear;
+      }
     }
   }
 
