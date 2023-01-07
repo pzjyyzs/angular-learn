@@ -32,6 +32,7 @@ export class RecommendComponent implements OnInit {
   isHoving: string = '';
   singerList: Singer[];
   djList: Dj[];
+  showLogin: boolean = false;
 
   @ViewChild('carousel') carousel!: WyCarouselComponent;
 
@@ -111,5 +112,9 @@ export class RecommendComponent implements OnInit {
       }
       console.log(list);
     })
+  }
+
+  openLoginModal() {
+    this.showLogin = true;
   }
 }

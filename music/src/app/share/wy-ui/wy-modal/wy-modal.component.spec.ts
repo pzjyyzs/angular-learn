@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WyScrollComponent } from './wy-scroll.component';
+import { WyModalComponent } from './wy-modal.component';
 
-describe('WyScrollComponent', () => {
-  let component: WyScrollComponent;
-  let fixture: ComponentFixture<WyScrollComponent>;
+describe('WyModalComponent', () => {
+  let component: WyModalComponent;
+  let fixture: ComponentFixture<WyModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WyScrollComponent ]
+      declarations: [ WyModalComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WyScrollComponent);
+    fixture = TestBed.createComponent(WyModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,7 +3,6 @@ import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChildren, Eleme
 import { Song } from 'src/app/services/data-types';
 import { findIndex } from 'src/app/utils/array';
 import { BaseLyricLine, WyLyric } from './wy-lyric';
-import { WyScrollComponent } from '../player/wy-scroll/wy-scroll.component';
 
 @Component({
   selector: 'app-wy-player-panel',
@@ -55,6 +54,8 @@ export class WyPlayerPanelComponent implements OnInit {
         if (this.show) {
           // this.
         }
+      } else {
+        this.resetLyric();
       }
     }
 
