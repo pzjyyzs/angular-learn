@@ -5,6 +5,7 @@ import { ShareModule } from 'src/app/share/share.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { RecommendComponent } from './recommend/recommend.component';
 import { SheetInfoComponent } from './sheet-info/sheet-info.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -12,7 +13,9 @@ import { SheetInfoComponent } from './sheet-info/sheet-info.component';
   declarations: [HomeComponent, RecommendComponent, SheetInfoComponent],
   imports: [
     ShareModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    ReactiveFormsModule,
+
   ]
 })
 export class HomeModule { }
