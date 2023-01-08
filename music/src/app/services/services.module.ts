@@ -1,5 +1,6 @@
 import { InjectionToken, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { httpInterceptorProvides } from './http-interceptors';
 
 export const API_CONFIG = new InjectionToken('ApiConfigToken');
 
@@ -8,7 +9,8 @@ export const API_CONFIG = new InjectionToken('ApiConfigToken');
     CommonModule
   ],
   providers: [
-    { provide: API_CONFIG, useValue: '/api' }
+    { provide: API_CONFIG, useValue: '/api' },
+    httpInterceptorProvides
   ]
 })
 export class ServicesModule { }

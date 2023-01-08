@@ -46,7 +46,7 @@
           </div>
           <ul class="m-cvrlst f-cb">
             <li *ngFor="let song of songSheet">
-              <a [routerLink]="['../sheetinfo', song.id]" >
+              <a [routerLink]="['../sheetinfo', song.id]">
                 <app-sing-sheet [song]="song"></app-sing-sheet>
               </a>
             </li>
@@ -101,7 +101,7 @@
               <dt class="top">
                 <div class="cver u-cover u-cover-4">
                   <img [src]="toplist?.playlist?.coverImgUrl" alt="">
-                  <a href="" class="msk" ></a>
+                  <a href="" class="msk"></a>
                 </div>
                 <div class="tit">
                   <a href="">
@@ -115,11 +115,9 @@
               </dt>
               <dd>
                 <ol>
-                  <li
-                    (mouseover)="addClass(i, item, 'top')" (mouseleave)="removeClass()"
+                  <li (mouseover)="addClass(i, item, 'top')" (mouseleave)="removeClass()"
                     [class.z-hvr]="isHoving == i + item.name + 'top'"
-                    *ngFor="let item of toplist?.playlist?.tracks | slice:0:10;let i = index;"
-                  >
+                    *ngFor="let item of toplist?.playlist?.tracks | slice:0:10;let i = index;">
                     <span class="no" [class.no-top]="i + 1 < 4">{{ i + 1 }}</span>
                     <a href="" class="nm f-thide">{{ item.name }}</a>
                     <div class="oper">
@@ -138,7 +136,7 @@
               <dt class="top">
                 <div class="cver u-cover u-cover-4">
                   <img [src]="newList?.playlist?.coverImgUrl" alt="">
-                  <a href="" class="msk" ></a>
+                  <a href="" class="msk"></a>
                 </div>
                 <div class="tit">
                   <a href="">
@@ -152,11 +150,9 @@
               </dt>
               <dd>
                 <ol>
-                  <li
-                    (mouseover)="addClass(i, item, 'new')" (mouseleave)="removeClass()"
+                  <li (mouseover)="addClass(i, item, 'new')" (mouseleave)="removeClass()"
                     *ngFor="let item of newList?.playlist?.tracks | slice:0:10;let i = index;"
-                    [class.z-hvr]="isHoving == i + item.name + 'new'"
-                  >
+                    [class.z-hvr]="isHoving == i + item.name + 'new'">
                     <span class="no" [class.no-top]="i + 1 < 4">{{ i + 1 }}</span>
                     <a href="" class="nm f-thide">{{ item.name }}</a>
                     <div class="oper">
@@ -175,7 +171,7 @@
               <dt class="top">
                 <div class="cver u-cover u-cover-4">
                   <img [src]="hotList?.playlist?.coverImgUrl" alt="">
-                  <a href="" class="msk" ></a>
+                  <a href="" class="msk"></a>
                 </div>
                 <div class="tit">
                   <a href="">
@@ -189,18 +185,16 @@
               </dt>
               <dd>
                 <ol>
-                  <li
-                    (mouseover)="addClass(i, item, 'hot')" (mouseleave)="removeClass()"
+                  <li (mouseover)="addClass(i, item, 'hot')" (mouseleave)="removeClass()"
                     [class.z-hvr]="isHoving == i + item.name + 'hot'"
-                    *ngFor="let item of hotList?.playlist?.tracks | slice:0:10;let i = index;"
-                  >
-                  <span class="no" [class.no-top]="i + 1 < 4">{{ i + 1 }}</span>
-                  <a href="" class="nm f-thide">{{ item.name }}</a>
-                  <div class="oper">
-                    <a href="javascript: void(0);" class="s-bg s-bg-11" (click)="onPlay(item)"></a>
-                    <a href="" class="u-icn u-icn-81"></a>
-                    <a href="" class="s-bg s-bg-12"></a>
-                  </div>
+                    *ngFor="let item of hotList?.playlist?.tracks | slice:0:10;let i = index;">
+                    <span class="no" [class.no-top]="i + 1 < 4">{{ i + 1 }}</span>
+                    <a href="" class="nm f-thide">{{ item.name }}</a>
+                    <div class="oper">
+                      <a href="javascript: void(0);" class="s-bg s-bg-11" (click)="onPlay(item)"></a>
+                      <a href="" class="u-icn u-icn-81"></a>
+                      <a href="" class="s-bg s-bg-12"></a>
+                    </div>
                   </li>
                 </ol>
                 <div class="more">
@@ -267,5 +261,60 @@
 </div>
 
 <app-wy-modal [(ngModel)]="showLogin">
+  <div class="cnt-box-include">
+    <div class="g-bd">
+      <div class="m-cnt">
+        <form action="" [formGroup]="formModel" (ngSubmit)="onSubmit()">
+          <div class="inputbox">
+            <div class="u-input mbItlBox">
+              <!-- <label class="u-label f-dn">请输入手机号</label> -->
+              <div class="country">
+                <em>+86</em>
+              </div>
+              <input type="tel" class="dlemail" id="phone" placeholder="请输入手机号" formControlName="phone">
+            </div>
+          </div>
 
+          <div class="m-pccnt f-cb">
+            <div class="m-pcbox">
+              <div class="inputbox m-mb m-pc f-fl">
+                <div class="u-input">
+                  <input type="tel" class="j-inputtext pcin" placeholder="请输入短信验证码" formControlName="code">
+                </div>
+              </div>
+              <div class="pcbtn f-fl">
+                <a class="tabfocus getsmscode " href="javascript:void(0);" (click)="getLoginCode()"
+                  [class.disable]="codeBtnDisable">
+                  {{ codeStr }}
+                </a>
+              </div>
+              <div class="m-nerror">
+                <div class="j-icon ferrortail"></div>
+                <div class="ferrorhead">
+                  <ng-container
+                    *ngIf="formModel.controls['phone'].invalid && (formModel.controls['phone'].dirty || formModel.controls['phone'].touched )">
+                    <ng-container *ngIf="formModel.controls['phone'].errors?.['required']">
+                      请输入手机号
+                    </ng-container>
+                    <ng-container *ngIf="formModel.controls['phone'].errors?.['required']">
+                      手机号格式错误
+                    </ng-container>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="formModel.controls['code'].invalid && (formModel.controls['code'].dirty || formModel.controls['code'].touched )">
+                    <ng-container *ngIf="formModel.controls['code'].errors?.['required']">
+                      请输入验证码
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="f-cb loginbox">
+                <button type="submit" class="u-loginbtn btncolor tabfocus">登录</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </app-wy-modal>
