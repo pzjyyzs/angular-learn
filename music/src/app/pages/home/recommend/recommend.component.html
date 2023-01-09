@@ -262,12 +262,16 @@
 
 <app-wy-modal [(ngModel)]="showLogin">
   <div class="cnt-box-include">
-    <div class="g-bd">
+    <img [src]="qrImg" alt="">
+    <div class="qrimg-refresh" [hidden]="!isQrImgShow">
+      <p>二维码已失效</p>
+      <a class="qrimg-refresh-btn" href="javascript:;" (click)="reloadQrCode()">点击刷新</a>
+    </div>
+    <!--  <div class="g-bd">
       <div class="m-cnt">
         <form action="" [formGroup]="formModel" (ngSubmit)="onSubmit()">
           <div class="inputbox">
             <div class="u-input mbItlBox">
-              <!-- <label class="u-label f-dn">请输入手机号</label> -->
               <div class="country">
                 <em>+86</em>
               </div>
@@ -315,6 +319,6 @@
           </div>
         </form>
       </div>
-    </div>
+    </div> -->
   </div>
 </app-wy-modal>
