@@ -34,6 +34,28 @@ export class UserService {
       .pipe(map((res: SampleBack) => res.code));
   }
 
+  getQrCode() {
+    return this.http.get<{ data: { code: number, unikey: string } }>(this.url + `/login/qr/key?timerstamp=${Date.now()}`)
+      .pipe(map((res: { data: { code: number, unikey: string } }) => res.data));
+  }
+
+  getQrCodeImg(args: { key: string, qrimg: boolean, timerstamp: number }) {
+    const params = new HttpParams({ fromString: queryString.stringify(args) });
+    return this.http.get<{ data: { qrimg: string, qrurl: string } }>(this.url + `/login/qr/create`, { params })
+      .pipe(map((res: { data: { qrimg: string, qrurl: string } }) => res.data))
+  }
+
+  getQrStatus(args: { key: string, timerstamp: number }) {
+    const params = new HttpParams({ fromString: queryString.stringify(args) })
+    return this.http.get<{ code: number, message: string, cookie: string }>(this.url + `/login/qr/check`, { params })
+      .pipe(map((res: { code: number, message: string, cookie: string }) => res));
+  }
+
+  getLoginStatus(cookie: any) {
+    // const params = new HttpParams({ fromString: queryString.stringify(args) })
+    return this.http.post(this.url + `/login/status?timerstamp=${Date.now()}`, { cookie: cookie })
+      .pipe(map(res => res));
+  }
   private handlerError(error: HttpErrorResponse) {
     return throwError(() => {
       console.log('service handle error: ' + error);

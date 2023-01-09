@@ -56,6 +56,7 @@ export interface UserSheet {
 export interface LoginParams {
   phone: string;
   captcha: string;
+  realIP: string;
 }
 
 export interface SampleBack extends AnyJson {

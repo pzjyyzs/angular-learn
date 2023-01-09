@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs';
 import { Singer, SongSheet, Dj, Song } from './../../../services/data-types';
-import { combineLatest, interval, take, timer } from 'rxjs';
+import { combineLatest, interval, Observable, of, switchMap, take, timer } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Banner } from 'src/app/services/data-types';
 import { HomeService } from 'src/app/services/home.service';
@@ -46,10 +47,13 @@ export class RecommendComponent implements OnInit {
     this._indexColor = `url(${color}?imageView&blur=40x20)`;
   }
 
-  formModel: FormGroup;
+  /* formModel: FormGroup;
   codeStr = '获取验证码';
   codeTime = 30;
-  codeBtnDisable = false;
+  codeBtnDisable = false; */
+  qrImg: string | undefined = '';
+  isQrImgShow = false;
+  loginStatus$: Subscription;
   constructor(
     private homeService: HomeService,
     private songService: SongService,
@@ -77,10 +81,10 @@ export class RecommendComponent implements OnInit {
       this.djList = data[7];
     });
 
-    this.formModel = this.fb.group({
+    /* this.formModel = this.fb.group({
       phone: ['', [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       code: ['', [Validators.required, Validators.minLength(6)]]
-    });
+    }); */
   }
 
   ngOnInit(): void {
@@ -128,49 +132,92 @@ export class RecommendComponent implements OnInit {
 
   openLoginModal() {
     this.showLogin = true;
+    this.getQrCode();
   }
 
   onSubmit() {
-    if (!this.formModel.valid) {
-      let arg = {
-        phone: this.formModel.value['phone'],
-        captcha: this.formModel.value['code'],
-      }
-      this.userService.login(arg).subscribe({
-        next: user => {
-          console.log('user', user);
-        },
-        error: error => {
-          console.log('recommend error', error);
-        }
-      });
-    }
-    console.log('code', this.formModel)
+    /*  if (!this.formModel.valid) {
+       let arg = {
+         phone: this.formModel.value['phone'],
+         captcha: this.formModel.value['code'],
+         realIP: '116.25.146.177'
+       }
+       this.userService.login(arg).subscribe({
+         next: user => {
+           console.log('user', user);
+         },
+         error: error => {
+           console.log('recommend error', error);
+         }
+       });
+     }
+     console.log('code', this.formModel) */
   }
 
   getLoginCode() {
-    console.log('error',)
-    let phone = this.formModel.controls['phone'];
-    if (!phone?.errors) {
-      this.userService.sendCode(phone.value).subscribe(code => {
-        if (code === 200) {
+    /*  console.log('error',)
+     let phone = this.formModel.controls['phone'];
+     if (!phone?.errors) {
+       this.userService.sendCode(phone.value).subscribe(code => {
+         if (code === 200) {
 
-          interval(1000).pipe(take(this.codeTime + 1)).subscribe({
-            next: (x) => {
-              this.codeStr = `${this.codeTime - x}`;
-              this.codeBtnDisable = true;
-            },
-            error: () => { },
-            complete: () => {
-              this.codeStr = '获取验证码';
-              this.codeBtnDisable = false;
-            }
-          })
-        }
-      })
+           interval(1000).pipe(take(this.codeTime + 1)).subscribe({
+             next: (x) => {
+               this.codeStr = `${this.codeTime - x}`;
+               this.codeBtnDisable = true;
+             },
+             error: () => { },
+             complete: () => {
+               this.codeStr = '获取验证码';
+               this.codeBtnDisable = false;
+             }
+           })
+         }
+       })
 
-    }
+     } */
 
   }
 
+  reloadQrCode() {
+    this.isQrImgShow = false;
+    this.getQrCode();
+  }
+
+  getQrCode() {
+    let key: string;
+    const cookie = localStorage.getItem('cookie');
+    // this.getLoginStatus(cookie);
+    console.log('a')
+    this.userService.getQrCode().pipe(
+      switchMap((data: { code: number, unikey: string }) => {
+        if (data.code === 200) {
+          key = data.unikey;
+          return this.userService.getQrCodeImg({ key, qrimg: true, timerstamp: Date.now() })
+        }
+        return of(null)
+      })
+    ).subscribe(res => {
+      this.qrImg = res?.qrimg;
+      this.loginStatus$ = interval(3000).pipe(
+        switchMap(() => {
+          return this.userService.getQrStatus({ key, timerstamp: Date.now() })
+        })
+      ).subscribe(async (data) => {
+        console.log('data', data)
+        if (data.code === 800) {
+          this.isQrImgShow = true;
+        }
+        if (data.code === 803) {
+          this.loginStatus$.unsubscribe();
+          this.userService.getLoginStatus(data.cookie).subscribe(item => {
+            console.log('item', item)
+            localStorage.setItem('cookie', data.cookie);
+            this.showLogin = false;
+          })
+        }
+      })
+    })
+
+  }
 }

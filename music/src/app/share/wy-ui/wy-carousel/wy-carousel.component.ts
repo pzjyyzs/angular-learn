@@ -1,7 +1,9 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
+import {
+  AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
   Component, ContentChildren, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit,
   Optional,
-  Output, QueryList, Renderer2, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+  Output, QueryList, Renderer2, SimpleChanges, ViewChild, ViewEncapsulation
+} from '@angular/core';
 import { WyCarouselContentDirective } from './wy-carousel-content.directive';
 import { Platform } from '@angular/cdk/platform';
 import { Direction, Directionality } from '@angular/cdk/bidi';
@@ -26,7 +28,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   slickTrackEl!: HTMLElement;
   strategy?: CarouselStrategy;
 
-  transitionInProgress: number  | null = null;
+  transitionInProgress: number | null = null;
 
   private isTransiting = false;
   private destroy$ = new Subject<void>();
@@ -110,7 +112,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     this.cdr.markForCheck();
   }
 
-  private switchStrategy(): void{
+  private switchStrategy(): void {
     this.strategy = new CarouselStrategy(this, this.cdr, this.renderer, this.platform);
   }
 
@@ -119,7 +121,7 @@ export class WyCarouselComponent implements AfterContentInit, AfterViewInit, OnC
 
     this.transitionInProgress = window.setTimeout(() => {
       this.goTo(this.activeIndex + 1);
-    }, 2000);
+    }, 10000);
   }
 
   private clearScheduledTransition(): void {
