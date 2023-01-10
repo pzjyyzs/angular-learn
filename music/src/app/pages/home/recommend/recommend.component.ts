@@ -1,3 +1,4 @@
+import { getUserInfo } from './../../../store/selector/user.selector';
 import { Subscription } from 'rxjs';
 import { Singer, SongSheet, Dj, Song, User } from './../../../services/data-types';
 import { combineLatest, interval, Observable, of, switchMap, take, timer } from 'rxjs';
@@ -9,6 +10,9 @@ import { SongService } from 'src/app/services/song.service';
 import { BatchActionService } from 'src/app/store/batch-action.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { StoreIndexModule } from 'src/app/store/store.module';
+import { select, Store } from '@ngrx/store';
+import { getUser } from 'src/app/store/selector/user.selector';
 
 type Playlist = {
   coverImgUrl: string,
@@ -61,11 +65,11 @@ export class RecommendComponent implements OnInit {
     private userService: UserService,
     private batchService: BatchActionService,
     private fb: FormBuilder,
+    private store$: Store<StoreIndexModule>
   ) {
-    const cookie = localStorage.getItem('cookie');
     combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(), this.homeService.getTopAlbum(),
     this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678),
-    this.songService.getIndexSongList(), this.songService.getTopListDj(), this.userService.getLoginStatus(cookie)
+    this.songService.getIndexSongList(), this.songService.getTopListDj(),
     ]).subscribe(data => {
       console.log('123', data)
       this.banner = data[0];
@@ -81,11 +85,12 @@ export class RecommendComponent implements OnInit {
       this.hotList = data[5];
       this.singerList = data[6];
       this.djList = data[7];
-      if (data[8].code === 200) {
-        this.user = data[8].profile;
-      }
     });
 
+    const appStore$ = this.store$.pipe(select(getUser));
+    appStore$.pipe(select(getUserInfo)).subscribe(info => {
+      this.user = info;
+    })
     /* this.formModel = this.fb.group({
       phone: ['', [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       code: ['', [Validators.required, Validators.minLength(6)]]
