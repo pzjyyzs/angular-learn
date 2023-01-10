@@ -6,7 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { API_CONFIG, ServicesModule } from './services.module';
 import *  as queryString from 'query-string';
-import { LoginParams, SampleBack, User } from './member.types';
+import { LoginParams, SampleBack } from './member.types';
+import { User } from './data-types';
 
 
 @Injectable({
@@ -53,8 +54,8 @@ export class UserService {
 
   getLoginStatus(cookie: any) {
     // const params = new HttpParams({ fromString: queryString.stringify(args) })
-    return this.http.post(this.url + `/login/status?timerstamp=${Date.now()}`, { cookie: cookie })
-      .pipe(map(res => res));
+    return this.http.post<{ data: { code: number, account?: any, profile?: any } }>(this.url + `/login/status?timerstamp=${Date.now()}`, { cookie: cookie })
+      .pipe(map((res: { data: { code: number, account?: any, profile?: any } }) => res.data));
   }
   private handlerError(error: HttpErrorResponse) {
     return throwError(() => {

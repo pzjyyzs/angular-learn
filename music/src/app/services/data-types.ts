@@ -49,3 +49,9 @@ export interface Lyric {
   lyric: string;
   tlyric: string;
 }
+
+export interface User {
+  nickname: string;
+  userId: number;
+  avatarUrl: string;
+}

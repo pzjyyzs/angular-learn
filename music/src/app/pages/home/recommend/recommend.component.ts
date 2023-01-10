@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Singer, SongSheet, Dj, Song } from './../../../services/data-types';
+import { Singer, SongSheet, Dj, Song, User } from './../../../services/data-types';
 import { combineLatest, interval, Observable, of, switchMap, take, timer } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Banner } from 'src/app/services/data-types';
@@ -54,6 +54,7 @@ export class RecommendComponent implements OnInit {
   qrImg: string | undefined = '';
   isQrImgShow = false;
   loginStatus$: Subscription;
+  user: User;
   constructor(
     private homeService: HomeService,
     private songService: SongService,
@@ -61,9 +62,10 @@ export class RecommendComponent implements OnInit {
     private batchService: BatchActionService,
     private fb: FormBuilder,
   ) {
+    const cookie = localStorage.getItem('cookie');
     combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(), this.homeService.getTopAlbum(),
     this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678),
-    this.songService.getIndexSongList(), this.songService.getTopListDj(),
+    this.songService.getIndexSongList(), this.songService.getTopListDj(), this.userService.getLoginStatus(cookie)
     ]).subscribe(data => {
       console.log('123', data)
       this.banner = data[0];
@@ -79,6 +81,9 @@ export class RecommendComponent implements OnInit {
       this.hotList = data[5];
       this.singerList = data[6];
       this.djList = data[7];
+      if (data[8].code === 200) {
+        this.user = data[8].profile;
+      }
     });
 
     /* this.formModel = this.fb.group({
@@ -186,9 +191,6 @@ export class RecommendComponent implements OnInit {
 
   getQrCode() {
     let key: string;
-    const cookie = localStorage.getItem('cookie');
-    // this.getLoginStatus(cookie);
-    console.log('a')
     this.userService.getQrCode().pipe(
       switchMap((data: { code: number, unikey: string }) => {
         if (data.code === 200) {

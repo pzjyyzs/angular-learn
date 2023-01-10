@@ -142,10 +142,56 @@
   width: 250px;
   zoom: 1;
 
+
+  .n-myinfo {
+    box-sizing: content-box;
+    height: 105px;
+    padding-top: 20px;
+
+    .f-cb {
+      &:after {
+        clear: both;
+        content: '';
+        display: block;
+        height: 0;
+        visibility: hidden;
+      }
+    }
+
+    .head {
+      box-sizing: content-box;
+      float: left;
+      margin-left: 20px;
+      padding: 2px;
+      width: 80px;
+      height: 80px;
+      background-color: #fff;
+      border: 1px solid #dadada;
+
+      img {
+        display: block;
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .info {
+      float: left;
+      width: 115px;
+      margin-left: 18px;
+      padding-top: 3px;
+
+      h4 {
+        height: 20px;
+      }
+    }
+  }
+
   .n-myinfo-1 {
     height: 126px;
     padding-top: 0;
   }
+
 
   .note {
     width: 205px;
