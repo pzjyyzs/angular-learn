@@ -1,11 +1,69 @@
 <nz-layout>
   <nz-header class="m-top">
-    <div class="m-top-wrap">
-      <ul nz-menu nzMode="horizontal" class="m-top-list">
-        <li nz-menu-item class="m-top-item">nav 1</li>
-        <li nz-menu-item class="m-top-item">nav 2</li>
-        <li nz-menu-item class="m-top-item">nav 3</li>
+    <div class="wrap">
+      <h1 class="logo">
+      </h1>
+
+      <ul class="m-nav">
+        <li class="fst">
+          <span>
+            <a href="javascript:void(0)">
+              <em>发现音乐</em>
+            </a>
+          </span>
+        </li>
+        <li>
+          <span>
+            <a href="javascript:void(0)">
+              <em>我的音乐</em>
+            </a>
+          </span>
+        </li>
+        <li>
+          <span>
+            <a href="javascript:void(0)">
+              <em>关注</em>
+            </a>
+          </span>
+        </li>
+        <li>
+          <span>
+            <a href="javascript:void(0)">
+              <em>商城</em>
+            </a>
+          </span>
+        </li>
+        <li>
+          <span>
+            <a href="javascript:void(0)">
+              <em>音乐人</em>
+            </a>
+          </span>
+        </li>
+        <li class="lst">
+          <span>
+            <a href="javascript:void(0)">
+              <em>下载客户端</em>
+            </a>
+          </span>
+        </li>
       </ul>
+
+      <div class="m-srch f-pr">
+        <div class="srchbg">
+          <div class="parent">
+            <input type="text" class="txt j-flag" placeholder="音乐">
+          </div>
+        </div>
+      </div>
+
+      <a href="javascript:void(0)" class="m-topvd">创作者中心</a>
+
+      <div class="m-tophead f-pr">
+        <div class="head f-pr f-fl">
+          <img [src]="user.avatarUrl" alt="">
+        </div>
+      </div>
     </div>
   </nz-header>
   <nz-content>

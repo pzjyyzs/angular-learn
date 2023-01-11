@@ -18,22 +18,20 @@
   }
 
   &-item {
-    &:hover {
-
-    }
+    &:hover {}
   }
 }
 
 [nz-menu] {
   line-height: 70px;
   border-bottom: none;
-  & > li {
+
+  &>li {
     border-bottom: none;
   }
 }
 
-nz-content {
-}
+nz-content {}
 
 nz-footer {
   text-align: center;
@@ -45,3 +43,133 @@ nz-footer {
   min-height: 280px;
 }
 
+.wrap {
+  width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+
+
+  .logo {
+    width: 176px;
+    height: 69px;
+    background: url(../assets/img/topbar.png) no-repeat 0 9999px;
+    background-position: 0 0;
+
+    a {
+      width: 157px;
+      height: 100%;
+      padding-right: 20px;
+      text-indent: -9999px;
+    }
+  }
+
+  .m-nav {
+    display: flex;
+    align-items: center;
+
+    li {
+      position: relative;
+      background-position: right -300px;
+      height: 70px;
+      font-size: 14px;
+
+      &.fst {
+        span {
+          background: none;
+        }
+      }
+
+      span {
+        height: 70px;
+        font-size: 14px;
+      }
+    }
+
+    a {
+      height: 70px;
+      font-size: 14px;
+      padding: 0 9px;
+      text-align: center;
+      line-height: 70px;
+      color: #ccc;
+
+      &.z-slt {
+        background-color: #000;
+        text-decoration: none;
+        color: #fff;
+      }
+
+      em {
+        height: 70px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .m-tophead {
+    height: 45px;
+    margin-right: 20px;
+    padding: 0 22px 0 0;
+    background: url(../assets/img/topbar.png) no-repeat 0 9999px;
+    background-position: right -47px;
+    background-image: none;
+
+    .head {
+      margin-top: 1px;
+      width: 30px;
+      height: 30px;
+
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        vertical-align: unset;
+      }
+    }
+  }
+
+  .m-srch {
+    margin-left: 100px;
+    width: 158px;
+    height: 32px;
+
+    .srchbg {
+      width: 158px;
+      height: 32px;
+      background-position: 0 -99px;
+      background-color: #fff;
+      border-radius: 32px;
+    }
+
+    .parent {
+      display: block;
+      position: relative;
+      margin-right: 30px;
+      line-height: 16px;
+
+      input {
+        color: #333;
+        line-height: 16px;
+        width: 95%;
+        padding: 0;
+        margin: 8px 0 0 30px;
+        background: transparent;
+      }
+    }
+  }
+
+  .m-topvd {
+    width: 90px;
+    height: 32px;
+    margin-right: 12px;
+    margin-left: 12px;
+    box-sizing: border-box;
+    padding-left: 16px;
+    border: 1px solid #4F4F4F;
+    background-position: 0 -140px;
+    line-height: 33px;
+    color: #ccc;
+    border-radius: 20px;
+  }
+}

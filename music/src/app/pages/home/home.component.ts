@@ -11,15 +11,10 @@ import { Store } from '@ngrx/store';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private userService: UserService, private store$: Store<StoreIndexModule>) { }
+  constructor() { }
 
   ngOnInit(): void {
-    const cookie = localStorage.getItem('cookie');
-    this.userService.getLoginStatus(cookie).subscribe(data => {
-      if (data.code === 200) {
-        this.store$.dispatch(SetUser({ user: data.profile }));
-      }
-    })
+
   }
 
 }
