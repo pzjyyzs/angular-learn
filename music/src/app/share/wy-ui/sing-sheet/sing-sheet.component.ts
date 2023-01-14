@@ -1,5 +1,5 @@
 import { SongSheet } from './../../../services/data-types';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-sing-sheet',
@@ -9,9 +9,17 @@ import { Component, Input, OnInit } from '@angular/core';
 export class SingSheetComponent implements OnInit {
 
   @Input() song!: SongSheet;
+  @Output() playSheet = new EventEmitter<number>;
   constructor() { }
 
   ngOnInit(): void {
   }
+
+  onPlayList(event: MouseEvent) {
+    event.stopPropagation();
+    console.log('song id', this.song.id)
+    this.playSheet.emit(this.song.id);
+  }
+
 
 }

@@ -1,8 +1,12 @@
+import { SetCurrentIndex } from './../../../store/actions/play.action';
 import { SongService } from 'src/app/services/song.service';
-import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChildren, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChildren, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Song } from 'src/app/services/data-types';
 import { findIndex } from 'src/app/utils/array';
 import { BaseLyricLine, WyLyric } from './wy-lyric';
+import { Store } from '@ngrx/store';
+import { SetSongList, SetPlayList } from 'src/app/store/actions/play.action';
+import { StoreIndexModule } from 'src/app/store/store.module';
 
 @Component({
   selector: 'app-wy-player-panel',
@@ -16,6 +20,7 @@ export class WyPlayerPanelComponent implements OnInit {
   @Input() currentSong: Song | undefined;
   @Input() show: boolean = true;
 
+  @Output() closeChange = new EventEmitter<boolean>;
   get picUrl() {
     if (this.currentSong) {
       return `//music.163.com/api/img/blur/${this.currentSong.al.pic_str}`
@@ -33,9 +38,10 @@ export class WyPlayerPanelComponent implements OnInit {
 
   //@ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
   @ViewChild('listlyric') private listlyric: ElementRef<HTMLElement>;
-  constructor(private songServe: SongService) { }
+  constructor(private songServe: SongService, private store$: Store<StoreIndexModule>) { }
 
   ngOnInit(): void {
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -64,6 +70,33 @@ export class WyPlayerPanelComponent implements OnInit {
         // this.wyScroll.first.refreshScroll();
       }
     }
+  }
+
+  playSong(song: Song) {
+    let index = this.songList.findIndex(item => item.id === song.id);
+    if (index !== this.currentIndex) {
+      this.store$.dispatch(SetCurrentIndex({ currentIndex: index }));
+    }
+  }
+
+  deleteSong(index: number) {
+    let list = [...this.songList];
+    list.splice(index, 1)
+    this.store$.dispatch(SetSongList({ songList: list }));
+    this.store$.dispatch(SetPlayList({ playList: list }));
+    localStorage.setItem('songlist', JSON.stringify(list));
+
+  }
+
+  clearSongList() {
+    this.store$.dispatch(SetSongList({ songList: [] }));
+    this.store$.dispatch(SetPlayList({ playList: [] }));
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: 0 }));
+    localStorage.removeItem('songlist');
+  }
+
+  closePanel() {
+    this.closeChange.emit(false);
   }
 
   private updateCurrentIndex() {

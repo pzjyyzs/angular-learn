@@ -11,7 +11,8 @@
             <div class="cntc">
               <div class="hd f-cb">
                 <i class="f-fl u-icn u-icn-13 f-pr">
-                  <span style="display:inline-block;width:8px;height:8px;top:2px;background-size:cover;left:34px;"></span>
+                  <span
+                    style="display:inline-block;width:8px;height:8px;top:2px;background-size:cover;left:34px;"></span>
                 </i>
                 <div class="tit">
                   <h2 class="f-ff2 f-brk">{{ playList.name }}</h2>
@@ -20,12 +21,14 @@
 
               <div class="user f-cb">
                 <a href="" class="face">
-                  <img [src]="user?.profile.avatarUrl" alt="">
+                  <img [src]="sheetUser?.profile.avatarUrl" alt="">
                 </a>
                 <span class="name">
-                  <a href="" class="s-fc7">{{ user?.profile.nickname }}</a>
+                  <a href="" class="s-fc7">{{ sheetUser?.profile.nickname }}</a>
                 </span>
-                <img *ngIf="user?.identify"  style="height:13px;width:13px;display:inline-block;vertical-align:middle;" [src]="user?.identify.imageUrl" alt="">
+                <img *ngIf="sheetUser?.identify"
+                  style="height:13px;width:13px;display:inline-block;vertical-align:middle;"
+                  [src]="sheetUser?.identify.imageUrl" alt="">
                 <span class="time s-fc4">{{ playList.createTime | date: 'yyyy-MM-dd' }} 创建</span>
               </div>
 
@@ -118,7 +121,7 @@
                     <tr *ngFor="let track of this.playList.tracks;let i = index">
                       <td class="left">
                         <div class="hd">
-                          <span class="ply"></span>
+                          <span class="ply" (click)="onPlaySong(track, true)"></span>
                           <span class="num">{{ i + 1 }}</span>
                         </div>
                       </td>

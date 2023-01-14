@@ -1,11 +1,6 @@
-
 <div class="g-btmbar">
-  <div
-    class="m-playbar m-playbar-unlock"
-    appClickoutside
-    [bindFlag]="bindFlag"
-    (onClickOutSide)="onClickOutSide($event)"
-  >
+  <div class="m-playbar m-playbar-unlock" appClickoutside [bindFlag]="bindFlag"
+    (onClickOutSide)="onClickOutSide($event)">
     <div class="updn">
       <div class="left f-fl">
         <a class="btn"></a>
@@ -42,7 +37,8 @@
           <a class="src" *ngIf="currentSong"></a>
         </div>
         <div class="m-pbar">
-          <app-wy-slide  [(ngModel)]="percent" [progressBar]="progressBar" [needProgressBar]="true" (wyOnAfterChange)="onPercentChange($event)"></app-wy-slide>
+          <app-wy-slide [(ngModel)]="percent" [progressBar]="progressBar" [needProgressBar]="true"
+            (wyOnAfterChange)="onPercentChange($event)"></app-wy-slide>
           <span class="j-flag time">
             <em>{{ currentTime | formatTime }}</em> / {{ duration | formatTime}}
           </span>
@@ -59,11 +55,13 @@
         <div class="m-vol" [hidden]="!showVolumnPanel">
           <div class="barbg"></div>
           <div class="barbg-bar">
-            <app-wy-slide [(ngModel)]="volume" direction="vertical" (wyOnAfterChange)="onVolumeChange($event)"></app-wy-slide>
+            <app-wy-slide [(ngModel)]="volume" direction="vertical" (wyOnAfterChange)="onVolumeChange($event)">
+            </app-wy-slide>
           </div>
         </div>
         <a href="javascript: void(0)" class="icn icn-vol" (click)="toggleVolPanel()"></a>
-        <a href="javascript: void(0)" class="icn" [class]="currentMode.type" [title]="currentMode.type" (click)="changeMode()"></a>
+        <a href="javascript: void(0)" class="icn" [class]="currentMode.type" [title]="currentMode.type"
+          (click)="changeMode()"></a>
         <span class="add f-pr">
           <span class="tip" style="display: none;">已添加到播放列表</span>
           <a href="javascript: void(0);" class="icn icn-list s-fc3" (click)="togglePanel()">{{ playList.length }}</a>
@@ -71,14 +69,11 @@
         <!-- <div class="tip tip-1">循环</div> -->
       </div>
     </div>
-    <app-wy-player-panel
-      [playing]="playing"
-      [songList]="songList"
-      [currentSong]="currentSong"
-      [show]="showPanel"
-    ></app-wy-player-panel>
+    <app-wy-player-panel [playing]="playing" [songList]="songList" [currentSong]="currentSong" [show]="showPanel"
+      (closeChange)="closePanel($event)">
+    </app-wy-player-panel>
   </div>
 </div>
 
-<audio #audio [src]="playUrl" [volume]="volume / 100"
-  (canplay)="onCanPlay()" (progress)="onLoadbar()" (timeupdate)="onTimeUpdate($event)" (ended)="onEnded()"></audio>
+<audio #audio [src]="playUrl" [volume]="volume / 100" (canplay)="onCanPlay()" (progress)="onLoadbar()"
+  (timeupdate)="onTimeUpdate($event)" (ended)="onEnded()"></audio>

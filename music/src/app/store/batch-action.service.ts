@@ -20,13 +20,12 @@ export class BatchActionService {
       this.playerState = res
     });
     // this.store$.pipe(select(getMember)).subscribe(res => this.memberState = res);
-   }
+  }
 
   insertSong(song: Song, isPlay: boolean) {
     let songList = this.playerState.songList.slice();
     let playList = this.playerState.playList.slice();
     let insertIndex = this.playerState.currentIndex;
-    let isSongHas = playList.find(item => item.id === song.id);
     const pIndex = findIndex(playList, song);
     if (pIndex > -1) {
       if (isPlay) {
@@ -45,10 +44,21 @@ export class BatchActionService {
       }
       this.store$.dispatch(SetSongList({ songList }));
       this.store$.dispatch(SetPlayList({ playList }));
+      localStorage.setItem('songlist', JSON.stringify(songList));
     }
 
     if (insertIndex !== this.playerState.currentIndex) {
       this.store$.dispatch(SetCurrentIndex({ currentIndex: insertIndex }));
     }
+  }
+
+  insertSongList(song: Song[]) {
+    let songList = song;
+    let playList = song;
+    let insertIndex = 0;
+    this.store$.dispatch(SetSongList({ songList }));
+    this.store$.dispatch(SetPlayList({ playList }));
+    localStorage.setItem('songlist', JSON.stringify(songList));
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: insertIndex }));
   }
 }

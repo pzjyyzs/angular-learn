@@ -12,12 +12,12 @@
         收藏全部
       </a>
       <span class="line"></span>
-      <a href="javascript:;" class="clear">
+      <a href="javascript:;" class="clear" (click)="clearSongList()">
         <span class="ico icn-del"></span>
         清除
       </a>
       <p class="lytit f-thide">{{ currentSong?.name }}</p>
-      <span class="close">关闭</span>
+      <span class="close" (click)="closePanel()">关闭</span>
     </div>
   </div>
   <div class="listbd">
@@ -25,14 +25,15 @@
     <div class="msk"></div>
     <div class="listbdc">
       <ul class="f-cb">
-        <li *ngFor="let song of songList" [class.z-sel]="song.id === currentSong?.id">
+        <li *ngFor="let song of songList let i = index" [class.z-sel]="song.id === currentSong?.id"
+          (dblclick)="playSong(song)">
           <div class="col col-1">
             <div class="playicn" [style.display]="song.id === currentSong?.id ? 'block' : 'none'"></div>
           </div>
           <div class="col col-2">{{ song.name }}</div>
           <div class="col col-3">
             <div class="icns">
-              <i class="ico icn-del"></i>
+              <i data-act="delete" class="ico icn-del" (click)="deleteSong(i)"></i>
               <i class="ico ico-dl"></i>
               <i class="ico ico-share"></i>
               <i class="ico ico-add"></i>

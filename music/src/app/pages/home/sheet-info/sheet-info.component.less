@@ -29,6 +29,7 @@
     position: relative;
     margin: 0 0 12px;
     line-height: 24px;
+
     h2 {
       line-height: 24px;
       font-size: 20px;
@@ -67,13 +68,14 @@
   .btns {
     margin-bottom: 25px;
     margin-right: -10px;
+
     .u-btni-add {
       margin-right: 5px;
     }
 
     .u-btni {
       margin-right: 6px;
-      font-family: simsun,\5b8b\4f53;
+      font-family: simsun, \5b8b\4f53;
     }
   }
 
@@ -96,10 +98,12 @@
   .tags {
     margin: 25px 0 5px;
     line-height: 22px;
+
     .u-tag {
       float: left;
       margin: 0px 10px 3px 0;
     }
+
     b {
       float: left;
     }
@@ -125,7 +129,29 @@
   left: -4px;
 }
 
-.u-btni-share i, .u-btni-fav i, .u-btni-cmmt i, .u-btni-dl i, .u-btni-unfav i {
+.u-btni-share i,
+.u-btni-fav i,
+.u-btni-cmmt i,
+.u-btni-dl i,
+.u-btni-unfav i {
   padding-right: 2px;
   padding-left: 28px;
+}
+
+tr {
+  .hshow {
+    display: none;
+  }
+
+  &:hover {
+    .hshow {
+      display: block;
+      position: relative;
+      margin-right: -10px;
+    }
+
+    .u-dur {
+      display: none;
+    }
+  }
 }

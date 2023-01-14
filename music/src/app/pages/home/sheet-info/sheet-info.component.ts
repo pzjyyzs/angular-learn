@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { mergeMap } from 'rxjs';
+import { User, Song } from 'src/app/services/data-types';
 import { SongService } from 'src/app/services/song.service';
 import { UserService } from 'src/app/services/user.service';
+import { BatchActionService } from 'src/app/store/batch-action.service';
+import { getUser, getUserInfo } from 'src/app/store/selector/user.selector';
+import { StoreIndexModule } from 'src/app/store/store.module';
 
 @Component({
   selector: 'app-sheet-info',
@@ -12,14 +17,16 @@ import { UserService } from 'src/app/services/user.service';
 export class SheetInfoComponent implements OnInit {
 
   playList: any;
-  user: any;
-  description: { short: string, long: string} = { short: '', long: '' };
+  user: User;
+  description: { short: string, long: string } = { short: '', long: '' };
   controlDesc = {
     isExpand: false,
     label: '展开',
     iconCls: 'down'
   };
-  constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService) { }
+  sheetUser: any
+  constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService,
+    private store$: Store<StoreIndexModule>, private batchService: BatchActionService) { }
 
   ngOnInit(): void {
     const heroId = this.route.snapshot.paramMap.get('id');
@@ -33,13 +40,18 @@ export class SheetInfoComponent implements OnInit {
               console.log(this.playList.description.length)
               this.changeDesc(this.playList.description)
             }
-            return this.userService.getUser({uid: data.playlist.userId})
+            return this.userService.getUser({ uid: data.playlist.userId })
           })
         ).subscribe(data => {
           console.log(data);
-          this.user = data
+          this.sheetUser = data
         })
     }
+
+    const appStore$ = this.store$.pipe(select(getUser));
+    appStore$.pipe(select(getUserInfo)).subscribe(info => {
+      this.user = info;
+    })
   }
 
   toggleDesc() {
@@ -51,6 +63,10 @@ export class SheetInfoComponent implements OnInit {
       this.controlDesc.label = '展开';
       this.controlDesc.iconCls = 'down';
     }
+  }
+
+  onPlaySong(item: Song, isPlay: boolean) {
+    console.log('play', item)
   }
 
   private changeDesc(desc: string) {

@@ -1,3 +1,4 @@
+import { SetPlayList, SetSongList } from './../../../store/actions/play.action';
 import { getUserInfo } from './../../../store/selector/user.selector';
 import { Subscription } from 'rxjs';
 import { Singer, SongSheet, Dj, Song, User } from './../../../services/data-types';
@@ -13,6 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 import { StoreIndexModule } from 'src/app/store/store.module';
 import { select, Store } from '@ngrx/store';
 import { getUser } from 'src/app/store/selector/user.selector';
+import { Router } from '@angular/router';
 
 type Playlist = {
   coverImgUrl: string,
@@ -65,7 +67,8 @@ export class RecommendComponent implements OnInit {
     private userService: UserService,
     private batchService: BatchActionService,
     private fb: FormBuilder,
-    private store$: Store<StoreIndexModule>
+    private store$: Store<StoreIndexModule>,
+    private router: Router,
   ) {
     combineLatest([this.homeService.getBanners(), this.homeService.getTopPlaylist(), this.homeService.getTopAlbum(),
     this.songService.getSheet(19723756), this.songService.getSheet(3779629), this.songService.getSheet(3778678),
@@ -132,14 +135,18 @@ export class RecommendComponent implements OnInit {
   onPlay(item: Song, isPlay: boolean = false) {
     this.songService.getSongList(item).subscribe(list => {
       if (list.length) {
-        this.batchService.insertSong(list[0], true);
-      } else {
-        //this.a
+        this.batchService.insertSong(list[0], isPlay);
       }
-      console.log(list);
     })
   }
 
+  onPlayList(list: Song[] | undefined) {
+    if (list) {
+      this.songService.getSongList(list).subscribe(list => {
+        this.batchService.insertSongList(list.slice(0, 90));
+      })
+    }
+  }
   openLoginModal() {
     this.showLogin = true;
     this.getQrCode();
@@ -226,5 +233,17 @@ export class RecommendComponent implements OnInit {
       })
     })
 
+  }
+
+  toInfo(id: number) {
+    this.router.navigate(['/home/sheetinfo', id]);
+  }
+
+  playSheet(id: number) {
+    this.songService.getSheetSong(id).subscribe(songs => {
+      this.store$.dispatch(SetPlayList({ playList: songs }));
+      this.store$.dispatch(SetSongList({ songList: songs }));
+      localStorage.setItem('songlist', JSON.stringify(songs));
+    })
   }
 }

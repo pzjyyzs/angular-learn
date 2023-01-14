@@ -46,9 +46,7 @@
           </div>
           <ul class="m-cvrlst f-cb">
             <li *ngFor="let song of songSheet">
-              <a [routerLink]="['../sheetinfo', song.id]">
-                <app-sing-sheet [song]="song"></app-sing-sheet>
-              </a>
+              <app-sing-sheet [song]="song" (click)="toInfo(song.id)" (playSheet)="playSheet($event)"></app-sing-sheet>
             </li>
           </ul>
         </div>
@@ -108,7 +106,8 @@
                     <h3 class="f-fs1 f-thide">{{ toplist?.playlist?.name }}</h3>
                   </a>
                   <div class="btn">
-                    <a class="s-bg s-bg-9 f-tdn"></a>
+                    <a href="javascript: void(0);" class="s-bg s-bg-9 f-tdn"
+                      (click)="onPlayList(toplist?.playlist?.tracks)"></a>
                     <a class="s-bg s-bg-10 f-tdn subscribe-flag "></a>
                   </div>
                 </div>
@@ -121,8 +120,8 @@
                     <span class="no" [class.no-top]="i + 1 < 4">{{ i + 1 }}</span>
                     <a href="" class="nm f-thide">{{ item.name }}</a>
                     <div class="oper">
-                      <a href="javascript:void(0);" class="s-bg s-bg-11" (click)="onPlay(item)"></a>
-                      <a href="" class="u-icn u-icn-81"></a>
+                      <a href="javascript:void(0);" class="s-bg s-bg-11" (click)="onPlay(item, true)"></a>
+                      <a href="javascript:void(0);" class="u-icn u-icn-81" (click)="onPlay(item)"></a>
                       <a href="" class="s-bg s-bg-12"></a>
                     </div>
                   </li>
@@ -143,7 +142,8 @@
                     <h3 class="f-fs1 f-thide">{{ newList?.playlist?.name }}</h3>
                   </a>
                   <div class="btn">
-                    <a class="s-bg s-bg-9 f-tdn"></a>
+                    <a href="javascript: void(0);" class="s-bg s-bg-9 f-tdn"
+                      (click)="onPlayList(newList?.playlist?.tracks)"></a>
                     <a class="s-bg s-bg-10 f-tdn subscribe-flag "></a>
                   </div>
                 </div>
@@ -157,7 +157,7 @@
                     <a href="" class="nm f-thide">{{ item.name }}</a>
                     <div class="oper">
                       <a href="javascript: void(0);" class="s-bg s-bg-11" (click)="onPlay(item, true)"></a>
-                      <a href="" class="u-icn u-icn-81"></a>
+                      <a href="javascript:void(0);" class="u-icn u-icn-81" (click)="onPlay(item)"></a>
                       <a href="" class="s-bg s-bg-12"></a>
                     </div>
                   </li>
@@ -178,7 +178,8 @@
                     <h3 class="f-fs1 f-thide">{{ hotList?.playlist?.name }}</h3>
                   </a>
                   <div class="btn">
-                    <a class="s-bg s-bg-9 f-tdn"></a>
+                    <a href="javascript: void(0);" class="s-bg s-bg-9 f-tdn"
+                      (click)="onPlayList(hotList?.playlist?.tracks)"></a>
                     <a class="s-bg s-bg-10 f-tdn subscribe-flag "></a>
                   </div>
                 </div>
@@ -191,9 +192,9 @@
                     <span class="no" [class.no-top]="i + 1 < 4">{{ i + 1 }}</span>
                     <a href="" class="nm f-thide">{{ item.name }}</a>
                     <div class="oper">
-                      <a href="javascript: void(0);" class="s-bg s-bg-11" (click)="onPlay(item)"></a>
-                      <a href="" class="u-icn u-icn-81"></a>
-                      <a href="" class="s-bg s-bg-12"></a>
+                      <a href="javascript: void(0);" class="s-bg s-bg-11" (click)="onPlay(item, true)"></a>
+                      <a href="javascript: void(0);" class="u-icn u-icn-81" (click)="onPlay(item)"></a>
+                      <a href="javascript: void(0);" class="s-bg s-bg-12"></a>
                     </div>
                   </li>
                 </ol>

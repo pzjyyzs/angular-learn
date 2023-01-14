@@ -37,6 +37,11 @@ export class SongService {
       .pipe(map(res => res));
   }
 
+  getSheetSong(id: number): Observable<Song[]> {
+    const params = new HttpParams({ fromString: queryString.stringify({ id }) })
+    return this.http.get<{ songs: Song[] }>(this.url + '/playlist/track/all', { params })
+      .pipe(map((res: { songs: Song[] }) => res.songs))
+  }
   getIndexSongList(args: SingerParams = defaultParams): Observable<Singer[]> {
     const params = new HttpParams({ fromString: queryString.stringify(args) });
     return this.http.get<{ artists: Singer[] }>(this.url + '/artist/list', { params })
@@ -45,13 +50,13 @@ export class SongService {
 
   getTopListDj(args: DjParams = djParams): Observable<Dj[]> {
     const params = new HttpParams({ fromString: queryString.stringify(args) });
-    return this.http.get<{ data: { list: Dj[] }}>(this.url + '/dj/toplist/popular', { params })
-      .pipe(map((res: { data: { list: Dj[] }}) => res.data.list));
+    return this.http.get<{ data: { list: Dj[] } }>(this.url + '/dj/toplist/popular', { params })
+      .pipe(map((res: { data: { list: Dj[] } }) => res.data.list));
   }
 
   getSongUrl(ids: string): Observable<SongUrl[]> {
     const params = new HttpParams().set('id', ids).set('level', 'exhigh');
-    return this.http.get<{data: SongUrl[]}>(this.url + '/song/url/v1', { params })
+    return this.http.get<{ data: SongUrl[] }>(this.url + '/song/url/v1', { params })
       .pipe(map((res: { data: SongUrl[] }) => res.data));
   }
 
@@ -63,7 +68,7 @@ export class SongService {
 
   getLyric(id: number): Observable<Lyric> {
     const params = new HttpParams().set('id', id.toString());
-    return this.http.get<{[key: string]: { lyric: string; } }>(this.url + 'lyric', { params })
+    return this.http.get<{ [key: string]: { lyric: string; } }>(this.url + 'lyric', { params })
       .pipe(map((res: { [key: string]: { lyric: string; } }) => {
         try {
           return {
@@ -76,7 +81,7 @@ export class SongService {
             tlyric: '',
           };
         }
-    }));
+      }));
   }
 
   private generateSongList(songs: Song[], urls: SongUrl[]): Song[] {

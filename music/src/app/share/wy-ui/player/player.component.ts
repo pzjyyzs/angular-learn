@@ -86,15 +86,15 @@ export class PlayerComponent implements OnInit {
     /* if (!this.currentSong) {
 
     } else { */
-      if (this.songReady) {
-        this.playing = !this.playing;
-        if (this.playing) {
-          this.audioEl.play();
+    if (this.songReady) {
+      this.playing = !this.playing;
+      if (this.playing) {
+        this.audioEl.play();
 
-        } else {
-          this.audioEl.pause();
-        }
+      } else {
+        this.audioEl.pause();
       }
+    }
     // }
   }
 
@@ -117,7 +117,6 @@ export class PlayerComponent implements OnInit {
   }
 
   private watchCurrentIndex(index: number) {
-    console.log('current');
     this.currentIndex = index;
   }
 
@@ -125,17 +124,17 @@ export class PlayerComponent implements OnInit {
     return this.currentSong ? this.currentSong.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg';
   }
 
-  onLoadbar(){
+  onLoadbar() {
     let duration = this.audioEl.duration;
     var bufferedEnd = this.audioEl.buffered.end(this.audioEl.buffered.length - 1);
     if (duration > 0) {
-      this.progressBar = (bufferedEnd / duration)*100;
+      this.progressBar = (bufferedEnd / duration) * 100;
     }
   }
 
   onPercentChange(per: number | null) {
     if (this.currentSong && per) {
-      const currentTime =  this.duration * ( per / 100);
+      const currentTime = this.duration * (per / 100);
       this.audioEl.currentTime = currentTime;
     }
   }
@@ -153,14 +152,15 @@ export class PlayerComponent implements OnInit {
   onEnded() {
     this.playing = false;
     if (this.currentMode.type === 'singleLoop') {
-
+      this.play();
     } else {
-
+      let index = this.playList.length === this.currentIndex + 1 ? 0 : this.currentIndex + 1;
+      this.updateIndex(index);
     }
   }
 
   changeMode() {
-    this.store$.dispatch(SetPlayMode({ playMode: this.modelTypes[++this.modeCount % 3]}))
+    this.store$.dispatch(SetPlayMode({ playMode: this.modelTypes[++this.modeCount % 3] }))
   }
 
   private updateIndex(index: number) {
@@ -203,5 +203,9 @@ export class PlayerComponent implements OnInit {
     if (target.dataset['act'] !== 'delete') {
       this.showPanel = true;
     }
+  }
+
+  closePanel(flag: boolean) {
+    this.showPanel = true;
   }
 }
