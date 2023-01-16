@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { mergeMap } from 'rxjs';
+import { mergeMap, Subject } from 'rxjs';
 import { User, Song } from 'src/app/services/data-types';
 import { SongService } from 'src/app/services/song.service';
 import { UserService } from 'src/app/services/user.service';
 import { BatchActionService } from 'src/app/store/batch-action.service';
+import { getCurrentSong, getPlayer } from 'src/app/store/selector/player.selector';
 import { getUser, getUserInfo } from 'src/app/store/selector/user.selector';
 import { StoreIndexModule } from 'src/app/store/store.module';
 
@@ -25,6 +26,7 @@ export class SheetInfoComponent implements OnInit {
     iconCls: 'down'
   };
   sheetUser: any
+  currentSong: Song | undefined;
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService,
     private store$: Store<StoreIndexModule>, private batchService: BatchActionService) { }
 
@@ -35,23 +37,22 @@ export class SheetInfoComponent implements OnInit {
         .pipe(
           mergeMap(data => {
             this.playList = data.playlist;
-            console.log(this.playList)
             if (this.playList.description) {
-              console.log(this.playList.description.length)
               this.changeDesc(this.playList.description)
             }
             return this.userService.getUser({ uid: data.playlist.userId })
           })
         ).subscribe(data => {
-          console.log(data);
           this.sheetUser = data
         })
     }
 
     const appStore$ = this.store$.pipe(select(getUser));
+    const songStore$ = this.store$.pipe(select(getPlayer));
     appStore$.pipe(select(getUserInfo)).subscribe(info => {
       this.user = info;
-    })
+    });
+    songStore$.pipe(select(getCurrentSong)).subscribe(song => this.currentSong = song);
   }
 
   toggleDesc() {
@@ -65,10 +66,16 @@ export class SheetInfoComponent implements OnInit {
     }
   }
 
-  onPlaySong(item: Song, isPlay: boolean) {
-    console.log('play', item)
+  onPlaySong(song: Song, isPlay: boolean) {
+    this.batchService.insertSong(song, isPlay);
   }
 
+  playSheet(isPlay: boolean) {
+    this.songService.getSongList(this.playList.tracks).subscribe(list => {
+      this.batchService.insertSongList(list.slice(0, 90), isPlay);
+    })
+
+  }
   private changeDesc(desc: string) {
     if (desc.length < 99) {
       this.description = {

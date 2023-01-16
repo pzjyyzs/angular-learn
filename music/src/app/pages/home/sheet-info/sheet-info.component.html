@@ -33,13 +33,13 @@
               </div>
 
               <div class="btns f-cb">
-                <a href="" class="u-btn2 u-btn2-2 u-btni-addply f-fl">
+                <a href="javascript: void(0);" class="u-btn2 u-btn2-2 u-btni-addply f-fl" (click)="playSheet(true)">
                   <i>
                     <em class="ply"></em>
                     播放
                   </i>
                 </a>
-                <a href="" class="u-btni u-btni-add"></a>
+                <a href="javascript: void(0);" class="u-btni u-btni-add" (click)="playSheet(false)"></a>
                 <a class="u-btni u-btni-fav">
                   <i>{{ playList.subscribedCount }}</i>
                 </a>
@@ -121,7 +121,8 @@
                     <tr *ngFor="let track of this.playList.tracks;let i = index">
                       <td class="left">
                         <div class="hd">
-                          <span class="ply" (click)="onPlaySong(track, true)"></span>
+                          <span class="ply " (click)="onPlaySong(track, true)"
+                            [class.ply-z-slt]="currentSong?.id === track.id"></span>
                           <span class="num">{{ i + 1 }}</span>
                         </div>
                       </td>
@@ -131,7 +132,8 @@
                       <td class="s-fc3">
                         <span class="u-dur">{{ track.dt }}</span>
                         <div class="opt hshow">
-                          <a class="u-icn u-icn-81 icn-add"></a>
+                          <a href="javascript:void(0);" class="u-icn u-icn-81 icn-add"
+                            (click)="onPlaySong(track, false)"></a>
                           <span class="icn icn-fav"></span>
                           <span class="icn icn-share"></span>
                         </div>
@@ -153,8 +155,12 @@
             </div>
           </div>
         </div>
+
+        <app-wy-comment></app-wy-comment>
       </div>
     </div>
+
+
   </div>
   <div class="g-sd4"></div>
 </div>

@@ -143,7 +143,7 @@ export class RecommendComponent implements OnInit {
   onPlayList(list: Song[] | undefined) {
     if (list) {
       this.songService.getSongList(list).subscribe(list => {
-        this.batchService.insertSongList(list.slice(0, 90));
+        this.batchService.insertSongList(list.slice(0, 90), true);
       })
     }
   }

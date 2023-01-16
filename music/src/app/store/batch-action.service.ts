@@ -52,13 +52,15 @@ export class BatchActionService {
     }
   }
 
-  insertSongList(song: Song[]) {
+  insertSongList(song: Song[], isPlay: boolean) {
     let songList = song;
     let playList = song;
     let insertIndex = 0;
     this.store$.dispatch(SetSongList({ songList }));
     this.store$.dispatch(SetPlayList({ playList }));
     localStorage.setItem('songlist', JSON.stringify(songList));
-    this.store$.dispatch(SetCurrentIndex({ currentIndex: insertIndex }));
+    if (isPlay) {
+      this.store$.dispatch(SetCurrentIndex({ currentIndex: insertIndex }));
+    }
   }
 }

@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { WyPlayerPanelComponent } from './wy-player-panel/wy-player-panel.component';
 import { ClickoutsideDirective } from '../directives/clickoutside.directive';
 import { WyModalComponent } from './wy-modal/wy-modal.component';
+import { WyCommentComponent } from './wy-comment/wy-comment.component';
 
 
 
@@ -27,6 +28,7 @@ import { WyModalComponent } from './wy-modal/wy-modal.component';
     WyPlayerPanelComponent,
     ClickoutsideDirective,
     WyModalComponent,
+    WyCommentComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,8 @@ import { WyModalComponent } from './wy-modal/wy-modal.component';
     WySlideComponent,
     WyPlayerPanelComponent,
     ClickoutsideDirective,
-    WyModalComponent
+    WyModalComponent,
+    WyCommentComponent
   ]
 })
 export class WyUiModule { }
