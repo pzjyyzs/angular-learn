@@ -84,6 +84,12 @@ export class SongService {
       }));
   }
 
+  getComment(id: string, offset: number = 1): Observable<any> {
+    const params = new HttpParams({ fromString: queryString.stringify({ id, offset, limit: 20 }) });
+    return this.http.get(this.url + '/comment/playlist', { params })
+      .pipe(map(res => res));
+  }
+
   private generateSongList(songs: Song[], urls: SongUrl[]): Song[] {
     const result: Song[] = [];
     songs.forEach(song => {

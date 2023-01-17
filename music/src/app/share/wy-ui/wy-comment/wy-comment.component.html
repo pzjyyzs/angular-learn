@@ -3,13 +3,76 @@
     <div class="u-title u-title-1">
       <h3><span class="f-ff2">评论</span></h3>
       <span class="sub s-fc3">
-        共 <span class="j-flag">1980</span> 条评论
+        共 <span class="j-flag">{{ total }}</span> 条评论
       </span>
     </div>
     <div class="m-cmmt">
       <div class="iptarea">
-        <div class="head"></div>
-        <div class="j-flag"></div>
+        <div class="head">
+          <img [src]="user?.avatarUrl" alt="">
+        </div>
+        <div class="j-flag">
+          <div>
+            <div class="m-cmmtipt f-cb f-pr">
+              <div class="u-txtwrap holder-parent f-pr">
+                <textarea class="u-txt area j-flag"></textarea>
+              </div>
+              <div class="btns f-cb f-pr">
+                <a href="javascript:void(0);" class="btn u-btn u-btn-1 j-flag">评论</a>
+                <span class="zs s-fc4 j-flag">140</span>
+
+              </div>
+              <div class="corr u-arr">
+                <em class="arrline">◆</em>
+                <span class="arrclr">◆</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cmmts j-flag">
+        <h3 class="u-hd4">最新评论( {{ total }} )</h3>
+        <div class="itm" *ngFor="let item of list">
+          <div class="head">
+            <img [src]="item.user.avatarUrl" alt="">
+          </div>
+
+          <div class="cntwrap">
+            <div>
+              <div class="cnt f-brk">
+                <a href="" class="s-fc7">{{ item.user.nickname }}</a>
+                <!-- <img
+                  src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4788940880/1a1f/68f5/b59a/b444b81b88567108ba88194fa29144f5.png"
+                  width="13" height="13" alt=""> -->
+                : {{ item.content }}
+              </div>
+            </div>
+
+            <div class="que f-brk f-pr s-fc3" *ngIf="item.beReplied && item.beReplied.length > 0">
+              <ng-container *ngFor="let replied of item.beReplied">
+                <span class="darr">
+                  <i class="bd">◆</i>
+                  <i class="bg">◆</i>
+                </span>
+                <a href="" class="s-fc7">{{ replied.user.nickname }}</a>
+                ： {{ replied.content }}
+              </ng-container>
+
+
+            </div>
+
+            <div class="rp">
+              <div class="time s-fc4">{{ item.timeStr }}</div>
+              <!--  <span class="dlt"></span> -->
+              <a href="javascript:void(0);">
+                <i class="zan u-icn2 u-icn2-12"></i> ({{ item.likedCount }})
+              </a>
+              <span class="sep">|</span>
+              <a href="javascript:void(0);" class="s-fc3">回复</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

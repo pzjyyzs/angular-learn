@@ -176,10 +176,71 @@ button {
   color: #666;
 }
 
+.s-fc4,
+a.s-fc4:hover {
+  color: #999;
+}
+
 .s-bg,
 .v-hd2,
 .n-disk li {
   background: url(../img/index.png) no-repeat 0 9999px;
+}
+
+.u-btn,
+div.u-page a,
+div.u-page a.js-selected,
+div.u-page a.znxt.js-disabled,
+div.u-page a.zprv.js-disabled {
+  background: url(../img/button.png) no-repeat 0 9999px;
+}
+
+.u-btn {
+  display: inline-block;
+
+  &-1 {
+    width: 46px;
+    height: 25px;
+    background-position: -84px -64px;
+    color: #fff;
+    text-align: center;
+    line-height: 25px;
+  }
+}
+
+.u-hd4 {
+  position: relative;
+  top: 1px;
+  height: 20px;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.u-arr {
+  width: 13px;
+  height: 14px;
+  left: -7px;
+  overflow: hidden;
+
+  .arrline,
+  .arrclr,
+  .arriner {
+    display: block;
+    font-family: "SimSun";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    height: 10px;
+    line-height: normal;
+  }
+
+  .arrline {
+    color: #cdcdcd;
+  }
+
+  .arrclr {
+    margin: -10px 0 0 1px;
+    color: #fff;
+  }
 }
 
 .u-cover {
@@ -274,6 +335,9 @@ button {
   background: url(../img/icon.png) no-repeat 0 9999px;
 }
 
+.u-icn2 {
+  background: url(../img/icon2.png) no-repeat 0 9999px;
+}
 
 .u-icn-81 {
   width: 13px;
@@ -281,13 +345,13 @@ button {
   background-position: 0 -700px;
 }
 
-.u-icn,
-.u-icn2,
-.u-icn3 {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: middle;
+.u-icn2-12,
+.u-icn2-13 {
+  width: 15px;
+  height: 14px;
+  background-position: -150px 0;
 }
+
 
 .s-bg-12 {
   background-position: -297px -268px;
@@ -544,13 +608,6 @@ button {
   display: none;
 }
 
-.u-icn,
-.u-icn2,
-.u-icn3 {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: middle;
-}
 
 .u-title {
   box-sizing: content-box;
@@ -590,6 +647,11 @@ button {
       margin-top: 5px;
     }
   }
+}
+
+.s-fc7,
+a.s-fc7:hover {
+  color: #0c73c2;
 }
 
 .s-fc6,
@@ -744,4 +806,29 @@ a.s-fc3:hover {
   height: 0;
   width: 100%;
   z-index: 1002;
+}
+
+div.holder-parent {
+  position: relative;
+  zoom: 1;
+}
+
+.u-txtwrap {
+  padding-right: 14px;
+}
+
+.u-txt {
+  height: 19px;
+  margin: 0;
+  padding: 5px 6px 6px;
+  border: 1px solid #cdcdcd;
+  border-radius: 2px;
+  line-height: 19px;
+  box-sizing: content-box;
+}
+
+textarea.u-txt,
+div.u-txt {
+  width: 100%;
+  margin-right: -20px;
 }

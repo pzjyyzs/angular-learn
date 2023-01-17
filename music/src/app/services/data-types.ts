@@ -55,3 +55,20 @@ export interface User {
   userId: number;
   avatarUrl: string;
 }
+
+export interface Replied {
+  beRepliedCommentId: number;
+  content: string;
+  user: User;
+}
+
+export interface Comment {
+  commentId: number;
+  content: string;
+  timeStr: string;
+  user: User;
+  needDisplayTime: boolean;
+  likedCount: number;
+  liked: boolean;
+  beReplied: Array<Replied>;
+}

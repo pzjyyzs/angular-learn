@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { User, Comment } from 'src/app/services/data-types';
 
 @Component({
   selector: 'app-wy-comment',
@@ -7,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WyCommentComponent implements OnInit {
 
+  @Input() list: Array<Comment>;
+  @Input() total: number;
+  @Input() user?: User;
   constructor() { }
 
   ngOnInit(): void {

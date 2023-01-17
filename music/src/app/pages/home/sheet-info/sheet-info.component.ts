@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { mergeMap, Subject } from 'rxjs';
-import { User, Song } from 'src/app/services/data-types';
+import { forkJoin, mergeMap, Subject } from 'rxjs';
+import { User, Song, Comment } from 'src/app/services/data-types';
 import { SongService } from 'src/app/services/song.service';
 import { UserService } from 'src/app/services/user.service';
 import { BatchActionService } from 'src/app/store/batch-action.service';
@@ -27,6 +27,9 @@ export class SheetInfoComponent implements OnInit {
   };
   sheetUser: any
   currentSong: Song | undefined;
+  offset: number = 1;
+  commentList: Array<Comment>;
+  commentTotal: number;
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService,
     private store$: Store<StoreIndexModule>, private batchService: BatchActionService) { }
 
@@ -37,13 +40,18 @@ export class SheetInfoComponent implements OnInit {
         .pipe(
           mergeMap(data => {
             this.playList = data.playlist;
+            console.log('playlist', data)
             if (this.playList.description) {
               this.changeDesc(this.playList.description)
             }
-            return this.userService.getUser({ uid: data.playlist.userId })
+            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(heroId, this.offset)])
           })
         ).subscribe(data => {
-          this.sheetUser = data
+          this.sheetUser = data[0];
+          this.commentList = data[1].comments;
+          this.commentTotal = data[1].total;
+          console.log('sheet', data[1])
+
         })
     }
 
