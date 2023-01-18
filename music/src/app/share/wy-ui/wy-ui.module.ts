@@ -13,6 +13,7 @@ import { WyPlayerPanelComponent } from './wy-player-panel/wy-player-panel.compon
 import { ClickoutsideDirective } from '../directives/clickoutside.directive';
 import { WyModalComponent } from './wy-modal/wy-modal.component';
 import { WyCommentComponent } from './wy-comment/wy-comment.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 
@@ -29,6 +30,7 @@ import { WyCommentComponent } from './wy-comment/wy-comment.component';
     ClickoutsideDirective,
     WyModalComponent,
     WyCommentComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { WyCommentComponent } from './wy-comment/wy-comment.component';
     WyPlayerPanelComponent,
     ClickoutsideDirective,
     WyModalComponent,
-    WyCommentComponent
+    WyCommentComponent,
+    PaginationComponent
   ]
 })
 export class WyUiModule { }
