@@ -1,32 +1,42 @@
-<ul>
+<ul *ngIf="pageSize">
   <li class="prev">
     <button class="item-link">
       <span nz-icon nzType="left" nzTheme="outline"></span>
     </button>
   </li>
 
-  <li class="item">
-    <a href="javascript:;">1</a>
-  </li>
-  <li class="item item-active">
-    <a href="javascript:;">2</a>
-  </li>
-  <li class="item">
-    <a href="javascript:;">3</a>
-  </li>
-  <li class="item">
-    <a href="javascript:;">4</a>
-  </li>
-  <li class="item">
-    <a href="javascript:;">5</a>
-  </li>
-
-  <li class="item">
+  <li class="jump-next" *ngIf="showPrevBtn">
     <a href="javascript:;">
       <div class="item-container">
 
+        <span class="jump-next-right" nz-icon nzType="double-left" nzTheme="outline"></span>
         <span class="item-ellipsis">•••</span>
       </div>
     </a>
+  </li>
+
+  <li class="item" *ngFor="let num of pageArr" [class.item-active]="num === currentIndex"
+    (click)="changeCurrentIndex(num)">
+    <a href="javascript:;">{{num}}</a>
+  </li>
+
+  <li class="jump-next" *ngIf="showNextBtn">
+    <a href="javascript:;">
+      <div class="item-container">
+
+        <span class="jump-next-right" nz-icon nzType="double-right" nzTheme="outline"></span>
+        <span class="item-ellipsis">•••</span>
+      </div>
+    </a>
+  </li>
+
+  <li class="item">
+    <a href="javascript:;">{{ pageSize }}</a>
+  </li>
+
+  <li class="prev">
+    <button class="item-link">
+      <span nz-icon nzType="right" nzTheme="outline"></span>
+    </button>
   </li>
 </ul>

@@ -30,6 +30,7 @@ export class SheetInfoComponent implements OnInit {
   offset: number = 1;
   commentList: Array<Comment>;
   commentTotal: number;
+  commentPageCount: number = 20;
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService,
     private store$: Store<StoreIndexModule>, private batchService: BatchActionService) { }
 
@@ -44,7 +45,7 @@ export class SheetInfoComponent implements OnInit {
             if (this.playList.description) {
               this.changeDesc(this.playList.description)
             }
-            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(heroId, this.offset)])
+            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(heroId, this.offset, this.commentPageCount)])
           })
         ).subscribe(data => {
           this.sheetUser = data[0];

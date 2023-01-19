@@ -11,6 +11,9 @@ export class WyCommentComponent implements OnInit {
   @Input() list: Array<Comment>;
   @Input() total: number;
   @Input() user?: User;
+  @Input() currentIndex: number;
+  @Input() pageCount: number;
+
   constructor() { }
 
   ngOnInit(): void {

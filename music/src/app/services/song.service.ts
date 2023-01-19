@@ -84,8 +84,8 @@ export class SongService {
       }));
   }
 
-  getComment(id: string, offset: number = 1): Observable<any> {
-    const params = new HttpParams({ fromString: queryString.stringify({ id, offset, limit: 20 }) });
+  getComment(id: string, offset: number = 1, pageCount: number = 20): Observable<any> {
+    const params = new HttpParams({ fromString: queryString.stringify({ id, offset, limit: pageCount }) });
     return this.http.get(this.url + '/comment/playlist', { params })
       .pipe(map(res => res));
   }
