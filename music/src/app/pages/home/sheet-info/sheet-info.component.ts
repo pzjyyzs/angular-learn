@@ -31,13 +31,14 @@ export class SheetInfoComponent implements OnInit {
   commentList: Array<Comment>;
   commentTotal: number;
   commentPageCount: number = 20;
+  playListId: string | null = '';
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService,
     private store$: Store<StoreIndexModule>, private batchService: BatchActionService) { }
 
   ngOnInit(): void {
-    const heroId = this.route.snapshot.paramMap.get('id');
-    if (heroId) {
-      this.songService.getSheet(parseInt(heroId))
+    this.playListId = this.route.snapshot.paramMap.get('id');
+    if (this.playListId) {
+      this.songService.getSheet(parseInt(this.playListId))
         .pipe(
           mergeMap(data => {
             this.playList = data.playlist;
@@ -45,7 +46,7 @@ export class SheetInfoComponent implements OnInit {
             if (this.playList.description) {
               this.changeDesc(this.playList.description)
             }
-            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(heroId, this.offset, this.commentPageCount)])
+            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(this.playListId!, this.offset, this.commentPageCount)])
           })
         ).subscribe(data => {
           this.sheetUser = data[0];
@@ -85,6 +86,14 @@ export class SheetInfoComponent implements OnInit {
     })
 
   }
+
+  changeIndex(index: number) {
+    this.songService.getComment(this.playListId!, index * this.commentPageCount, this.commentPageCount).subscribe(data => {
+      this.commentList = data.comments;
+      this.offset = index;
+    })
+  }
+
   private changeDesc(desc: string) {
     if (desc.length < 99) {
       this.description = {

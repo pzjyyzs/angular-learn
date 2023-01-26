@@ -1,12 +1,16 @@
 <ul *ngIf="pageSize">
-  <li class="prev">
-    <button class="item-link">
+  <li class="prev" [class.disabled]="currentIndex === 1">
+    <button class="item-link" [disabled]="currentIndex === 1" (click)="changeCurrentIndex(currentIndex - 1)">
       <span nz-icon nzType="left" nzTheme="outline"></span>
     </button>
   </li>
 
+  <li class="item" *ngIf="currentIndex > 3">
+    <a href="javascript:;" (click)="changeCurrentIndex(1)">{{ 1 }}</a>
+  </li>
+
   <li class="jump-next" *ngIf="showPrevBtn">
-    <a href="javascript:;">
+    <a href="javascript:;" (click)="changeCurrentIndex(currentIndex - 5)">
       <div class="item-container">
 
         <span class="jump-next-right" nz-icon nzType="double-left" nzTheme="outline"></span>
@@ -21,7 +25,7 @@
   </li>
 
   <li class="jump-next" *ngIf="showNextBtn">
-    <a href="javascript:;">
+    <a href="javascript:;" (click)="changeCurrentIndex(currentIndex + 5)">
       <div class="item-container">
 
         <span class="jump-next-right" nz-icon nzType="double-right" nzTheme="outline"></span>
@@ -30,12 +34,12 @@
     </a>
   </li>
 
-  <li class="item">
-    <a href="javascript:;">{{ pageSize }}</a>
+  <li class="item" *ngIf="currentIndex < pageSize - 2 ">
+    <a href="javascript:;" (click)="changeCurrentIndex(pageSize)">{{ pageSize }}</a>
   </li>
 
-  <li class="prev">
-    <button class="item-link">
+  <li class="prev" [class.disabled]="pageSize === currentIndex">
+    <button class="item-link" [disabled]="pageSize === currentIndex" (click)="changeCurrentIndex(currentIndex + 1)">
       <span nz-icon nzType="right" nzTheme="outline"></span>
     </button>
   </li>

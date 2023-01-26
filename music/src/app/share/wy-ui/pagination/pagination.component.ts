@@ -20,11 +20,8 @@ export class PaginationComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['total']) {
+    if (changes['total'] || changes['currentIndex']) {
       this.pageSize = Math.ceil(this.total / this.pageCount);
-    }
-
-    if (changes['currentIndex']) {
       this.setPageArr();
     }
   }
@@ -33,23 +30,33 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   changeCurrentIndex(num: number) {
-    this.currentIndex = num;
+    this.currentIndexChange.emit(num);
   }
 
   private setPageArr() {
     if (this.total > this.showLimit) {
       if (this.currentIndex < 3) {
         this.pageArr = [1, 2, 3, 4, 5];
-      } else if (this.currentIndex > this.total - 2) {
-        this.pageArr = [this.total - 4, this.total - 3, this.total - 2, this.total - 1, this.total];
+      } else if (this.currentIndex > this.pageSize - 2) {
+        this.pageArr = [this.pageSize - 4, this.pageSize - 3, this.pageSize - 2, this.pageSize - 1, this.pageSize];
       } else {
         this.pageArr = [this.currentIndex - 2, this.currentIndex - 1, this.currentIndex, this.currentIndex + 1, this.currentIndex + 2];
+      }
+
+      if (this.currentIndex < 3) {
+        this.showNextBtn = true;
+        this.showPrevBtn = false;
+      } else if (this.currentIndex > this.pageSize - 2) {
+        this.showPrevBtn = true;
+        this.showNextBtn = false;
+      } else {
+        this.showPrevBtn = true;
+        this.showNextBtn = true;
       }
     } else {
       for (let i = 0; i < this.total; i++) {
         this.pageArr.push(i);
       }
     }
-
   }
 }

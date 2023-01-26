@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User, Comment } from 'src/app/services/data-types';
 
 @Component({
@@ -13,10 +13,14 @@ export class WyCommentComponent implements OnInit {
   @Input() user?: User;
   @Input() currentIndex: number;
   @Input() pageCount: number;
+  @Output() changeCurrentIndex = new EventEmitter<number>;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  changeIndex(index: number) {
+    this.changeCurrentIndex.emit(index);
+  }
 }
