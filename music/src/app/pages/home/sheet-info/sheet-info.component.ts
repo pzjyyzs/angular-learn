@@ -5,6 +5,7 @@ import { forkJoin, mergeMap, Subject } from 'rxjs';
 import { User, Song, Comment } from 'src/app/services/data-types';
 import { SongService } from 'src/app/services/song.service';
 import { UserService } from 'src/app/services/user.service';
+import { SetOpenLoginModal } from 'src/app/store/actions/user.action';
 import { BatchActionService } from 'src/app/store/batch-action.service';
 import { getCurrentSong, getPlayer } from 'src/app/store/selector/player.selector';
 import { getUser, getUserInfo } from 'src/app/store/selector/user.selector';
@@ -92,6 +93,14 @@ export class SheetInfoComponent implements OnInit {
       this.commentList = data.comments;
       this.offset = index;
     })
+  }
+
+  changeLike(like: boolean) {
+    if (this.user) {
+
+    } else {
+      this.store$.dispatch(SetOpenLoginModal({ openLoginModal: true }));
+    }
   }
 
   private changeDesc(desc: string) {

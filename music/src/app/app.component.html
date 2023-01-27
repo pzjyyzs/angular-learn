@@ -73,3 +73,66 @@
 </nz-layout>
 
 <app-player></app-player>
+
+<app-wy-modal [(ngModel)]="showLogin">
+  <div class="cnt-box-include">
+    <img [src]="qrImg" alt="">
+    <div class="qrimg-refresh" [hidden]="!isQrImgShow">
+      <p>二维码已失效</p>
+      <a class="qrimg-refresh-btn" href="javascript:;" (click)="reloadQrCode()">点击刷新</a>
+    </div>
+    <!--  <div class="g-bd">
+      <div class="m-cnt">
+        <form action="" [formGroup]="formModel" (ngSubmit)="onSubmit()">
+          <div class="inputbox">
+            <div class="u-input mbItlBox">
+              <div class="country">
+                <em>+86</em>
+              </div>
+              <input type="tel" class="dlemail" id="phone" placeholder="请输入手机号" formControlName="phone">
+            </div>
+          </div>
+
+          <div class="m-pccnt f-cb">
+            <div class="m-pcbox">
+              <div class="inputbox m-mb m-pc f-fl">
+                <div class="u-input">
+                  <input type="tel" class="j-inputtext pcin" placeholder="请输入短信验证码" formControlName="code">
+                </div>
+              </div>
+              <div class="pcbtn f-fl">
+                <a class="tabfocus getsmscode " href="javascript:void(0);" (click)="getLoginCode()"
+                  [class.disable]="codeBtnDisable">
+                  {{ codeStr }}
+                </a>
+              </div>
+              <div class="m-nerror">
+                <div class="j-icon ferrortail"></div>
+                <div class="ferrorhead">
+                  <ng-container
+                    *ngIf="formModel.controls['phone'].invalid && (formModel.controls['phone'].dirty || formModel.controls['phone'].touched )">
+                    <ng-container *ngIf="formModel.controls['phone'].errors?.['required']">
+                      请输入手机号
+                    </ng-container>
+                    <ng-container *ngIf="formModel.controls['phone'].errors?.['required']">
+                      手机号格式错误
+                    </ng-container>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="formModel.controls['code'].invalid && (formModel.controls['code'].dirty || formModel.controls['code'].touched )">
+                    <ng-container *ngIf="formModel.controls['code'].errors?.['required']">
+                      请输入验证码
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="f-cb loginbox">
+                <button type="submit" class="u-loginbtn btncolor tabfocus">登录</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div> -->
+  </div>
+</app-wy-modal>

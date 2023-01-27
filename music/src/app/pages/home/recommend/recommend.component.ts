@@ -15,6 +15,7 @@ import { StoreIndexModule } from 'src/app/store/store.module';
 import { select, Store } from '@ngrx/store';
 import { getUser } from 'src/app/store/selector/user.selector';
 import { Router } from '@angular/router';
+import { SetOpenLoginModal } from 'src/app/store/actions/user.action';
 
 type Playlist = {
   coverImgUrl: string,
@@ -41,7 +42,6 @@ export class RecommendComponent implements OnInit {
   isHoving: string = '';
   singerList: Singer[];
   djList: Dj[];
-  showLogin: boolean = false;
 
   @ViewChild('carousel') carousel!: WyCarouselComponent;
 
@@ -53,13 +53,7 @@ export class RecommendComponent implements OnInit {
     this._indexColor = `url(${color}?imageView&blur=40x20)`;
   }
 
-  /* formModel: FormGroup;
-  codeStr = '获取验证码';
-  codeTime = 30;
-  codeBtnDisable = false; */
   qrImg: string | undefined = '';
-  isQrImgShow = false;
-  loginStatus$: Subscription;
   user: User;
   constructor(
     private homeService: HomeService,
@@ -148,8 +142,9 @@ export class RecommendComponent implements OnInit {
     }
   }
   openLoginModal() {
-    this.showLogin = true;
-    this.getQrCode();
+    /* this.showLogin = true;
+    this.getQrCode(); */
+    this.store$.dispatch(SetOpenLoginModal({ openLoginModal: true }));
   }
 
   onSubmit() {
@@ -193,45 +188,6 @@ export class RecommendComponent implements OnInit {
        })
 
      } */
-
-  }
-
-  reloadQrCode() {
-    this.isQrImgShow = false;
-    this.getQrCode();
-  }
-
-  getQrCode() {
-    let key: string;
-    this.userService.getQrCode().pipe(
-      switchMap((data: { code: number, unikey: string }) => {
-        if (data.code === 200) {
-          key = data.unikey;
-          return this.userService.getQrCodeImg({ key, qrimg: true, timerstamp: Date.now() })
-        }
-        return of(null)
-      })
-    ).subscribe(res => {
-      this.qrImg = res?.qrimg;
-      this.loginStatus$ = interval(3000).pipe(
-        switchMap(() => {
-          return this.userService.getQrStatus({ key, timerstamp: Date.now() })
-        })
-      ).subscribe(async (data) => {
-        console.log('data', data)
-        if (data.code === 800) {
-          this.isQrImgShow = true;
-        }
-        if (data.code === 803) {
-          this.loginStatus$.unsubscribe();
-          this.userService.getLoginStatus(data.cookie).subscribe(item => {
-            console.log('item', item)
-            localStorage.setItem('cookie', data.cookie);
-            this.showLogin = false;
-          })
-        }
-      })
-    })
 
   }
 

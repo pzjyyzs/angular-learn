@@ -156,8 +156,9 @@
           </div>
         </div>
 
-        <app-wy-comment [list]="commentList" [total]="commentTotal" [user]="user" [currentIndex]="offset"
-          [pageCount]="commentPageCount" (changeCurrentIndex)="changeIndex($event)"></app-wy-comment>
+        <app-wy-comment [list]="commentList" [total]="commentTotal" [currentIndex]="offset"
+          [pageCount]="commentPageCount" (changeCurrentIndex)="changeIndex($event)"
+          (changeLike)="changeLike($event)"></app-wy-comment>
       </div>
     </div>
 
