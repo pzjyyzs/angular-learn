@@ -23,7 +23,6 @@ export class AppComponent {
     const appStore$ = this.store$.pipe(select(getUser));
     appStore$.pipe(select(getOpenLoginModal)).subscribe(isOpenLogin => {
       this.showLogin = isOpenLogin;
-      console.log('showLogin', this.showLogin)
       if (this.showLogin) {
         this.reloadQrCode()
       }
@@ -85,10 +84,18 @@ export class AppComponent {
           this.userService.getLoginStatus(data.cookie).subscribe(item => {
             localStorage.setItem('cookie', data.cookie);
             this.store$.dispatch(SetOpenLoginModal({ openLoginModal: false }));
+            if (item.code === 200) {
+              this.store$.dispatch(SetUser({ user: item.profile }));
+              this.user = item.profile;
+            }
           })
         }
       })
     })
 
+  }
+
+  changeLoginModal() {
+    this.store$.dispatch(SetOpenLoginModal({ openLoginModal: false }));
   }
 }

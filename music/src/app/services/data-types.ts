@@ -1,3 +1,14 @@
+export enum CommentType {
+  Song = 0,
+  MV,
+  Sheet,
+  Album,
+  DjShow,
+  Video,
+  Post,
+  DJ
+}
+
 export interface Banner {
   url: string;
   imageUrl: string;

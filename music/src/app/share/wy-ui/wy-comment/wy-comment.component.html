@@ -62,8 +62,8 @@
             <div class="rp">
               <div class="time s-fc4">{{ item.timeStr }}</div>
               <!--  <span class="dlt"></span> -->
-              <a href="javascript:void(0);" (click)="handleLike(true)">
-                <i class="zan u-icn2 u-icn2-12"></i> ({{ item.likedCount }})
+              <a href="javascript:void(0);" (click)="handleLike(item.commentId, item.liked)">
+                <i class="zan u-icn2" [class]="item.liked ? 'u-icn2-13' : 'u-icn2-12'"></i> ({{ item.likedCount }})
               </a>
               <span class="sep">|</span>
               <a href="javascript:void(0);" class="s-fc3" (click)="handleReplay()">回复</a>

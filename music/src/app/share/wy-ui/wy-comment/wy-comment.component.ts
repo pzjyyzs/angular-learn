@@ -10,14 +10,14 @@ import { StoreIndexModule } from 'src/app/store/store.module';
   templateUrl: './wy-comment.component.html',
   styleUrls: ['./wy-comment.component.less']
 })
-export class WyCommentComponent implements OnInit, OnChanges {
+export class WyCommentComponent implements OnInit {
 
   @Input() list: Array<Comment>;
   @Input() total: number;
   @Input() currentIndex: number;
   @Input() pageCount: number;
   @Output() changeCurrentIndex = new EventEmitter<number>;
-  @Output() changeLike = new EventEmitter<boolean>;
+  @Output() changeLike = new EventEmitter<{ cid: number, isLike: boolean }>;
 
   userImg: string;
   user: User;
@@ -25,13 +25,8 @@ export class WyCommentComponent implements OnInit, OnChanges {
     const appStore$ = this.store$.pipe(select(getUser));
     appStore$.pipe(select(getUserInfo)).subscribe(info => {
       this.user = info;
-    })
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['user']) {
       this.userImg = this.user?.avatarUrl ? this.user.avatarUrl : 'http://s4.music.126.net/style/web2/img/default/default_avatar.jpg?param=50y50';
-    }
+    })
   }
 
   ngOnInit(): void {
@@ -42,9 +37,9 @@ export class WyCommentComponent implements OnInit, OnChanges {
     this.changeCurrentIndex.emit(index);
   }
 
-  handleLike(isLike: boolean) {
+  handleLike(cid: number, isLike: boolean) {
     if (this.user) {
-      this.changeLike.emit(isLike)
+      this.changeLike.emit({ cid, isLike })
     } else {
       this.store$.dispatch(SetOpenLoginModal({ openLoginModal: true }));
     }
@@ -62,7 +57,7 @@ export class WyCommentComponent implements OnInit, OnChanges {
     if (this.user) {
 
     } else {
-      this.store$.dispatch(SetOpenLoginModal({ openLoginModal: true }));
+      this.store$.dispatch(SetOpenLoginModal({ openLoginModal: true }))
     }
   }
 }

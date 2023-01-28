@@ -74,7 +74,7 @@
 
 <app-player></app-player>
 
-<app-wy-modal [(ngModel)]="showLogin">
+<app-wy-modal [show]="showLogin" (closeModal)="changeLoginModal()">
   <div class="cnt-box-include">
     <img [src]="qrImg" alt="">
     <div class="qrimg-refresh" [hidden]="!isQrImgShow">

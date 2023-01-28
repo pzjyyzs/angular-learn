@@ -1,4 +1,4 @@
-import { Dj, Singer, Song, SongUrl, Lyric } from './data-types';
+import { Dj, Singer, Song, SongUrl, Lyric, CommentType } from './data-types';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
@@ -15,6 +15,13 @@ type DjParams = {
   limit: number;
 }
 
+type ReviewParams = {
+  id: string;
+  cid: number;
+  t: number;
+  type: CommentType;
+}
+
 const defaultParams: SingerParams = {
   type: 1,
   area: 7,
@@ -23,6 +30,13 @@ const defaultParams: SingerParams = {
 
 const djParams: DjParams = {
   limit: 5,
+}
+
+const reviewParams: ReviewParams = {
+  id: '',
+  cid: 0,
+  t: 0,
+  type: CommentType.Song
 }
 
 @Injectable({
@@ -87,6 +101,11 @@ export class SongService {
   getComment(id: string, offset: number = 1, pageCount: number = 20): Observable<any> {
     const params = new HttpParams({ fromString: queryString.stringify({ id, offset, limit: pageCount }) });
     return this.http.get(this.url + '/comment/playlist', { params })
+      .pipe(map(res => res));
+  }
+
+  setCommentLike(args = reviewParams): Observable<any> {
+    return this.http.post(this.url + '/comment/like', args)
       .pipe(map(res => res));
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, mergeMap, Subject } from 'rxjs';
-import { User, Song, Comment } from 'src/app/services/data-types';
+import { User, Song, Comment, CommentType } from 'src/app/services/data-types';
 import { SongService } from 'src/app/services/song.service';
 import { UserService } from 'src/app/services/user.service';
 import { SetOpenLoginModal } from 'src/app/store/actions/user.action';
@@ -53,8 +53,6 @@ export class SheetInfoComponent implements OnInit {
           this.sheetUser = data[0];
           this.commentList = data[1].comments;
           this.commentTotal = data[1].total;
-          console.log('sheet', data[1])
-
         })
     }
 
@@ -95,9 +93,11 @@ export class SheetInfoComponent implements OnInit {
     })
   }
 
-  changeLike(like: boolean) {
+  changeLike(args: { cid: number, isLike: boolean }) {
     if (this.user) {
-
+      this.songService.setCommentLike({ id: this.playListId!, cid: args.cid, t: Number(!args.isLike), type: CommentType.Sheet }).subscribe(data => {
+        console.log('like', data)
+      })
     } else {
       this.store$.dispatch(SetOpenLoginModal({ openLoginModal: true }));
     }
