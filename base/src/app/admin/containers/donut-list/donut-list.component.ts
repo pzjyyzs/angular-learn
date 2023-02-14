@@ -12,7 +12,7 @@ export class DonutListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.donuts = [
+    /* this.donuts = [
       {
         id: 'y8z0As',
         name: 'Just Chocolate',
@@ -25,6 +25,7 @@ export class DonutListComponent implements OnInit {
         name: 'Glazed Fudge',
         icon: 'glazed-fudge',
         price: 129,
+        promo: true,
         description: 'Sticky perfection.'
       },
       {
@@ -34,7 +35,7 @@ export class DonutListComponent implements OnInit {
         price: 129,
         description: 'Chocolate drizzled with caramel'
       }
-    ]
+    ] */
   }
 
 }
