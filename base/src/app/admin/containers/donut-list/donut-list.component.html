@@ -1,7 +1,7 @@
 <div>
   <ng-container *ngIf="donuts.length; then card else nothing"></ng-container>
   <ng-template #card>
-    <ng-container *ngFor="let donut of donuts">
+    <ng-container *ngFor="let donut of donuts; trackBy: trackById;index as i;odd as o;even as e">
       <app-donut-card [donut]="donut"></app-donut-card>
     </ng-container>
   </ng-template>
