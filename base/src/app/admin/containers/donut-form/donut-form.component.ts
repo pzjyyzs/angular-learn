@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Donut } from './../../models/donut';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -8,6 +9,8 @@ import { NgForm } from '@angular/forms';
 })
 export class DonutFormComponent implements OnInit {
 
+  @Input() donut!: Donut;
+  @Output() create = new EventEmitter<Donut>();
   icons: string[] = [
     'caramel-swirl',
     'glazed-fudge',
@@ -24,7 +27,7 @@ export class DonutFormComponent implements OnInit {
 
   handleSubmit(form: NgForm) {
     if (form.valid) {
-
+      this.create.emit(form.value);
     } else {
       form.form.markAllAsTouched();
     }
