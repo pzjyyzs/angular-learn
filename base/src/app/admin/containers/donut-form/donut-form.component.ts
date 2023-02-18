@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-donut-form',
@@ -21,4 +22,11 @@ export class DonutFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  handleSubmit(form: NgForm) {
+    if (form.valid) {
+
+    } else {
+      form.form.markAllAsTouched();
+    }
+  }
 }
