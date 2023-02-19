@@ -1,3 +1,4 @@
+import { DonutService } from './../../service/donut.service';
 import { Component, OnInit } from '@angular/core';
 import { Donut } from '../../models/donut';
 
@@ -9,20 +10,13 @@ import { Donut } from '../../models/donut';
 export class DonutSingleComponent implements OnInit {
 
   donut!: Donut;
-  constructor() { }
+  constructor(private donutService: DonutService) { }
 
   ngOnInit(): void {
-    this.donut = {
-      id: 'y8z0As',
-      name: 'Just Chocolate',
-      icon: 'just-chocolate',
-      price: 119,
-      promo: 'limited',
-      description: 'For the pure chocoholic.'
-    }
+    this.donut = this.donutService.readOne('y8z0As');
   }
 
   onCreate(donut: Donut) {
-
+    this.donutService.create(donut);
   }
 }
