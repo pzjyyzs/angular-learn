@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Donut } from '../models/donut';
 
@@ -7,48 +8,12 @@ import { Donut } from '../models/donut';
 export class DonutService {
 
   donuts: Donut[] = [
-    {
-      id: 'y8z0As',
-      name: 'Just Chocolate',
-      icon: 'just-chocolate',
-      price: 119,
-      promo: 'limited',
-      description: 'For the pure chocoholic.'
-    },
-    {
-      id: '3u98kl',
-      name: 'Glazed Fudge',
-      icon: 'glazed-fudge',
-      price: 129,
-      promo: 'new',
-      description: 'Sticky perfection.'
-    },
-    {
-      id: 'ae098s',
-      name: 'Caramel Swirl',
-      icon: 'caramel-swirl',
-      price: 129,
-      description: 'Chocolate drizzled with caramel'
-    },
-    {
-      id: '8amkz9',
-      name: 'Sour Superme',
-      icon: 'sour-superme',
-      price: 139,
-      description: 'For the sour advocate'
-    },
-    {
-      id: 'l3M0nz',
-      name: 'Zesty Lemon',
-      icon: 'zesty-lemon',
-      price: 129,
-      description: 'Delicious lucious lemon.'
-    }
+
   ]
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   read() {
-    return this.donuts;
+    return this.http.get<Donut[]>(`/api/donuts`);
   }
 
   readOne(id: string) {
@@ -58,5 +23,19 @@ export class DonutService {
 
   create(payLoad: Donut) {
     this.donuts = [...this.donuts, payLoad];
+  }
+
+  update(payload: Donut) {
+    this.donuts = this.donuts.map((donut: Donut) => {
+      if (donut.id === payload.id) {
+        return payload;
+      }
+      return donut
+    })
+  }
+
+  delete(payload: Donut) {
+    this.donuts = this.donuts.filter((donut: Donut) => donut.id !== payload.id);
+
   }
 }
