@@ -5,6 +5,7 @@
       "^/api": ""
     },
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }

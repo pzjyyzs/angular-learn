@@ -1,4 +1,4 @@
-<form class="donut-form" #form="ngForm">
+<form class="donut-form" #form="ngForm" *ngIf="donut; else loading">
   <label>
     <span>Name</span>
     <input type="text" class="input" name="name" required [ngModel]="donut.name" minlength="5" #name="ngModel"
@@ -65,3 +65,4 @@
     {{ donut | json }}
   </pre>
 </form>
+<ng-template #loading>Loading...</ng-template>
