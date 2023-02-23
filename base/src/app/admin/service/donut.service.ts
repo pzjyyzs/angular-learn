@@ -37,20 +37,33 @@ export class DonutService {
   }
 
   create(payLoad: Donut) {
+    return this.http.post<Donut>('/api/donuts', payLoad).pipe(
+      tap((donut) => {
+        this.donuts = [...this.donuts, donut];
+      })
+    )
     this.donuts = [...this.donuts, payLoad];
   }
 
   update(payload: Donut) {
-    this.donuts = this.donuts.map((donut: Donut) => {
-      if (donut.id === payload.id) {
-        return payload;
-      }
-      return donut
-    })
+    return this.http.put<Donut>(`/api/donuts/${payload.id}`, payload).pipe(
+      tap((donut) => {
+        this.donuts = this.donuts.map((item: Donut) => {
+          if (item.id === donut.id) {
+            return donut;
+          }
+          return item
+        })
+      })
+    )
+
   }
 
   delete(payload: Donut) {
-    this.donuts = this.donuts.filter((donut: Donut) => donut.id !== payload.id);
+    return this.http.delete<Donut>(`/api/donuts/${payload.id}`).pipe(tap(() => {
+
+      this.donuts = this.donuts.filter((donut: Donut) => donut.id !== payload.id);
+    }));
 
   }
 }
