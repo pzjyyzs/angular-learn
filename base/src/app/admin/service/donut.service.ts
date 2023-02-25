@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, of, tap } from 'rxjs';
+import { catchError, delay, map, of, retry, retryWhen, take, tap, throwError } from 'rxjs';
 import { Donut } from '../models/donut';
 
 @Injectable({
@@ -17,10 +17,20 @@ export class DonutService {
     if (this.donuts.length) {
       return of(this.donuts);
     }
-    return this.http.get<Donut[]>(`/api/donuts`).pipe(
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+    headers = headers.append('Api-Token', '1234abcd');
+    const options = {
+      headers
+    }
+    return this.http.get<Donut[]>(`/api/donuts`, options).pipe(
       tap((donuts: Donut[]) => {
         this.donuts = donuts;
-      })
+      }),
+      retry({ count: 2, delay: 5000 }),
+      catchError(this.handleError)
     );
   }
 
@@ -32,7 +42,8 @@ export class DonutService {
           return donut
         }
         return { name: '', icon: '', price: 0, description: '' }
-      })
+      }),
+      catchError(this.handleError)
     )
   }
 
@@ -40,9 +51,9 @@ export class DonutService {
     return this.http.post<Donut>('/api/donuts', payLoad).pipe(
       tap((donut) => {
         this.donuts = [...this.donuts, donut];
-      })
+      }),
+      catchError(this.handleError)
     )
-    this.donuts = [...this.donuts, payLoad];
   }
 
   update(payload: Donut) {
@@ -54,16 +65,29 @@ export class DonutService {
           }
           return item
         })
-      })
+      }),
+      catchError(this.handleError)
     )
-
   }
 
   delete(payload: Donut) {
-    return this.http.delete<Donut>(`/api/donuts/${payload.id}`).pipe(tap(() => {
+    return this.http.delete<Donut>(`/api/donuts/${payload.id}`).pipe(
+      tap(() => {
+        this.donuts = this.donuts.filter((donut: Donut) => donut.id !== payload.id);
+      }),
+      catchError(this.handleError)
+    );
 
-      this.donuts = this.donuts.filter((donut: Donut) => donut.id !== payload.id);
-    }));
+  }
 
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // client side error
+      console.warn('Client', error.message);
+    } else {
+      // server side error
+      console.warn('Server', error.status);
+    }
+    return throwError(() => new Error(error.message));
   }
 }

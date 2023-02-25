@@ -8,8 +8,14 @@ import { DonutSingleComponent } from './containers/donut-single/donut-single.com
 // components
 import { DonutCardComponent } from './containers/donut-card/donut-card.component';
 import { DonutFormComponent } from './containers/donut-form/donut-form.component';
+import { RouterModule, Routes } from '@angular/router';
 
 
+const routes: Routes = [
+  { path: 'donuts', component: DonutListComponent },
+  { path: 'donut', component: DonutSingleComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'donuts' },
+]
 @NgModule({
   declarations: [
     DonutListComponent,
@@ -20,6 +26,7 @@ import { DonutFormComponent } from './containers/donut-form/donut-form.component
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule.forRoot(routes),
     HttpClientModule
   ],
   exports: [DonutListComponent, DonutSingleComponent]
