@@ -11,9 +11,10 @@ import { DonutFormComponent } from './containers/donut-form/donut-form.component
 import { RouterModule, Routes } from '@angular/router';
 
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'donuts', component: DonutListComponent },
-  { path: 'donut', component: DonutSingleComponent },
+  { path: 'donuts/new', component: DonutSingleComponent, data: { isEdit: false } },
+  { path: 'donuts/:id', component: DonutSingleComponent, data: { isEdit: true } },
   { path: '', pathMatch: 'full', redirectTo: 'donuts' },
 ]
 @NgModule({
@@ -26,8 +27,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule.forRoot(routes),
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forChild(routes),
   ],
   exports: [DonutListComponent, DonutSingleComponent]
 })

@@ -1,4 +1,4 @@
-<div class="donut-card" [class.promo]='donut.promo'>
+<a [routerLink]="donut.id" class="donut-card" [class.promo]='donut.promo'>
 
   <img src="../../../../assets/img/{{ donut.icon }}.svg" [alt]="donut.name" class="donut-card-icon" />
   <div>
@@ -14,4 +14,4 @@
     </p>
   </div>
 
-</div>
+</a>

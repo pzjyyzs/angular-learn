@@ -52,10 +52,12 @@
     </ng-container>
   </label>
 
-  <button type="submit" class="btn btn--green" (click)="handleCreate(form)">Create</button>
-  <button type="submit" class="btn btn--green" (click)="handleUpdate(form)" [disabled]="form.untouched">Update</button>
-  <button type="submit" class="btn btn--green" (click)="handleDelete()">Delete</button>
-  <button type="button" class="btn btn--grey" (click)="form.resetForm()">Reset Form</button>
+  <button type="button" class="btn btn--green" (click)="handleCreate(form)" *ngIf="!isEdit">Create</button>
+  <button type="button" class="btn btn--green" (click)="handleUpdate(form)" *ngIf="isEdit"
+    [disabled]="form.untouched">Update</button>
+  <button type="button" class="btn btn--green" (click)="handleDelete()" *ngIf="isEdit">Delete</button>
+  <button type="button" class="btn btn--grey" (click)="form.resetForm()" *ngIf="form.touched || isEdit">Reset
+    Form</button>
 
   <div class="donut-form-working" *ngIf="form.valid && form.submitted">Working...</div>
   <pre>

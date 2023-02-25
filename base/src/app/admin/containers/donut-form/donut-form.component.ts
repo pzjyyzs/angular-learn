@@ -10,6 +10,7 @@ import { NgForm } from '@angular/forms';
 export class DonutFormComponent implements OnInit {
 
   @Input() donut!: Donut;
+  @Input() isEdit!: boolean;
   @Output() create = new EventEmitter<Donut>();
   @Output() update = new EventEmitter<Donut>();
   @Output() delete = new EventEmitter<Donut>();
