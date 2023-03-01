@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'donuts', component: DonutListComponent },
   { path: 'donuts/new', component: DonutSingleComponent, data: { isEdit: false } },
   { path: 'donuts/:id', component: DonutSingleComponent, data: { isEdit: true } },
-  { path: '', pathMatch: 'full', redirectTo: 'donuts' },
+  { path: '', pathMatch: 'full', redirectTo: 'base/index/admin/donuts' },
 ]
 @NgModule({
   declarations: [

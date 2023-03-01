@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ProComponent } from './pro/index/pro.component';
 
 const routes: Routes = [
   {
-    path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(x => x.AdminModule)
+    path: 'pro',
+    loadChildren: () => import('./pro/pro.module').then(x => x.ProModule)
+  },
+  {
+    path: 'base',
+    loadChildren: () => import('./base/base.module').then(x => x.BaseModule)
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'admin'
+    redirectTo: 'base'
   },
   {
     path: '**',
-    redirectTo: 'admin'
+    redirectTo: 'base'
   }
 ];
 

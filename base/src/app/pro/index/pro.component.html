@@ -1,0 +1,8 @@
+<div class="container">
+  <div class="aside">
+    <a [routerLink]="link.path" *ngFor="let link of routerLink">{{ link.name }}</a>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
