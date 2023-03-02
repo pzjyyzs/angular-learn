@@ -164,5 +164,42 @@
 
 
   </div>
-  <div class="g-sd4"></div>
+  <div class="g-sd4">
+    <div class="g-wrap7">
+      <h3 class="u-hd3">
+        <span class="f-fl">喜欢这个歌单的人</span>
+      </h3>
+      <ul class="m-piclist f-cb">
+        <li *ngFor="let suber of this.playList.subscribers">
+          <a href="" class="f-tdn">
+            <img [src]="suber.avatarUrl" alt="">
+          </a>
+        </li>
+      </ul>
+      <h3 class="u-hd3">
+        <span class="f-fl">热门歌单</span>
+      </h3>
+      <ul class="m-rctlist f-cb">
+        <li *ngFor="let related of this.relatedPlayList">
+          <div class="cver u-cover u-cover-3">
+            <img [src]="related.coverImgUrl" alt="">
+          </div>
+          <div class="info">
+            <p class="f-thide">
+              <a class="sname f-fs1 s-fc0">{{ relat}]</a>
+            </p>
+            <p>
+              <span class="by s-fc4"></span>
+              <a class="nm nm f-thide s-fc3">--二白--</a>
+            </p>
+          </div>
+        </li>
+      </ul>
+      <!-- <div class="m-multi">
+        <h3 class="u-hd3">
+          <span class="f-fl">网易云音乐多端下载</span>
+        </h3>
+      </div> -->
+    </div>
+  </div>
 </div>

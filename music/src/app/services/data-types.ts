@@ -83,3 +83,10 @@ export interface Comment {
   liked: boolean;
   beReplied: Array<Replied>;
 }
+
+export interface RelatedSongSheet {
+  coverImgUrl: string;
+  creator: User;
+  id: string;
+  name: string;
+}

@@ -1,4 +1,4 @@
-import { Dj, Singer, Song, SongUrl, Lyric, CommentType } from './data-types';
+import { Dj, Singer, Song, SongUrl, Lyric, CommentType, RelatedSongSheet } from './data-types';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
@@ -107,6 +107,12 @@ export class SongService {
   setCommentLike(args = reviewParams): Observable<any> {
     return this.http.post(this.url + '/comment/like', args)
       .pipe(map(res => res));
+  }
+
+  getRelatedPlaylist(id: string): Observable<RelatedSongSheet[]> {
+    const params = new HttpParams({ fromString: queryString.stringify({ id }) });
+    return this.http.get<{ playlists: RelatedSongSheet[] }>(this.url + '/related/playlist', { params })
+      .pipe(map((res: { playlists: RelatedSongSheet[] }) => res.playlists));
   }
 
   private generateSongList(songs: Song[], urls: SongUrl[]): Song[] {

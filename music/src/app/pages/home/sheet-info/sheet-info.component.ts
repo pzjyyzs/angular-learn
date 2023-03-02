@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, mergeMap, Subject } from 'rxjs';
-import { User, Song, Comment, CommentType } from 'src/app/services/data-types';
+import { User, Song, Comment, CommentType, RelatedSongSheet } from 'src/app/services/data-types';
 import { SongService } from 'src/app/services/song.service';
 import { UserService } from 'src/app/services/user.service';
 import { SetOpenLoginModal } from 'src/app/store/actions/user.action';
@@ -33,6 +33,7 @@ export class SheetInfoComponent implements OnInit {
   commentTotal: number;
   commentPageCount: number = 20;
   playListId: string | null = '';
+  relatedPlayList: RelatedSongSheet[];
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService,
     private store$: Store<StoreIndexModule>, private batchService: BatchActionService) { }
 
@@ -47,12 +48,13 @@ export class SheetInfoComponent implements OnInit {
             if (this.playList.description) {
               this.changeDesc(this.playList.description)
             }
-            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(this.playListId!, this.offset, this.commentPageCount)])
+            return forkJoin([this.userService.getUser({ uid: data.playlist.userId }), this.songService.getComment(this.playListId!, this.offset, this.commentPageCount), this.songService.getRelatedPlaylist(this.playListId!)])
           })
         ).subscribe(data => {
           this.sheetUser = data[0];
           this.commentList = data[1].comments;
           this.commentTotal = data[1].total;
+          this.relatedPlayList = data[2];
         })
     }
 
