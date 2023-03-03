@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
 
+  rememberMe: boolean = false;
   constructor() { }
 
   ngOnInit(): void {
@@ -19,5 +20,9 @@ export class ContentComponent implements OnInit {
 
   loginUser(user: User) {
 
+  }
+
+  rememberUser(remember: boolean) {
+    this.rememberMe = remember;
   }
 }
