@@ -13,6 +13,7 @@ import { AuthMessageComponent } from './auth-form/auth-message/auth-message.comp
   imports: [
     CommonModule,
     FormsModule
-  ]
+  ],
+
 })
 export class ContentModule { }

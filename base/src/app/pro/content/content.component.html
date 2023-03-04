@@ -10,4 +10,12 @@
     <app-auth-remember (checked)="rememberUser($event)"></app-auth-remember>
     <button type="submit">Login</button>
   </app-auth-form>
+
+  <div #entry></div>
+  <button (click)="destoryComponent()">destory</button>
+  <ng-template #tmpl let-name let-location="location">
+    {{ name }} {{ location }}
+  </ng-template>
+  <ng-container [ngTemplateOutlet]="tmpl" [ngTemplateOutletContext]="ctx"></ng-container>
+
 </div>
