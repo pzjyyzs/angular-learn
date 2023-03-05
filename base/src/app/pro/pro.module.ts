@@ -1,3 +1,6 @@
+import { DirectivesComponent } from './directives/directives.component';
+import { DirectivesModule } from './directives/directives.module';
+import { PipeModule } from './pipe/pipe.module';
 import { ProComponent } from './index/pro.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -5,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ContentComponent } from './content/content.component';
 import { AuthFormComponent } from './content/auth-form/auth-form.component';
 import { ContentModule } from './content/content.module';
+import { PipeComponent } from './pipe/pipe.component';
 
 export const routes: Routes = [
   {
@@ -14,7 +18,17 @@ export const routes: Routes = [
       {
         path: 'content',
         component: ContentComponent
-      }
+      },
+      {
+        path: 'pipe',
+        component: PipeComponent
+      },
+
+      {
+        path: 'directives',
+        component: DirectivesComponent
+      },
+
     ]
   },
 
@@ -24,6 +38,8 @@ export const routes: Routes = [
   declarations: [ProComponent],
   imports: [
     ContentModule,
+    DirectivesModule,
+    PipeModule,
     CommonModule,
     RouterModule.forChild(routes),
   ]

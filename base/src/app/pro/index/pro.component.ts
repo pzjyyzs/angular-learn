@@ -16,7 +16,9 @@ export class ProComponent implements OnInit {
 
   ngOnInit(): void {
     this.routerLink = [
-      { path: 'content', name: 'content' }
+      { path: 'content', name: 'content' },
+      { path: 'pipe', name: 'pipe' },
+      { path: 'directives', name: 'directives' },
     ]
   }
 
