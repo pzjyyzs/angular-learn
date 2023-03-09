@@ -19,6 +19,7 @@ export class ProComponent implements OnInit {
       { path: 'content', name: 'content' },
       { path: 'pipe', name: 'pipe' },
       { path: 'directives', name: 'directives' },
+      { path: 'form', name: 'reactive-form' }
     ]
   }
 

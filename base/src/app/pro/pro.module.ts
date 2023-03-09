@@ -9,6 +9,8 @@ import { ContentComponent } from './content/content.component';
 import { AuthFormComponent } from './content/auth-form/auth-form.component';
 import { ContentModule } from './content/content.module';
 import { PipeComponent } from './pipe/pipe.component';
+import { ReactiveFormModule } from './reactive-form/reactive-form.module';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 
 export const routes: Routes = [
   {
@@ -28,7 +30,10 @@ export const routes: Routes = [
         path: 'directives',
         component: DirectivesComponent
       },
-
+      {
+        path: 'form',
+        component: ReactiveFormComponent
+      }
     ]
   },
 
@@ -40,6 +45,7 @@ export const routes: Routes = [
     ContentModule,
     DirectivesModule,
     PipeModule,
+    ReactiveFormModule,
     CommonModule,
     RouterModule.forChild(routes),
   ]
