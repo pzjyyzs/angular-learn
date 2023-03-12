@@ -10,7 +10,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
         <app-stock-branch
           [parent]="form">
         </app-stock-branch>
-        <app-stock-selector [parent]="form" [products]="products">
+        <app-stock-selector [parent]="form" [products]="products" (added)="addStock($event)">
         </app-stock-selector>
         <app-stock-products
           [parent]="form">
@@ -32,26 +32,39 @@ export class StockInventoryComponent implements OnInit {
 
   products: Product[] = [
     { id: 1, price: 3000, name: 'banner' },
-    { id: 1, price: 10, name: 'apple' },
-    { id: 1, price: 3, name: 'peach' },
-    { id: 1, price: 20, name: 'banana' },
-    { id: 1, price: 10, name: 'orange' },
-    { id: 1, price: 4, name: 'melon' },
+    { id: 2, price: 10, name: 'apple' },
+    { id: 3, price: 3, name: 'peach' },
+    { id: 4, price: 20, name: 'banana' },
+    { id: 5, price: 10, name: 'orange' },
+    { id: 6, price: 4, name: 'melon' },
   ];
   form = new FormGroup({
     store: new FormGroup({
       branch: new FormControl('B182'),
       code: new FormControl('1234')
     }),
-    selector: new FormGroup({
-      product_id: new FormControl(''),
-      quantity: new FormControl(10)
-    }),
-    stock: new FormArray([])
+    selector: this.createStock({ product_id: 0, quantity: 0 }),
+    stock: new FormArray([
+      this.createStock({ product_id: 1, quantity: 10 }),
+      this.createStock({ product_id: 3, quantity: 50 })
+    ])
   })
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  createStock(stock: { product_id: number, quantity: number }) {
+    return new FormGroup({
+      product_id: new FormControl(stock.product_id || ''),
+      quantity: new FormControl(stock.quantity || 10)
+    })
+  }
+
+  addStock(stock: { product_id: number; quantity: number; }) {
+    const control = this.form.get('stock') as FormArray;
+    console.log('123', stock)
+    control.push(this.createStock(stock));
   }
 
   onSubmit() {
