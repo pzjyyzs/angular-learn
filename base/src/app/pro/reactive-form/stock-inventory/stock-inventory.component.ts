@@ -1,6 +1,6 @@
 import { Product } from './models/product.interface';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-stock-inventory',
@@ -13,7 +13,9 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
         <app-stock-selector [parent]="form" [products]="products" (added)="addStock($event)">
         </app-stock-selector>
         <app-stock-products
-          [parent]="form">
+          [parent]="form"
+          (removed)="removeStock($event)"
+        >
         </app-stock-products>
         <div class="stock-inventory__buttons">
           <button
@@ -38,24 +40,24 @@ export class StockInventoryComponent implements OnInit {
     { id: 5, price: 10, name: 'orange' },
     { id: 6, price: 4, name: 'melon' },
   ];
-  form = new FormGroup({
-    store: new FormGroup({
-      branch: new FormControl('B182'),
-      code: new FormControl('1234')
+  form = this.fb.group({
+    store: this.fb.group({
+      branch: '',
+      code: ''
     }),
     selector: this.createStock({ product_id: 0, quantity: 0 }),
-    stock: new FormArray([
+    stock: this.fb.array([
       this.createStock({ product_id: 1, quantity: 10 }),
       this.createStock({ product_id: 3, quantity: 50 })
     ])
   })
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
   }
 
   createStock(stock: { product_id: number, quantity: number }) {
-    return new FormGroup({
+    return this.fb.group({
       product_id: new FormControl(stock.product_id || ''),
       quantity: new FormControl(stock.quantity || 10)
     })
@@ -69,5 +71,10 @@ export class StockInventoryComponent implements OnInit {
 
   onSubmit() {
     console.log('submit', this.form.value)
+  }
+
+  removeStock({ group, index }: { group: FormGroup, index: number }) {
+    const control = this.form.get('stock') as FormArray;
+    control.removeAt(index);
   }
 }
