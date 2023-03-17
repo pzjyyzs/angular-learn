@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
@@ -12,7 +12,7 @@ import { FormArray, FormGroup } from '@angular/forms';
               {{ item.value.product_id }}
             </div>
             <input type="number" step="10" min="10" max="1000" formControlName="quantity" />
-            <button type="button">Remove</button>
+            <button type="button" (click)="onRemove(item, i)">Remove</button>
           </div>
         </div>
       </div>
@@ -22,11 +22,16 @@ import { FormArray, FormGroup } from '@angular/forms';
 })
 export class StockProductsComponent implements OnInit {
   @Input() parent!: FormGroup;
+  @Output() removed = new EventEmitter<any>();
 
   get stocks() {
     return (this.parent.get('stock') as FormArray).controls
   }
   constructor() { }
+
+  onRemove(group: any, index: any) {
+    this.removed.emit({ group, index });
+  }
 
   ngOnInit(): void {
   }
