@@ -1,6 +1,8 @@
-import { Product } from './models/product.interface';
+import { StockInventoryService } from './services/stock-inventory.service';
+import { Item, Product } from './models/product.interface';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-stock-inventory',
@@ -14,9 +16,14 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
         </app-stock-selector>
         <app-stock-products
           [parent]="form"
+          [map]="productMap"
           (removed)="removeStock($event)"
         >
         </app-stock-products>
+
+        <div>
+          Total: {{ total | currency:'USD':true }}
+        </div>
         <div class="stock-inventory__buttons">
           <button
             type="submit"
@@ -32,28 +39,51 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class StockInventoryComponent implements OnInit {
 
-  products: Product[] = [
-    { id: 1, price: 3000, name: 'banner' },
-    { id: 2, price: 10, name: 'apple' },
-    { id: 3, price: 3, name: 'peach' },
-    { id: 4, price: 20, name: 'banana' },
-    { id: 5, price: 10, name: 'orange' },
-    { id: 6, price: 4, name: 'melon' },
-  ];
+  products: Product[] = [];
+  productMap!: Map<number, Product>;
+  total: number = 0;
   form = this.fb.group({
     store: this.fb.group({
       branch: '',
       code: ''
     }),
     selector: this.createStock({ product_id: 0, quantity: 0 }),
-    stock: this.fb.array([
-      this.createStock({ product_id: 1, quantity: 10 }),
-      this.createStock({ product_id: 3, quantity: 50 })
-    ])
+    stock: this.fb.array<Item[]>([])
   })
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private stockService: StockInventoryService
+  ) { }
 
   ngOnInit(): void {
+    const cart = this.stockService.getCartItems();
+    const products = this.stockService.getProducts();
+    forkJoin([cart, products]).subscribe(([cart, products]: [Item[], Product[]]) => {
+      const myMap = products.map<[number, Product]>(product => [product.id, product]);
+      this.productMap = new Map<number, Product>(myMap);
+      this.products = products;
+
+      cart.forEach(item => this.addStock(item));
+
+      this.calculateTotal(this.form.get('stock')!.value);
+      if (this.form.get('stock')) {
+        this.form.get('stock')!.valueChanges.subscribe((value) => {
+          this.calculateTotal(value)
+        })
+      }
+    });
+  }
+
+  calculateTotal(value: (Item | null)[]) {
+    if (value.length && value[0]) {
+      const total = value.reduce((prev: number, next: { quantity: number; product_id: number; } | null) => {
+        if (next) {
+          return prev + (next.quantity * this.productMap.get(next.product_id)!.price)
+        }
+        return 0;
+      }, 0)
+      this.total = total;
+    }
   }
 
   createStock(stock: { product_id: number, quantity: number }) {
