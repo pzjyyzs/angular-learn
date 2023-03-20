@@ -9,9 +9,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     multi: true
   }],
   template: `
-    <div class="stock-counter">
+    <div class="stock-counter" [class.focused]="focus">
       <div>
-        <div>
+        <div (keydown)="onKeyDown($event)" (blur)="onBlur($event)" (focus)="onFocus($event)">
           <p> {{ value }} </p>
           <div>
             <button type="button" (click)="increment()" [disabled]="value === max">+</button>
@@ -29,6 +29,7 @@ export class StockCounterComponent implements OnInit, ControlValueAccessor {
   @Input() min: number = 10;
   @Input() max: number = 1000;
 
+  focus: boolean = false;
   private onTouch!: Function;
   private onModelChange!: Function;
   value: number = 10;
@@ -47,6 +48,33 @@ export class StockCounterComponent implements OnInit, ControlValueAccessor {
     throw new Error('Method not implemented.');
   }
 
+  onKeyDown(event: KeyboardEvent) {
+    const handlers: { [key: string]: () => void } = {
+      'ArrowDown': () => this.decrement(),
+      'ArrowUp': () => this.increment()
+    };
+
+    if (handlers[event.code]) {
+      handlers[event.code]();
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.onTouch();
+  }
+
+  onFocus(event: FocusEvent) {
+    this.focus = true;
+    event.preventDefault();
+    event.stopPropagation();
+    this.onTouch();
+  }
+
+  onBlur(event: FocusEvent) {
+    this.focus = false;
+    event.preventDefault();
+    event.stopPropagation();
+    this.onTouch();
+  }
   ngOnInit(): void {
   }
 

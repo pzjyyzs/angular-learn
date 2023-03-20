@@ -28,6 +28,16 @@ export class StockInventoryService {
       )
   }
 
+  /* checkBranchId(id: string): Observable<boolean> {
+    let search = new URLSearchParams();
+    search.set('id', id);
+    return this.http.get('/api/branches', { search: search })
+    .pipe(
+      map((res: any) => res),
+      catchError(this.handleError)
+    )
+  } */
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // client side error
