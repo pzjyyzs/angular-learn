@@ -1,8 +1,8 @@
 import { StockInventoryService } from './services/stock-inventory.service';
 import { Item, Product } from './models/product.interface';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { forkJoin, map } from 'rxjs';
 import { StockValidators } from './stock-inventory.validators';
 
 @Component({
@@ -45,7 +45,7 @@ export class StockInventoryComponent implements OnInit {
   total: number = 0;
   form = this.fb.group({
     store: this.fb.group({
-      branch: ['', Validators.required, StockValidators.checkBranch],
+      branch: ['', [Validators.required, StockValidators.checkBranch], [this.validateBranch.bind(this)]],
       code: ['', Validators.required]
     }),
     selector: this.createStock({ product_id: 0, quantity: 0 }),
@@ -107,5 +107,15 @@ export class StockInventoryComponent implements OnInit {
   removeStock({ group, index }: { group: FormGroup, index: number }) {
     const control = this.form.get('stock') as FormArray;
     control.removeAt(index);
+  }
+
+  validateBranch(control: AbstractControl) {
+    return this.stockService
+      .checkBranchId(control.value)
+      .pipe(
+        map((res: boolean) => {
+          return res ? null : { unknownBranch: true }
+        })
+      )
   }
 }

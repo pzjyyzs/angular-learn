@@ -11,6 +11,8 @@ import { ContentModule } from './content/content.module';
 import { PipeComponent } from './pipe/pipe.component';
 import { ReactiveFormModule } from './reactive-form/reactive-form.module';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { RouterComponent } from './router/router.component';
+import { RouterTestModule } from './router/router-test.module';
 
 export const routes: Routes = [
   {
@@ -33,6 +35,10 @@ export const routes: Routes = [
       {
         path: 'form',
         component: ReactiveFormComponent
+      },
+      {
+        path: 'router',
+        loadChildren: () => import('./router/router-test.module').then(x => x.RouterTestModule)
       }
     ]
   },
@@ -46,6 +52,7 @@ export const routes: Routes = [
     DirectivesModule,
     PipeModule,
     ReactiveFormModule,
+    RouterTestModule,
     CommonModule,
     RouterModule.forChild(routes),
   ]

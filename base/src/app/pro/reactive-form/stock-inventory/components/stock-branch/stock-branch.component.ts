@@ -13,12 +13,13 @@ import { Component, Input, OnInit } from '@angular/core';
           <div class="error" *ngIf="required('branch')">
             branch ID is required
           </div>
-          <div class="error" *ngIf="invalidrequired('branch')">Invalid branch code: 1 letter, 3 numbers</div>
+          <div class="error" *ngIf="invalid">Invalid branch code: 1 letter, 3 numbers</div>
+          <div class="error" *ngIf="unknown">Unknow branch, please check the ID</div>
         <input
           type="text"
           placeholder="Manager Code"
           formControlName="code">
-          <div class="error" *ngIf="parent.get('store.code').hasError('required') && parent.get('store.code').touched">
+          <div class="error" *ngIf="parent.get('store.code')?.hasError('required') && parent.get('store.code')?.touched">
             Manager ID is required
           </div>
       </div>
@@ -34,6 +35,13 @@ export class StockBranchComponent implements OnInit {
       this.parent.get('store.branch')?.dirty &&
       this.required('branch')
     );
+  }
+
+  get unknown() {
+    return (
+      this.parent.get('store.branch')?.hasError('unknownBranch') &&
+      this.parent.get('store.branch')?.dirty
+    )
   }
   @Input() parent!: FormGroup;
   constructor() { }

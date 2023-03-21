@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { Item, Product } from '../models/product.interface';
@@ -28,15 +28,15 @@ export class StockInventoryService {
       )
   }
 
-  /* checkBranchId(id: string): Observable<boolean> {
-    let search = new URLSearchParams();
-    search.set('id', id);
-    return this.http.get('/api/branches', { search: search })
-    .pipe(
-      map((res: any) => res),
-      catchError(this.handleError)
-    )
-  } */
+  checkBranchId(id: string): Observable<boolean> {
+    let params = new HttpParams();
+    params.set('id', id);
+    return this.http.get('/api/branches', { params })
+      .pipe(
+        map((res: any) => res),
+        catchError(this.handleError)
+      )
+  }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
